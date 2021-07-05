@@ -1,2 +1,5 @@
 language: csharp
 solution: MathExpressionParser.sln
+dotnet: 5.0.204
+script:
+  - dotnet restore
