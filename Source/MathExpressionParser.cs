@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MathExpressionParser
+namespace MEP
 {
-    public static class MathExpressionParser
+    public class MathExpressionParser
     {
-        private static IList<string> Tokenize(string input)
+        protected static IList<string> Tokenize(string input)
         {
             IList<string> tokens = new List<string>();
             for (int i = 0; i < input.Length; i++)
@@ -15,10 +15,10 @@ namespace MathExpressionParser
                 {
                     for (int j = i; j < input.Length; j++)
                     {
-                        if ((!input[j].IsDigit() && input[j] != '.') || j == input.Length - 1)
+                        if ((!input[j].IsDigit() && input[j] != '.' && input[j] != 'E') || j == input.Length - 1)
                         {
-                            tokens.Add(input[i..j]);
-                            i = j - 1;
+                            tokens.Add(input.Substring(i, j - i + 1));
+                            i = j == input.Length - 1 ? j : j - 1;
                             break;
                         }
                     }
@@ -29,8 +29,8 @@ namespace MathExpressionParser
                     {
                         if ((!input[j].IsDigit() && !input[j].IsLetter() && input[j] != '_') || j == input.Length - 1)
                         {
-                            tokens.Add(input[i..j]);
-                            i = j - 1;
+                            tokens.Add(input.Substring(i, j - i + 1));
+                            i = j == input.Length - 1 ? j : j - 1;
                             break;
                         }
                     }
@@ -47,7 +47,7 @@ namespace MathExpressionParser
             return tokens;
         }
 
-        private static string UnpackTokens(IList<string> tokens, string delimiter = "")
+        protected static string UnpackTokens(IList<string> tokens, string delimiter = "")
         {
             string result = string.Empty;
             for (int i = 0; i < tokens.Count; i++)
@@ -69,7 +69,7 @@ namespace MathExpressionParser
         /// <param name="index">The index of the <see langword="char"/> in the token to get the index from.</param>
         /// <param name="delimiterLength">The length of the delimiter to add to the string of the unpacked<paramref name="tokens"/> between each tokens before the result is computed.</param>
         /// <returns>The index of the <paramref name="index"/>-th <see langword="char"/> in the <paramref name="token"/>-th token as if the tokens are merged into a single string.</returns>
-        private static int GetIndexInStringFromToken(IList<string> tokens, int token, int index, int delimiterLength = 0)
+        protected static int GetIndexInStringFromToken(IList<string> tokens, int token, int index, int delimiterLength = 0)
         {
             int result = 0;
             for (int i = 0; i <= token; i++)
@@ -83,7 +83,14 @@ namespace MathExpressionParser
             return result + index;
         }
 
-        private static int GetCloseParenthesisIndex(IList<string> tokens, int start)
+        /// <summary>
+        /// Finds the index of the corrosponding closing parenthesis of the specified opening parenthesis at index <paramref name="start"/>.
+        /// </summary>
+        /// <param name="tokens"></param>
+        /// <param name="start"></param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <returns></returns>
+        protected static int GetClosingParenthesisIndex(IList<string> tokens, int start)
         {
             if (tokens[start] != "(")
             {
@@ -98,14 +105,7 @@ namespace MathExpressionParser
                 }
                 else if (tokens[i] == ")")
                 {
-                    if (open == 0)
-                    {
-                        throw new ArgumentException("Too many closing parentheses", nameof(tokens));
-                    }
-                    else
-                    {
-                        open--;
-                    }
+                    open--;
                 }
                 if (open == 0)
                 {
@@ -119,7 +119,7 @@ namespace MathExpressionParser
             throw new Exception("This exception should never be thrown");
         }
 
-        private static int GetOpenParenthesisIndex(IList<string> tokens, int end)
+        protected static int GetOpeningParenthesisIndex(IList<string> tokens, int end)
         {
             if (tokens[end] != ")")
             {
@@ -134,14 +134,7 @@ namespace MathExpressionParser
                 }
                 else if (tokens[i] == "(")
                 {
-                    if (close == 0)
-                    {
-                        throw new ArgumentException("Too many opening parentheses", nameof(tokens));
-                    }
-                    else
-                    {
-                        close--;
-                    }
+                    close--;
                 }
                 if (close == 0)
                 {
@@ -163,7 +156,7 @@ namespace MathExpressionParser
                 {
                     if (tokens[i] == "(")
                     {
-                        int closeParenthesisIndex = GetCloseParenthesisIndex(tokens, i);
+                        int closeParenthesisIndex = GetClosingParenthesisIndex(tokens, i);
                         if
                         (
                             operators.Any
@@ -284,17 +277,25 @@ namespace MathExpressionParser
                 }
             }
 
+            if (input is null)
+            {
+                throw new ArgumentNullException($"{nameof(input)}", "Is null");
+            }
+            else if (string.IsNullOrWhiteSpace(input))
+            {
+                return "";
+            }
             IList<string> tokens = Tokenize(input);
             for (int i = 0; i < tokens.Count; i++)
             {
                 // throws an exception if a matching parenthesis isn't found, indicating that input has unmatching parentheses
                 if (tokens[i] == "(")
                 {
-                    GetCloseParenthesisIndex(tokens, i);
+                    GetClosingParenthesisIndex(tokens, i);
                 }
                 else if (tokens[i] == ")")
                 {
-                    GetOpenParenthesisIndex(tokens, i);
+                    GetOpeningParenthesisIndex(tokens, i);
                 }
             }
             IList<MathOperator> invalidOperators = MathOperator.GetInvalidOperators(operators);

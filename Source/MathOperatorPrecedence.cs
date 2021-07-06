@@ -1,4 +1,4 @@
-﻿namespace MathExpressionParser
+﻿namespace MEP
 {
     /// <summary>
     /// Parse order: <see cref="Constant"/> > <see cref="Function"/> > <see cref="Exponent"/> > <see cref="NegativeSign"/> > <see cref="MultiplicationDivision"/> > <see cref="AdditionSubtraction"/>.

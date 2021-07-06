@@ -1,4 +1,4 @@
-namespace MathExpressionParser
+namespace MEP
 {
     public class UnaryMathOperator : MathOperator
     {

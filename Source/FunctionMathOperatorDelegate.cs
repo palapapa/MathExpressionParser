@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MathExpressionParser
+namespace MEP
 {
     public delegate string FunctionMathOperatorDelegate(IList<string> arguments);
 }

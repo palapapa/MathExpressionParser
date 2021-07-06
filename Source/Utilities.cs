@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MathExpressionParser
+namespace MEP
 {
     internal static class Utilities
     {
@@ -113,9 +113,9 @@ namespace MathExpressionParser
             return result.Insert(start, insert);
         }
 
-        public static IList<T> ReplaceRange<T>(this IList<T> list, IList<T> insert, int start, int count)
+        public static IList<T> ReplaceRange<T>(this IList<T> list, IList<T> insert, int start, int count) where T : ICloneable
         {
-            IList<T> result = list.Clone();
+            IList<T> result = list.DeepClone();
             for (int i = start + count - 1; i >= start; i--)
             {
                 result.RemoveAt(i);
@@ -127,7 +127,7 @@ namespace MathExpressionParser
             return result;
         }
 
-        public static IList<T> ReplaceRange<T>(this IList<T> list, T insert, int start, int count)
+        public static IList<T> ReplaceRange<T>(this IList<T> list, T insert, int start, int count) where T : ICloneable
         {
             return list.ReplaceRange(insert.ToList(), start, count);
         }
@@ -160,12 +160,12 @@ namespace MathExpressionParser
             return result;
         }
 
-        public static IList<T> Clone<T>(this IList<T> original)
+        public static IList<T> DeepClone<T>(this IList<T> original) where T : ICloneable
         {
             IList<T> result = new List<T>();
-            foreach (T item in original)
+            foreach (T t in original)
             {
-                result.Add(item);
+                result.Add((T)t.Clone());
             }
             return result;
         }

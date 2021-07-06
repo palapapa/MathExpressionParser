@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MathExpressionParser
+namespace MEP
 {
     public class MathOperator
     {
