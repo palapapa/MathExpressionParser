@@ -2,6 +2,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MEP;
 using System.Collections.Generic;
 using System;
+using System.Text;
+using System.Linq;
 
 namespace Tests
 {
@@ -134,7 +136,23 @@ namespace Tests
             };
             foreach (KeyValuePair<string, IList<string>> pair in expressionToTokens)
             {
-                Assert.AreEqual(Tokenize(pair.Key), pair.Value);
+                IList<string> tokens = Tokenize(pair.Key);
+                StringBuilder tokensExpanded = new();
+                foreach (string token in tokens)
+                {
+                    tokensExpanded.Append($"\"{token}\" ");
+                }
+                if (tokens.Count != pair.Value.Count)
+                {
+                    Assert.Fail($"Token count not correct: {pair.Key} => {tokensExpanded}");
+                }
+                for (int i = 0; i < tokens.Count; i++)
+                {
+                    if (tokens[i] != pair.Value[i])
+                    {
+                        Assert.Fail($"Tokens not correct: {pair.Key} => {tokensExpanded}");
+                    }
+                }
             }
         }
 

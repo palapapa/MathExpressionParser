@@ -15,10 +15,16 @@ namespace MEP
                 {
                     for (int j = i; j < input.Length; j++)
                     {
-                        if ((!input[j].IsDigit() && input[j] != '.' && input[j] != 'E') || j == input.Length - 1)
+                        if (!input[j].IsDigit() && input[j] != '.' && input[j] != 'E')
                         {
-                            tokens.Add(input.Substring(i, j - i + 1));
-                            i = j == input.Length - 1 ? j : j - 1;
+                            tokens.Add(input[i..j]);
+                            i = j - 1;
+                            break;
+                        }
+                        else if (j == input.Length - 1)
+                        {
+                            tokens.Add(input[i..(j + 1)]);
+                            i = j;
                             break;
                         }
                     }
@@ -27,10 +33,16 @@ namespace MEP
                 {
                     for (int j = i; j < input.Length; j++)
                     {
-                        if ((!input[j].IsDigit() && !input[j].IsLetter() && input[j] != '_') || j == input.Length - 1)
+                        if (!input[j].IsDigit() && !input[j].IsLetter() && input[j] != '_')
                         {
-                            tokens.Add(input.Substring(i, j - i + 1));
-                            i = j == input.Length - 1 ? j : j - 1;
+                            tokens.Add(input[i..j]);
+                            i = j - 1;
+                            break;
+                        }
+                        else if (j == input.Length - 1)
+                        {
+                            tokens.Add(input[i..(j + 1)]);
+                            i = j;
                             break;
                         }
                     }
