@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace MEP
 {
@@ -109,13 +110,13 @@ namespace MEP
 
         public static string ReplaceRange(this string str, string insert, int start, int count)
         {
-            string result = str.Remove(start, count);
-            return result.Insert(start, insert);
+            StringBuilder result = new(str);
+            return result.Remove(start, count).Insert(start, insert).ToString();
         }
 
         public static IList<T> ReplaceRange<T>(this IList<T> list, IList<T> insert, int start, int count) where T : ICloneable
         {
-            IList<T> result = list.DeepClone();
+            IList<T> result = list.Clone();
             for (int i = start + count - 1; i >= start; i--)
             {
                 result.RemoveAt(i);
@@ -142,25 +143,25 @@ namespace MEP
 
         public static string GetRange(this string str, int start, int count)
         {
-            string result = string.Empty;
+            StringBuilder result = new();
             for (int i = start; i < start + count; i++)
             {
-                result += str[i];
+                result.Append(str[i]);
             }
-            return result;
+            return result.ToString();
         }
 
-        public static IList<T> GetRange<T>(this IList<T> list, int start, int count)
+        public static IList<T> GetRange<T>(this IList<T> list, int start, int count) where T : ICloneable
         {
             IList<T> result = new List<T>();
             for (int i = start; i < start + count; i++)
             {
-                result.Add(list[i]);
+                result.Add((T)list[i].Clone());
             }
             return result;
         }
 
-        public static IList<T> DeepClone<T>(this IList<T> original) where T : ICloneable
+        public static IList<T> Clone<T>(this IList<T> original) where T : ICloneable
         {
             IList<T> result = new List<T>();
             foreach (T t in original)
