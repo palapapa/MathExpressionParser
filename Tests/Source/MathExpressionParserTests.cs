@@ -142,16 +142,9 @@ namespace Tests
                 {
                     tokensExpanded.Append($"\"{token}\" ");
                 }
-                if (tokens.Count != pair.Value.Count)
+                if (!tokens.SequenceEqual(pair.Value))
                 {
-                    Assert.Fail($"Token count not correct: {pair.Key} => {tokensExpanded}");
-                }
-                for (int i = 0; i < tokens.Count; i++)
-                {
-                    if (tokens[i] != pair.Value[i])
-                    {
-                        Assert.Fail($"Tokens not correct: {pair.Key} => {tokensExpanded}");
-                    }
+                    Assert.Fail($"Tokens not correct: {pair.Key} => {tokensExpanded}");
                 }
             }
         }
