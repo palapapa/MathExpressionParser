@@ -3,4 +3,6 @@ solution: MathExpressionParser.sln
 dotnet: 5.0.204
 script:
   - dotnet build
-  - dotnet test /Tests/bin/Debug/net5.0/Tests.dll
+  - cd Tests/
+  - dotnet build
+  - dotnet test ../Tests/bin/Debug/net5.0/Tests.dll
