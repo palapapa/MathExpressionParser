@@ -7,7 +7,7 @@
         public ConstantMathOperator(string name, MathOperatorPrecedence priority, string value)
         {
             Name = name;
-            Priority = priority;
+            Precedence = priority;
             Value = value;
         }
     }

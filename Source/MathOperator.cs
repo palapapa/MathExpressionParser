@@ -10,7 +10,7 @@ namespace MEP
         /// It can only contain letters, numbers, underscores and symbols(excluding '(', ')', ',' and '.'). It cannot start with a number. If it contains a symbol, then it must have a <see cref="string.Length"/> of 1.
         /// </summary>
         public string Name { get; set; }
-        public MathOperatorPrecedence Priority { get; set; }
+        public MathOperatorPrecedence Precedence { get; set; }
 
         protected MathOperator() { }
 

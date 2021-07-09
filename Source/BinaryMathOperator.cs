@@ -7,7 +7,7 @@ namespace MEP
         public BinaryMathOperator(string name, MathOperatorPrecedence priority, BinaryMathOperatorDelegate calculate)
         {
             Name = name;
-            Priority = priority;
+            Precedence = priority;
             Calculate = calculate;
         }
     }

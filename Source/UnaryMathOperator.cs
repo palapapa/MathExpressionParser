@@ -7,7 +7,7 @@ namespace MEP
         public UnaryMathOperator(string name, MathOperatorPrecedence priority, UnaryMathOperatorDelegate calculate)
         {
             Name = name;
-            Priority = priority;
+            Precedence = priority;
             Calculate = calculate;
         }
     }
