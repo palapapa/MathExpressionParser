@@ -4,10 +4,10 @@
     {
         public string Value { get; set; }
 
-        public ConstantMathOperator(string name, MathOperatorPrecedence priority, string value)
+        public ConstantMathOperator(string name, MathOperatorPrecedence precedence, string value)
         {
             Name = name;
-            Precedence = priority;
+            Precedence = precedence;
             Value = value;
         }
     }

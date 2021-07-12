@@ -4,10 +4,10 @@ namespace MEP
     {
         public UnaryMathOperatorDelegate Calculate { get; set; }
 
-        public UnaryMathOperator(string name, MathOperatorPrecedence priority, UnaryMathOperatorDelegate calculate)
+        public UnaryMathOperator(string name, MathOperatorPrecedence precedence, UnaryMathOperatorDelegate calculate)
         {
             Name = name;
-            Precedence = priority;
+            Precedence = precedence;
             Calculate = calculate;
         }
     }

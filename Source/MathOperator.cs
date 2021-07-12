@@ -12,8 +12,6 @@ namespace MEP
         public string Name { get; set; }
         public MathOperatorPrecedence Precedence { get; set; }
 
-        protected MathOperator() { }
-
         public static IList<MathOperator> GetDefaultOperators()
         {
             return new List<MathOperator>
@@ -54,13 +52,22 @@ namespace MEP
                         return (input1.ToDouble() / input2.ToDouble()).ToString();
                     }
                 ),
-                new UnaryMathOperator
+                new PrefixUnaryMathOperator
                 (
                     "-",
                     MathOperatorPrecedence.NegativeSign,
                     (string input) =>
                     {
                         return (-input.ToDouble()).ToString();
+                    }
+                ),
+                new SuffixUnaryMathOperator
+                (
+                    "!",
+                    MathOperatorPrecedence.Exponent,
+                    (string input) =>
+                    {
+                        return Utilities.Factorial((long)input.ToDouble()).ToString();
                     }
                 ),
                 new BinaryMathOperator
