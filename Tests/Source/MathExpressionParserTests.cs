@@ -152,14 +152,34 @@ namespace Tests
         [TestMethod]
         public void GetClosingParenthesisIndex_GettingIndex_CorrectResult()
         {
-
+            List<string> tokens = new()
+            {
+                "(", "a", "(", "b", "(", "c", ")", ")", "(", "(", "e", ")", "d", ")", ")", "(", "f", ")"
+            }; // (a(b(c))((e)d))(f)
+            IReadOnlyDictionary<int, int> openToClose = new Dictionary<int, int>()
+            {
+                { 0, 14 },
+                { 2, 7 },
+                { 4, 6 },
+                { 8, 13 },
+                { 9, 11 },
+                { 15, 17 }
+            };
+            foreach (KeyValuePair<int, int> pair in openToClose)
+            {
+                Assert.AreEqual(pair.Value, GetClosingParenthesisIndex(tokens, pair.Key));
+            }
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "ArgumentException should be thrown when there is too many opening parentheses", AllowDerivedTypes = false)]
         public void GetClosingParenthesisIndex_TooManyOpeningParentheses_ArgumentException()
         {
-
+            List<string> tokens = new()
+            {
+                "(", "(", "a", "(", "b", "(", "c", ")", ")", "(", "(", "e", ")", "d", ")", ")", "(", "f", ")"
+            }; // ((a(b(c))((e)d))(f)
+            GetClosingParenthesisIndex(tokens, 0);
         }
 
         [TestMethod]
