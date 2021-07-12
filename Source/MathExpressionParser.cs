@@ -160,6 +160,11 @@ namespace MEP
             throw new Exception("This exception should never be thrown");
         }
 
+        public static string Parse(string input)
+        {
+            return Parse(input, MathOperator.GetDefaultOperators());
+        }
+
         public static string Parse(string input, IList<MathOperator> operators)
         {
             string RealParse(IList<string> tokens)
