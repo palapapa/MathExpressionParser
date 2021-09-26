@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace MEP
 {
@@ -61,27 +62,27 @@ namespace MEP
 
         protected static string UnpackTokens(IList<string> tokens, string delimiter = "")
         {
-            string result = string.Empty;
+            StringBuilder result = new();
             for (int i = 0; i < tokens.Count; i++)
             {
-                result += tokens[i];
+                result.Append(tokens[i]);
                 if (i != tokens.Count - 1)
                 {
-                    result += delimiter;
+                    result.Append(delimiter);
                 }
             }
-            return result;
+            return result.ToString();
         }
 
         /// <summary>
-        /// Get the index of the <paramref name="index"/>-th <see langword="char"/> in the <paramref name="token"/>-th token as if the tokens are merged into a single string.
+        /// Get the index of the <paramref name="index"/>-th <see langword="char"/> in the <paramref name="token"/>-th token as if the tokens were merged into a single string.
         /// </summary>
         /// <param name="tokens">The target tokens.</param>
         /// <param name="token">The index of the token to get the index from.</param>
         /// <param name="index">The index of the <see langword="char"/> in the token to get the index from.</param>
-        /// <param name="delimiterLength">The length of the delimiter to add to the string of the unpacked<paramref name="tokens"/> between each tokens before the result is computed.</param>
-        /// <returns>The index of the <paramref name="index"/>-th <see langword="char"/> in the <paramref name="token"/>-th token as if the tokens are merged into a single string.</returns>
-        protected static int GetIndexInStringFromToken(IList<string> tokens, int token, int index, int delimiterLength = 0)
+        /// <param name="delimiterLength">The length of the delimiter to add to the string of the unpacked <paramref name="tokens"/> between each tokens before the result is computed.</param>
+        /// <returns>The index of the <paramref name="index"/>-th <see langword="char"/> in the <paramref name="token"/>-th token as if the tokens were merged into a single string.</returns>
+        protected static int GetIndexInStringFromTokens(IList<string> tokens, int token, int index, int delimiterLength = 0)
         {
             int result = 0;
             for (int i = 0; i <= token; i++)

@@ -41,7 +41,7 @@ namespace MEP
             return radian * 180 / Math.PI;
         }
 
-        public static long Factorial(long x)
+        public static long Factorial(this long x)
         {
             if (x < 0)
             {
@@ -65,7 +65,7 @@ namespace MEP
             {
                 throw new ArgumentException("Cannot be negative", nameof(r));
             }
-            return Factorial(n) / Factorial(n - r);
+            return n.Factorial() / (n - r).Factorial();
         }
 
         public static long Combination(long n, long r)
@@ -78,7 +78,7 @@ namespace MEP
             {
                 throw new ArgumentException("Cannot be negative", nameof(r));
             }
-            return Factorial(n) / (Factorial(r) * Factorial(n - r));
+            return n.Factorial() / (r.Factorial() * (n - r).Factorial());
         }
 
         public static double Log(double x, double @base)
@@ -101,7 +101,7 @@ namespace MEP
 
         public static bool IsParenthesis(this string str)
         {
-            if (str == "(" || str == ")")
+            if (str is "(" or ")")
             {
                 return true;
             }
@@ -114,7 +114,7 @@ namespace MEP
             return result.Remove(start, count).Insert(start, insert).ToString();
         }
 
-        public static IList<T> ReplaceRange<T>(this IList<T> list, IList<T> insert, int start, int count) where T : ICloneable
+        public static IList<T> ReplaceRange<T>(this IList<T> list, IList<T> insert, int start, int count)
         {
             IList<T> result = list.Clone();
             for (int i = start + count - 1; i >= start; i--)
@@ -128,7 +128,7 @@ namespace MEP
             return result;
         }
 
-        public static IList<T> ReplaceRange<T>(this IList<T> list, T insert, int start, int count) where T : ICloneable
+        public static IList<T> ReplaceRange<T>(this IList<T> list, T insert, int start, int count)
         {
             return list.ReplaceRange(insert.ToList(), start, count);
         }
@@ -141,32 +141,22 @@ namespace MEP
             };
         }
 
-        public static string GetRange(this string str, int start, int count)
-        {
-            StringBuilder result = new();
-            for (int i = start; i < start + count; i++)
-            {
-                result.Append(str[i]);
-            }
-            return result.ToString();
-        }
-
-        public static IList<T> GetRange<T>(this IList<T> list, int start, int count) where T : ICloneable
+        public static IList<T> GetRange<T>(this IList<T> list, int start, int count)
         {
             IList<T> result = new List<T>();
             for (int i = start; i < start + count; i++)
             {
-                result.Add((T)list[i].Clone());
+                result.Add(list[i]);
             }
             return result;
         }
 
-        public static IList<T> Clone<T>(this IList<T> original) where T : ICloneable
+        public static IList<T> Clone<T>(this IList<T> original)
         {
             IList<T> result = new List<T>();
             foreach (T t in original)
             {
-                result.Add((T)t.Clone());
+                result.Add(t);
             }
             return result;
         }

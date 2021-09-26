@@ -67,7 +67,7 @@ namespace MEP
                     MathOperatorPrecedence.Exponent,
                     (string input) =>
                     {
-                        return Utilities.Factorial((long)input.ToDouble()).ToString();
+                        return ((long)input.ToDouble()).Factorial().ToString();
                     }
                 ),
                 new BinaryMathOperator
@@ -387,10 +387,7 @@ namespace MEP
         {
             if
             (
-                c == '(' ||
-                c == ')' ||
-                c == ',' ||
-                c == '.'
+                c is '(' or ')' or ',' or '.'
             )
             {
                 return true;
