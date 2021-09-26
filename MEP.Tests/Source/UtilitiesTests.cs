@@ -1,11 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MEP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Tests
+namespace MEP.Tests
 {
     [TestClass]
     public class UtilitiesTests
@@ -488,7 +487,7 @@ namespace Tests
         public void ToList_GettingResult_CorrectResult()
         {
             int i = new Random().Next();
-            if (!i.ToList().SequenceEqual(new List<int>() { i }))
+            if (!i.ToSingletonList().SequenceEqual(new List<int>() { i }))
             {
                 Assert.Fail();
             }

@@ -1,7 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Tests
+namespace MEP.Tests
 {
     internal static class TestUtilities
     {

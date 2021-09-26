@@ -1,11 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MEP;
 using System.Collections.Generic;
 using System;
 using System.Text;
 using System.Linq;
 
-namespace Tests
+namespace MEP.Tests
 {
     [TestClass]
     public class MathExpressionParserTests : MathExpressionParser
@@ -400,7 +399,7 @@ namespace Tests
         [TestMethod]
         public void GetIndexInStringFromTokens_NegativeArguments_ArgumentException()
         {
-            List<string> tokens = new List<string> { "123", "456", "789" };
+            List<string> tokens = new() { "123", "456", "789" };
             List<(List<string>, int, int, int)> arguments = new()
             {
                 (tokens, -1, 0, 0),
@@ -423,7 +422,7 @@ namespace Tests
         [TestMethod]
         public void GetIndexInStringFromTokens_OutOfRange_ArgumentOutOfRangeException()
         {
-            List<string> tokens = new List<string> { "123", "456", "789" };
+            List<string> tokens = new() { "123", "456", "789" };
             List<(List<string>, int, int, int)> arguments = new()
             {
                 (tokens, 3, 0, 0),

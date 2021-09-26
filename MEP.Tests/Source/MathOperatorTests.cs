@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using MEP;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Tests
+namespace MEP.Tests
 {
     [TestClass]
     public class MathOperatorTests

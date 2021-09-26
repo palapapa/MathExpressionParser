@@ -130,10 +130,10 @@ namespace MEP
 
         public static IList<T> ReplaceRange<T>(this IList<T> list, T insert, int start, int count)
         {
-            return list.ReplaceRange(insert.ToList(), start, count);
+            return list.ReplaceRange(insert.ToSingletonList(), start, count);
         }
 
-        public static IList<T> ToList<T>(this T obj)
+        public static IList<T> ToSingletonList<T>(this T obj)
         {
             return new List<T>
             {
