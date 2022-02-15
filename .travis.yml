@@ -1,6 +1,6 @@
 language: csharp
 solution: MathExpressionParser.sln
-dotnet: 5.0.204
+dotnet: 6.0
 script:
   - dotnet build
   - dotnet test
