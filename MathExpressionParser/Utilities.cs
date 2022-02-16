@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace MEP;
+namespace MathExpressionParser;
 
 internal static class Utilities
 {
@@ -200,6 +200,22 @@ internal static class Utilities
             return list[index];
         }
         catch (ArgumentOutOfRangeException)
+        {
+            return default;
+        }
+    }
+
+    public static char BoundElememtAt(this string str, int index)
+    {
+        if (str is null)
+        {
+            throw new ArgumentNullException(nameof(str));
+        }
+        try
+        {
+            return str[index];
+        }
+        catch (IndexOutOfRangeException)
         {
             return default;
         }

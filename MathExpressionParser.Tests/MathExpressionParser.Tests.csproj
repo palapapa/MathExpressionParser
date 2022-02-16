@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MEP\MEP.csproj" />
+    <ProjectReference Include="..\MathExpressionParser\MathExpressionParser.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MEP.Tests;
+namespace MathExpressionParser.Tests;
 
 [TestClass]
 public class UtilitiesTests
@@ -469,7 +469,7 @@ public class UtilitiesTests
     }
 
     [TestMethod]
-    public void BoundElememtAt_GettingResult_CorrectResult()
+    public void BoundElememtAtList_GettingResult_CorrectResult()
     {
         List<string> tokens = "0 1 2 3 4 5 6 7 8 9".Split(' ').ToList();
         List<(int, string)> arguments = new()
@@ -487,8 +487,32 @@ public class UtilitiesTests
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException), $"{nameof(ArgumentNullException)} should be thrown when the tokens argument is null.", AllowDerivedTypes = false)]
-    public void BoundElememtAt_ArgumentNull_ArgumentNullException()
+    public void BoundElememtAtList_ArgumentNull_ArgumentNullException()
     {
         ((List<string>)null).BoundElememtAt(0);
+    }
+
+    [TestMethod]
+    public void BoundElememtAtString_GettingResult_CorrectResult()
+    {
+        string str = "0123456789";
+        List<(int, char)> arguments = new()
+        {
+            (1, '1'),
+            (7, '7'),
+            (69, '\0'),
+            (-1, '\0')
+        };
+        foreach ((int, char) argument in arguments)
+        {
+            Assert.AreEqual(argument.Item2, str.BoundElememtAt(argument.Item1));
+        }
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException), $"{nameof(ArgumentNullException)} should be thrown when the str argument is null.", AllowDerivedTypes = false)]
+    public void BoundElememtAtString_ArgumentNull_ArgumentNullException()
+    {
+        ((string)null).BoundElememtAt(0);
     }
 }
