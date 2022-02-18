@@ -5,5 +5,8 @@
 /// </summary>
 public enum ParserExceptionType
 {
+    /// <summary>
+    /// Represents a situation where a number with an invalid format is found in a <see cref="MathExpression"/>.
+    /// </summary>
     InvalidNumberFormat
 }
