@@ -8,7 +8,7 @@ public interface IMathExpression
     /// <summary>
     /// Represents the math expression.
     /// </summary>
-    public string Expression { get; }
+    public string Expression { get; set; }
 
     /// <summary>
     /// Evaluates the <see cref="Expression"/> and returns a value.
