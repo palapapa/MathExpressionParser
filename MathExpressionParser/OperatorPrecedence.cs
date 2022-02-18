@@ -5,10 +5,28 @@
 /// </summary>
 public enum OperatorPrecedence
 {
+    /// <summary>
+    /// This precedence level is parsed sixth.
+    /// </summary>
     Additive,
+    /// <summary>
+    /// This precedence level is parsed fifth.
+    /// </summary>
     Multiplicative,
+    /// <summary>
+    /// This precedence level is parsed fourth.
+    /// </summary>
     Unary,
+    /// <summary>
+    /// This precedence level is parsed third.
+    /// </summary>
     Exponentiation,
+    /// <summary>
+    /// This precedence level is parsed second.
+    /// </summary>
     Function,
+    /// <summary>
+    /// This precedence level is parsed first.
+    /// </summary>
     Constant
 }
