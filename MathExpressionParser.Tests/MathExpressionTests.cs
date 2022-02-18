@@ -159,7 +159,7 @@ public class MathExpressionTests
             TestUtilities.AssertException<ParserException>
             (
                 () => mathExpression.Invoke("Tokenize"),
-                e => e.Context.ErrorPosition == tuple.Item2,
+                e => e.Context.ErrorPosition == tuple.Item2 && e.Context.ParserExceptionType == ParserExceptionType.InvalidNumberFormat,
                 $"It should be thrown when the format of a number is invalid.{tuple}"
             );
         }

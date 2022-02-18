@@ -83,7 +83,7 @@ public class MathExpression : IMathExpression
                 }
                 if (!double.TryParse(tokens.Last(), out _))
                 {
-                    throw new ParserException($"Invalid number format at position {originalI}", new ParserExceptionContext(originalI));
+                    throw new ParserException($"Invalid number format at position {originalI}", new ParserExceptionContext(originalI, ParserExceptionType.InvalidNumberFormat));
                 }
             }
             else if (Expression[i].IsLetter() || Expression[i] == '_')
