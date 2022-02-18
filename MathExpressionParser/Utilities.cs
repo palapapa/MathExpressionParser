@@ -106,15 +106,11 @@ internal static class Utilities
 
     public static bool IsDouble(this string str)
     {
-        try
+        if (str is null)
         {
-            double.Parse(str);
-            return true;
+            throw new ArgumentNullException(nameof(str));
         }
-        catch (FormatException)
-        {
-            return false;
-        }
+        return double.TryParse(str, out _);
     }
 
     public static bool IsParenthesis(this string str)
@@ -195,14 +191,11 @@ internal static class Utilities
         {
             throw new ArgumentNullException(nameof(list));
         }
-        try
-        {
-            return list[index];
-        }
-        catch (ArgumentOutOfRangeException)
+        if (index >= list.Count || index < 0)
         {
             return default;
         }
+        return list[index];
     }
 
     public static char BoundElememtAt(this string str, int index)
@@ -211,13 +204,10 @@ internal static class Utilities
         {
             throw new ArgumentNullException(nameof(str));
         }
-        try
-        {
-            return str[index];
-        }
-        catch (IndexOutOfRangeException)
+        if (index >= str.Length || index < 0)
         {
             return default;
         }
+        return str[index];
     }
 }

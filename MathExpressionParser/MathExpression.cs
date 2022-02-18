@@ -81,11 +81,7 @@ public class MathExpression : IMathExpression
                         break;
                     }
                 }
-                try
-                {
-                    double.Parse(tokens.Last());
-                }
-                catch (FormatException)
+                if (!double.TryParse(tokens.Last(), out _))
                 {
                     throw new ParserException($"Invalid number format at position {originalI}", new ParserExceptionContext(originalI));
                 }
