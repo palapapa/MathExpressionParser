@@ -1,22 +1,22 @@
 ﻿namespace MathExpressionParser;
 
 /// <summary>
-/// Exposes common properties of an operator in an <see cref="MathExpression"/>.
+/// Base class for different types of operators in an <see cref="MathExpression"/>.
 /// </summary>
-public interface IOperator
+public abstract class Operator
 {
     /// <summary>
-    /// The <see cref="string"/> representation of the this <see cref="IOperator"/>.
+    /// The <see cref="string"/> representation of the this <see cref="Operator"/>.
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// The precedence of this <see cref="IOperator"/>.
+    /// The precedence of this <see cref="Operator"/>.
     /// </summary>
     public OperatorPrecedence Precedence { get; set; }
 
     /// <summary>
-    /// The associativity of this <see cref="IOperator"/>.
+    /// The associativity of this <see cref="Operator"/>.
     /// </summary>
     public OperatorAssociativity Associativity { get; set; }
 }

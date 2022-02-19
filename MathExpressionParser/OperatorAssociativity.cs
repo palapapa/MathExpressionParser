@@ -1,7 +1,7 @@
 ﻿namespace MathExpressionParser;
 
 /// <summary>
-/// Represents the associativity of an <see cref="IOperator"/>.
+/// Represents the associativity of an <see cref="Operator"/>.
 /// </summary>
 public enum OperatorAssociativity
 {
