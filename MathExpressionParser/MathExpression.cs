@@ -9,10 +9,15 @@ namespace MathExpressionParser;
 /// </summary>
 public class MathExpression : IMathExpression
 {
+    private string expression = "";
     /// <summary>
     /// The <see cref="string"/> representation of the math expression this <see cref="MathExpression"/> holds.
     /// </summary>
-    public string Expression { get; set; } = "";
+    public string Expression
+    {
+        get => expression;
+        set => expression = value ?? throw new ArgumentNullException(nameof(Expression));
+    }
 
     /// <summary>
     /// Initializes a new instance of <see cref="MathExpression"/> with <see cref="Expression"/> set to an empty <see cref="string"/>.
@@ -27,10 +32,7 @@ public class MathExpression : IMathExpression
     /// <exception cref="ArgumentNullException">When <paramref name="expression"/> is <see langword="null"/>.</exception>
     public MathExpression(string expression)
     {
-        if (expression is null)
-        {
-            throw new ArgumentNullException(nameof(expression));
-        }
+        ArgumentNullException.ThrowIfNull(expression, nameof(expression));
         Expression = expression;
     }
 
@@ -40,10 +42,7 @@ public class MathExpression : IMathExpression
     /// <param name="mathExpression">The <see cref="MathExpression"/> to copy.</param>
     public MathExpression(MathExpression mathExpression)
     {
-        if (mathExpression is null)
-        {
-            throw new ArgumentNullException(nameof(mathExpression));
-        }
+        ArgumentNullException.ThrowIfNull(mathExpression, nameof(mathExpression));
         Expression = mathExpression.Expression;
     }
     
@@ -55,10 +54,7 @@ public class MathExpression : IMathExpression
     /// <exception cref="ParserException">When a number in <see name="Expression"/> is of invalid format.</exception>
     private List<string> Tokenize()
     {
-        if (Expression is null)
-        {
-            throw new ArgumentNullException(nameof(Expression));
-        }
+        ArgumentNullException.ThrowIfNull(Expression, nameof(Expression));
         List<string> tokens = new();
         for (int i = 0; i < Expression.Length; i++)
         {

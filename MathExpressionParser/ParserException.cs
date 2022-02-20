@@ -32,8 +32,8 @@ public class ParserException : Exception
     /// <summary>
     /// Initializes a new instance of the <see cref="ParserException"/> with a specified error message and a reference to the inner exception that is the cause of this exception.
     /// </summary>
-    /// <param name="message">The reason why this <see cref="ParserException"/> was thrown.</param>
-    /// <param name="innerException">The exception that is the cause of the current exception, or a null reference(Nothing in Visual Basic) if no inner exception is specified.</param>
+    /// <param name="message"><inheritdoc cref="ParserException(string)" path="/param[@name='message']"/></param>
+    /// <param name="innerException"><inheritdoc cref="Exception(string?, Exception?)" path="/param[@name='innerException']"/></param>
     public ParserException(string message, Exception innerException) : base(message, innerException)
     {
     }
@@ -41,33 +41,39 @@ public class ParserException : Exception
     /// <summary>
     /// Initializes a new instance of the <see cref="ParserException"/> with a specified error message and a <see cref="ParserExceptionContext"/> with information about this exception.
     /// </summary>
-    /// <param name="message">The reason why this <see cref="ParserException"/> was thrown.</param>
+    /// <param name="message"><inheritdoc cref="ParserException(string)" path="/param[@name='message']"/></param>
     /// <param name="context">A <see cref="ParserExceptionContext"/> with information about this exception.</param>
+    /// <exception cref="ArgumentNullException">When <paramref name="context"/> is <see langword="null"/>.</exception>
     public ParserException(string message, ParserExceptionContext context) : base(message)
     {
-        Context = context;
+        Context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ParserException"/> with a specified error message, a <see cref="ParserExceptionContext"/> with information about this exception, 
     /// and a reference to the inner exception that is the cause of this exception.
     /// </summary>
-    /// <param name="message">The reason why this <see cref="ParserException"/> was thrown.</param>
-    /// <param name="context">A <see cref="ParserExceptionContext"/> with information about this exception.</param>
-    /// <param name="innerException">The exception that is the cause of the current exception, or a null reference(Nothing in Visual Basic) if no inner exception is specified.</param>
+    /// <param name="message"><inheritdoc cref="ParserException(string)" path="/param[@name='message']"/></param>
+    /// <param name="context"><inheritdoc cref="ParserException(string, ParserExceptionContext)" path="/param[@name='context']"/></param>
+    /// <param name="innerException"><inheritdoc cref="Exception(string?, Exception?)" path="/param[@name='innerException']"/></param>
+    /// <exception cref="ArgumentNullException"><inheritdoc cref="ParserException(string, ParserExceptionContext)" path="/exception[@cref='ArgumentNullException']"/></exception>
     public ParserException(string message, ParserExceptionContext context, Exception innerException) : base(message, innerException)
     {
-        Context = context;
+        Context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     protected ParserException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
+        ArgumentNullException.ThrowIfNull(info, nameof(info));
+        ArgumentNullException.ThrowIfNull(context, nameof(context));
         Context = (ParserExceptionContext)info.GetValue("Context", typeof(ParserExceptionContext));
     }
 
     public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         base.GetObjectData(info, context);
+        ArgumentNullException.ThrowIfNull(info, nameof(info));
+        ArgumentNullException.ThrowIfNull(context, nameof(context));
         info.AddValue("Context", Context, typeof(ParserExceptionContext));
     }
 }

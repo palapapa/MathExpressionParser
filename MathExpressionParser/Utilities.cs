@@ -24,10 +24,7 @@ internal static class Utilities
 
     public static bool IsWhitespace(this string s)
     {
-        if (s is null)
-        {
-            throw new ArgumentNullException(nameof(s));
-        }
+        ArgumentNullException.ThrowIfNull(s, nameof(s));
         return string.IsNullOrWhiteSpace(s);
     }
 
@@ -106,19 +103,13 @@ internal static class Utilities
 
     public static bool IsDouble(this string str)
     {
-        if (str is null)
-        {
-            throw new ArgumentNullException(nameof(str));
-        }
+        ArgumentNullException.ThrowIfNull(str, nameof(str));
         return double.TryParse(str, out _);
     }
 
     public static bool IsParenthesis(this string str)
     {
-        if (str is null)
-        {
-            throw new ArgumentNullException($"{nameof(str)}");
-        }
+        ArgumentNullException.ThrowIfNull(str, nameof(str));
         if (str is "(" or ")")
         {
             return true;
@@ -128,24 +119,15 @@ internal static class Utilities
 
     public static string ReplaceRange(this string str, string insert, int start, int count)
     {
-        if (str is null)
-        {
-            throw new ArgumentNullException($"{nameof(str)}");
-        }
-        if (insert is null)
-        {
-            throw new ArgumentNullException($"{nameof(insert)}");
-        }
+        ArgumentNullException.ThrowIfNull(str, nameof(str));
+        ArgumentNullException.ThrowIfNull(insert, nameof(insert));
         StringBuilder result = new(str);
         return result.Remove(start, count).Insert(start, insert).ToString();
     }
 
     public static List<T> ReplaceRange<T>(this List<T> list, List<T> insert, int start, int count)
     {
-        if (list is null)
-        {
-            throw new ArgumentNullException(nameof(list));
-        }
+        ArgumentNullException.ThrowIfNull(list, nameof(list));
         if (start < 0 || start >= list.Count)
         {
             throw new ArgumentOutOfRangeException(nameof(start));
@@ -162,10 +144,7 @@ internal static class Utilities
 
     public static List<T> ReplaceRange<T>(this List<T> list, T insert, int start, int count)
     {
-        if (list is null)
-        {
-            throw new ArgumentNullException(nameof(list));
-        }
+        ArgumentNullException.ThrowIfNull(list, nameof(list));
         if (start < 0 || start >= list.Count)
         {
             throw new ArgumentOutOfRangeException(nameof(start));
@@ -187,10 +166,7 @@ internal static class Utilities
 
     public static T BoundElememtAt<T>(this List<T> list, int index)
     {
-        if (list is null)
-        {
-            throw new ArgumentNullException(nameof(list));
-        }
+        ArgumentNullException.ThrowIfNull(list, nameof(list));
         if (index >= list.Count || index < 0)
         {
             return default;
@@ -200,10 +176,7 @@ internal static class Utilities
 
     public static char BoundElememtAt(this string str, int index)
     {
-        if (str is null)
-        {
-            throw new ArgumentNullException(nameof(str));
-        }
+        ArgumentNullException.ThrowIfNull(str, nameof(str));
         if (index >= str.Length || index < 0)
         {
             return default;
