@@ -53,10 +53,10 @@ public class MathExpression : IMathExpression
     /// <returns>A <see cref="List{T}"/> of tokens.</returns>
     /// <exception cref="ArgumentNullException">When the <see name="Expression"/> is null.</exception>
     /// <exception cref="ParserException">When a number in <see name="Expression"/> is of invalid format.</exception>
-    private List<string> Tokenize()
+    private List<Token> Tokenize()
     {
         ArgumentNullException.ThrowIfNull(Expression, nameof(Expression));
-        List<string> tokens = new();
+        List<Token> tokens = new();
         for (int i = 0; i < Expression.Length; i++)
         {
             if (Expression[i].IsDigit())
@@ -67,13 +67,13 @@ public class MathExpression : IMathExpression
                     if ((!Expression[j].IsDigit() && Expression[j] is not 'E' and not 'e' and not '+' and not '-' and not '.') ||
                         ((Expression[j] is '+' or '-') && Expression.BoundElememtAt(j - 1) is not 'E' and not 'e'))
                     {
-                        tokens.Add(Expression[i..j]);
+                        tokens.Add(new(Expression[i..j], i));
                         i = j - 1;
                         break;
                     }
                     else if (j == Expression.Length - 1)
                     {
-                        tokens.Add(Expression[i..(j + 1)]);
+                        tokens.Add(new(Expression[i..(j + 1)], i));
                         i = j;
                         break;
                     }
@@ -83,27 +83,31 @@ public class MathExpression : IMathExpression
                     throw new ParserException($"Invalid number format at position {originalI}", new ParserExceptionContext(originalI, ParserExceptionType.InvalidNumberFormat));
                 }
             }
-            else if (Expression[i].IsLetter() || Expression[i] == '_')
+            else if (Expression[i].IsLetter() || Expression[i] is '_')
             {
                 for (int j = i; j < Expression.Length; j++)
                 {
                     if (!Expression[j].IsDigit() && !Expression[j].IsLetter() && Expression[j] != '_')
                     {
-                        tokens.Add(Expression[i..j]);
+                        tokens.Add(new(Expression[i..j], i));
                         i = j - 1;
                         break;
                     }
                     else if (j == Expression.Length - 1)
                     {
-                        tokens.Add(Expression[i..(j + 1)]);
+                        tokens.Add(new(Expression[i..(j + 1)], i));
                         i = j;
                         break;
                     }
                 }
             }
-            else // whitespaces or symbols
+            else if (Expression[i].IsWhitespace())
             {
-                tokens.Add(Expression[i].ToString());
+                continue;
+            }
+            else // symbols
+            {
+                tokens.Add(new(Expression[i].ToString(), i));
             }
         }
         return tokens;
