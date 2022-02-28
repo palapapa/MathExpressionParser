@@ -6,27 +6,19 @@
 public enum OperatorPrecedence
 {
     /// <summary>
-    /// This precedence level is parsed sixth.
+    /// This precedence level is parsed fourth.
     /// </summary>
     Additive,
     /// <summary>
-    /// This precedence level is parsed fifth.
+    /// This precedence level is parsed third.
     /// </summary>
     Multiplicative,
     /// <summary>
-    /// This precedence level is parsed fourth.
+    /// This precedence level is parsed second.
     /// </summary>
     Unary,
     /// <summary>
-    /// This precedence level is parsed third.
-    /// </summary>
-    Exponentiation,
-    /// <summary>
-    /// This precedence level is parsed second.
-    /// </summary>
-    Function,
-    /// <summary>
     /// This precedence level is parsed first.
     /// </summary>
-    Constant
+    Exponentiation
 }

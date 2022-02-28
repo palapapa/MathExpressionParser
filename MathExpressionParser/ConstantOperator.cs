@@ -19,7 +19,7 @@ public class ConstantOperator : Operator
     /// <param name="precedence"><inheritdoc cref="Operator.Precedence" path="/summary"/></param>
     /// <param name="value">The value of this <see cref="ConstantOperator"/>.</param>
     /// <exception cref="ArgumentNullException">When <paramref name="name"/> is null.</exception>
-    public ConstantOperator(string name, double value, OperatorPrecedence precedence) : base(name, precedence)
+    public ConstantOperator(string name, double value) : base(name)
     {
         Value = value;
     }

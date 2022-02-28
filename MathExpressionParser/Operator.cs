@@ -17,14 +17,8 @@ public abstract class Operator
         set => name = value ?? throw new ArgumentNullException(nameof(Name));
     }
 
-    /// <summary>
-    /// The order in which this <see cref="Operator"/> will be parsed.
-    /// </summary>
-    public OperatorPrecedence Precedence { get; set; }
-
-    public Operator(string name, OperatorPrecedence precedence)
+    public Operator(string name)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
-        Precedence = precedence;
     }
 }

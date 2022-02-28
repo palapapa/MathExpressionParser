@@ -14,10 +14,15 @@ internal class BinaryOperator : Operator
         get => calculate;
         set => calculate = value ?? throw new ArgumentNullException(nameof(Calculate));
     }
+    /// <summary>
+    /// The order in which this <see cref="Operator"/> will be parsed.
+    /// </summary>
+    public OperatorPrecedence Precedence { get; set; }
 
-    public BinaryOperator(string name, OperatorPrecedence precedence, OperatorAssociativity associativity, BinaryOperatorDelegate calculate) : base(name, precedence)
+    public BinaryOperator(string name, OperatorPrecedence precedence, OperatorAssociativity associativity, BinaryOperatorDelegate calculate) : base(name)
     {
         Associativity = associativity;
+        Precedence = precedence;
         Calculate = calculate ?? throw new ArgumentNullException(nameof(calculate));
     }
 }

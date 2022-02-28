@@ -35,7 +35,7 @@ public class FunctionOperator : Operator
     /// <param name="calculate"><inheritdoc cref="Calculate" path="/summary"/></param>
     /// <param name="argumentCounts"><inheritdoc cref="ArgumentCounts" path="/summary"/></param>
     /// <exception cref="ArgumentNullException">When either <paramref name="name"/> or <paramref name="calculate"/> is null.</exception>
-    public FunctionOperator(string name, OperatorPrecedence precedence, FunctionOperatorDelegate calculate, params int[] argumentCounts) : base(name, precedence)
+    public FunctionOperator(string name, FunctionOperatorDelegate calculate, params int[] argumentCounts) : base(name)
     {
         Calculate = calculate ?? throw new ArgumentNullException(nameof(calculate));
         ArgumentCounts = argumentCounts ?? throw new ArgumentNullException(nameof(argumentCounts));
