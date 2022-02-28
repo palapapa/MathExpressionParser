@@ -12,6 +12,7 @@ public class FunctionOperator : Operator
     /// <summary>
     /// <inheritdoc cref="FunctionOperatorDelegate" path="/summary"/>
     /// </summary>
+    /// <exception cref="ArgumentNullException">When this is set to <see langword="null"/>.</exception>
     public FunctionOperatorDelegate Calculate
     {
         get => calculate;
@@ -21,6 +22,7 @@ public class FunctionOperator : Operator
     /// <summary>
     /// The possible number of arguments this <see cref="FunctionOperator"/> can take. If this has 0 elements, this <see cref="FunctionOperator"/> can take any number of arguments.
     /// </summary>
+    /// <exception cref="ArgumentNullException">When this is set to <see langword="null"/>.</exception>
     public IList<int> ArgumentCounts
     {
         get => argumentCounts;

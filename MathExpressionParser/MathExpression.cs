@@ -13,6 +13,7 @@ public class MathExpression : IMathExpression
     /// <summary>
     /// The <see cref="string"/> representation of the math expression this <see cref="MathExpression"/> holds.
     /// </summary>
+    /// <exception cref="ArgumentNullException">When this is set to <see langword="null"/>.</exception>
     public string Expression
     {
         get => expression;

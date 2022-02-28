@@ -11,6 +11,7 @@ public abstract class Operator
     /// <summary>
     /// The <see cref="string"/> representation of the this <see cref="Operator"/>.
     /// </summary>
+    /// <exception cref="ArgumentNullException">When this is set to <see langword="null"/>.</exception>
     public string Name
     {
         get => name;
