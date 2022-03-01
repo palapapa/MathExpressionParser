@@ -33,8 +33,7 @@ public class MathExpression : IMathExpression
     /// <exception cref="ArgumentNullException">When <paramref name="expression"/> is <see langword="null"/>.</exception>
     public MathExpression(string expression)
     {
-        ArgumentNullException.ThrowIfNull(expression, nameof(expression));
-        Expression = expression;
+        Expression = expression ?? throw new ArgumentNullException(nameof(expression));
     }
 
     /// <summary>
@@ -43,8 +42,7 @@ public class MathExpression : IMathExpression
     /// <param name="mathExpression">The <see cref="MathExpression"/> to copy.</param>
     public MathExpression(MathExpression mathExpression)
     {
-        ArgumentNullException.ThrowIfNull(mathExpression, nameof(mathExpression));
-        Expression = mathExpression.Expression;
+        Expression = mathExpression.Expression ?? throw new ArgumentNullException(nameof(mathExpression));
     }
     
     /// <summary>
@@ -53,27 +51,27 @@ public class MathExpression : IMathExpression
     /// <returns>A <see cref="List{T}"/> of tokens.</returns>
     /// <exception cref="ArgumentNullException">When the <see name="Expression"/> is null.</exception>
     /// <exception cref="ParserException">When a number in <see name="Expression"/> is of invalid format.</exception>
-    private List<Token> Tokenize()
+    private static List<Token> Tokenize(string expression)
     {
-        ArgumentNullException.ThrowIfNull(Expression, nameof(Expression));
+        ArgumentNullException.ThrowIfNull(expression, nameof(expression));
         List<Token> tokens = new();
-        for (int i = 0; i < Expression.Length; i++)
+        for (int i = 0; i < expression.Length; i++)
         {
-            if (Expression[i].IsDigit())
+            if (expression[i].IsDigit())
             {
                 int originalI = i;
-                for (int j = i; j < Expression.Length; j++)
+                for (int j = i; j < expression.Length; j++)
                 {
-                    if ((!Expression[j].IsDigit() && Expression[j] is not 'E' and not 'e' and not '+' and not '-' and not '.') ||
-                        ((Expression[j] is '+' or '-') && Expression.BoundElememtAt(j - 1) is not 'E' and not 'e'))
+                    if ((!expression[j].IsDigit() && expression[j] is not 'E' and not 'e' and not '+' and not '-' and not '.') ||
+                        ((expression[j] is '+' or '-') && expression.BoundElememtAt(j - 1) is not 'E' and not 'e'))
                     {
-                        tokens.Add(new(Expression[i..j], i));
+                        tokens.Add(new(expression[i..j], i));
                         i = j - 1;
                         break;
                     }
-                    else if (j == Expression.Length - 1)
+                    else if (j == expression.Length - 1)
                     {
-                        tokens.Add(new(Expression[i..(j + 1)], i));
+                        tokens.Add(new(expression[i..(j + 1)], i));
                         i = j;
                         break;
                     }
@@ -83,31 +81,31 @@ public class MathExpression : IMathExpression
                     throw new ParserException($"Invalid number format at position {originalI}", new ParserExceptionContext(originalI, ParserExceptionType.InvalidNumberFormat));
                 }
             }
-            else if (Expression[i].IsLetter() || Expression[i] is '_')
+            else if (expression[i].IsLetter() || expression[i] is '_')
             {
-                for (int j = i; j < Expression.Length; j++)
+                for (int j = i; j < expression.Length; j++)
                 {
-                    if (!Expression[j].IsDigit() && !Expression[j].IsLetter() && Expression[j] != '_')
+                    if (!expression[j].IsDigit() && !expression[j].IsLetter() && expression[j] != '_')
                     {
-                        tokens.Add(new(Expression[i..j], i));
+                        tokens.Add(new(expression[i..j], i));
                         i = j - 1;
                         break;
                     }
-                    else if (j == Expression.Length - 1)
+                    else if (j == expression.Length - 1)
                     {
-                        tokens.Add(new(Expression[i..(j + 1)], i));
+                        tokens.Add(new(expression[i..(j + 1)], i));
                         i = j;
                         break;
                     }
                 }
             }
-            else if (Expression[i].IsWhitespace())
+            else if (expression[i].IsWhitespace())
             {
                 continue;
             }
             else // symbols
             {
-                tokens.Add(new(Expression[i].ToString(), i));
+                tokens.Add(new(expression[i].ToString(), i));
             }
         }
         return tokens;
