@@ -4,7 +4,12 @@ namespace MathExpressionParser;
 
 internal record class Token
 {
-    public string Content { get; init; }
+    private string content;
+    public string Content
+    {
+        get => content;
+        init => content = value ?? throw new ArgumentNullException(nameof(Content));
+    }
     public int Position { get; init; }
 
     public Token(string content, int position)
