@@ -10,11 +10,7 @@ public enum ParserExceptionType
     /// </summary>
     InvalidNumberFormat,
     /// <summary>
-    /// Represents a situation where too many arguments were passed to a <see cref="FunctionOperator"/>.
+    /// Represents a situation where either too many or too few arguments were passed to a <see cref="FunctionOperator"/>.
     /// </summary>
-    TooManyArguments,
-    /// <summary>
-    /// Represents a situation where too few arguments were passed to a <see cref="FunctionOperator"/>.
-    /// </summary>
-    TooFewArguments
+    IncorrectArgumentCount
 }
