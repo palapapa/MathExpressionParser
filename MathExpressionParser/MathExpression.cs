@@ -115,9 +115,10 @@ public class MathExpression : IMathExpression
     /// Converts this <see cref="MathExpression"/> instance to a <see cref="string"/>.
     /// </summary>
     /// <param name="mathExpression">The <see cref="MathExpression"/> to convert.</param>
+    /// <returns><see cref="Expression"/> or <see langword="null"/> if <paramref name="mathExpression"/> is null.</returns>
     public static implicit operator string(MathExpression mathExpression)
     {
-        return mathExpression.ToString();
+        return mathExpression?.ToString();
     }
 
     /// <summary>
