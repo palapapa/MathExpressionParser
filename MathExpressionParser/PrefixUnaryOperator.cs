@@ -5,11 +5,13 @@ namespace MathExpressionParser;
 internal class PrefixUnaryOperator : Operator
 {
     private PrefixUnaryOperatorDelegate calculate;
+
     public PrefixUnaryOperatorDelegate Calculate
     {
         get => calculate;
         set => calculate = value ?? throw new ArgumentNullException(nameof(Calculate));
     }
+
     /// <summary>
     /// The order in which this <see cref="Operator"/> will be parsed.
     /// </summary>

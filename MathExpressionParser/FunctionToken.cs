@@ -13,6 +13,6 @@ internal record class FunctionToken : Token
 
     public static implicit operator string(FunctionToken token)
     {
-        return token.Content;
+        return token?.Content;
     }
 }

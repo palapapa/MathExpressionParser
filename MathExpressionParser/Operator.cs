@@ -8,6 +8,7 @@ namespace MathExpressionParser;
 public abstract class Operator
 {
     private string name;
+
     /// <summary>
     /// The <see cref="string"/> representation of the this <see cref="Operator"/>.
     /// </summary>

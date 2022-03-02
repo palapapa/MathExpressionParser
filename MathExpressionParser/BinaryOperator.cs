@@ -8,12 +8,15 @@ namespace MathExpressionParser;
 internal class BinaryOperator : Operator
 {
     public OperatorAssociativity Associativity { get; set; }
+
     private BinaryOperatorDelegate calculate;
+
     public BinaryOperatorDelegate Calculate
     {
         get => calculate;
         set => calculate = value ?? throw new ArgumentNullException(nameof(Calculate));
     }
+
     /// <summary>
     /// The order in which this <see cref="Operator"/> will be parsed.
     /// </summary>

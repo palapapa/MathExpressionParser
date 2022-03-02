@@ -9,6 +9,7 @@ namespace MathExpressionParser;
 public class FunctionOperator : Operator
 {
     private FunctionOperatorDelegate calculate;
+
     /// <summary>
     /// <inheritdoc cref="FunctionOperatorDelegate" path="/summary"/>
     /// </summary>
@@ -18,7 +19,9 @@ public class FunctionOperator : Operator
         get => calculate;
         set => calculate = value ?? throw new ArgumentNullException(nameof(Calculate));
     }
+
     private IList<int> argumentCounts;
+
     /// <summary>
     /// The possible number of arguments this <see cref="FunctionOperator"/> can take. If this has 0 elements, this <see cref="FunctionOperator"/> can take any number of arguments.
     /// </summary>

@@ -10,6 +10,7 @@ namespace MathExpressionParser;
 public class MathExpression : IMathExpression
 {
     private string expression = "";
+
     /// <summary>
     /// The <see cref="string"/> representation of the math expression this <see cref="MathExpression"/> holds.
     /// </summary>
@@ -26,6 +27,7 @@ public class MathExpression : IMathExpression
     public MathExpression()
     {
     }
+
     /// <summary>
     /// Initializes a new instance of <see cref="MathExpression"/> with <see cref="Expression"/> set to <paramref name="expression"/>.
     /// </summary>
