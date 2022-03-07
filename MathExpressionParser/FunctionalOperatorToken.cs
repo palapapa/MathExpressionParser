@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MathExpressionParser;
+﻿namespace MathExpressionParser;
 
 internal record class FunctionalOperatorToken : Token
 {
