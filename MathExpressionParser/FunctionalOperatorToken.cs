@@ -2,11 +2,11 @@
 
 namespace MathExpressionParser;
 
-internal record class FunctionOperatorToken : Token
+internal record class FunctionalOperatorToken : Token
 {
     public int ArgumentCount { get; init; }
 
-    public FunctionOperatorToken(Token token, int argumentCount) : base(token)
+    public FunctionalOperatorToken(Token token, int argumentCount) : base(token)
     {
         ArgumentCount = argumentCount;
     }

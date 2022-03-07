@@ -7,7 +7,7 @@ internal enum ParserState
 {
     ExpectingNumber = 1 << 0,
     ExpectingConstant = 1 << 1,
-    ExpectingFunction = 1 << 2,
+    ExpectingFunctionalOperator = 1 << 2,
     ExpectingBinaryOperator = 1 << 3,
     ExpectingUnaryPrefixOperator = 1 << 4,
     ExpectingUnaryPostfixOperator = 1 << 5,
