@@ -104,8 +104,8 @@ public class MathExpressionTests
             List<Token> tokens = null;
             try
             {
-                PrivateType mathExpression = new(typeof(MathExpression));
-                tokens = (List<Token>)mathExpression.InvokeStatic("Tokenize", pair.Key);
+                PrivateObject mathExpression = new(new MathExpression(pair.Key));
+                tokens = (List<Token>)mathExpression.Invoke("Tokenize");
             }
             catch (Exception e)
             {
@@ -127,8 +127,8 @@ public class MathExpressionTests
     [ExpectedException(typeof(ArgumentNullException), "ArgumentNullException should be thrown when the input is null.", AllowDerivedTypes = false)]
     public void Tokenize_ArgumentNull_ArgumentNullException()
     {
-        PrivateType mathExpression = new(typeof(MathExpression));
-        mathExpression.InvokeStatic("Tokenize", (string)null);
+        PrivateObject mathExpression = new(new MathExpression((string)null));
+        mathExpression.Invoke("Tokenize");
     }
 
     [TestMethod]
@@ -144,10 +144,10 @@ public class MathExpressionTests
         };
         foreach ((string, int) tuple in tuples)
         {
-            PrivateType mathExpression = new(typeof(MathExpression));
+            PrivateObject mathExpression = new(new MathExpression(tuple.Item1));
             TestUtilities.AssertException<ParserException>
             (
-                () => mathExpression.InvokeStatic("Tokenize", tuple.Item1),
+                () => mathExpression.Invoke("Tokenize"),
                 e => e.Context.Position == tuple.Item2 && e.Context.Type == ParserExceptionType.InvalidNumberFormat,
                 $"It should be thrown when the format of a number is invalid.{tuple}"
             );
