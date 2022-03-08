@@ -7,4 +7,4 @@ namespace MathExpressionParser;
 /// </summary>
 /// <param name="arguments">An <see cref="IList{T}"/> of arguments passed to a <see cref="FunctionalOperator"/> in a <see cref="MathExpression"/>.</param>
 /// <returns>The value of a <see cref="FunctionalOperator"/></returns>
-public delegate string FunctionalOperatorDelegate(IList<string> arguments);
+public delegate double FunctionalOperatorDelegate(IList<double> arguments);

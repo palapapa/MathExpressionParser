@@ -21,6 +21,369 @@ public class MathExpression : IMathExpression
         set => expression = value ?? throw new ArgumentNullException(nameof(Expression));
     }
 
+    private static readonly List<BinaryOperator> builtInBinaryOperators = new()
+    {
+        new BinaryOperator
+        (
+            "+",
+            OperatorPrecedence.Additive,
+            OperatorAssociativity.Left,
+            (right, left) =>
+            {
+                return right + left;
+            }
+        ),
+        new BinaryOperator
+        (
+            "-",
+            OperatorPrecedence.Additive,
+            OperatorAssociativity.Left,
+            (right, left) =>
+            {
+                return right - left;
+            }
+        ),
+        new BinaryOperator
+        (
+            "*",
+            OperatorPrecedence.Multiplicative,
+            OperatorAssociativity.Left,
+            (right, left) =>
+            {
+                return right * left;
+            }
+        ),
+        new BinaryOperator
+        (
+            "/",
+            OperatorPrecedence.Multiplicative,
+            OperatorAssociativity.Left,
+            (right, left) =>
+            {
+                return right / left;
+            }
+        ),
+        new BinaryOperator
+        (
+            "^",
+            OperatorPrecedence.Exponentiation,
+            OperatorAssociativity.Right,
+            (right, left) =>
+            {
+                return right.ToThePowerOf(left);
+            }
+        ),
+        new BinaryOperator
+        (
+            "%",
+            OperatorPrecedence.Multiplicative,
+            OperatorAssociativity.Left,
+            (right, left) =>
+            {
+                return right % left;
+            }
+        )
+    };
+
+    private static readonly List<ConstantOperator> builtInConstantOperators = new()
+    {
+        new ConstantOperator
+        (
+            "pi",
+            Math.PI
+        ),
+        new ConstantOperator
+        (
+            "e",
+            Math.E
+        )
+    };
+
+    private static readonly List<FunctionalOperator> builtInFunctionalOperators = new()
+    {
+        new FunctionalOperator
+        (
+            "sqrt",
+            arguments =>
+            {
+                return Math.Sqrt(arguments[0]);
+            },
+            1
+        ),
+        new FunctionalOperator
+        (
+            "sin",
+            arguments =>
+            {
+                return Math.Sin(arguments[0].Deg2Rad());
+            },
+            1
+        ),
+        new FunctionalOperator
+        (
+            "asin",
+            arguments => Math.Asin(arguments[0]).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "cos",
+            arguments => Math.Cos(arguments[0].Deg2Rad()),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "acos",
+            arguments => Math.Acos(arguments.First()).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "tan",
+            arguments => Math.Tan(arguments[0].Deg2Rad()),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "atan",
+            arguments => Math.Atan(arguments[0]).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "csc",
+            arguments => 1 / Math.Sin(arguments[0].Deg2Rad()),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "acsc",
+            arguments => Math.Asin(1 / arguments[0]).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "sec",
+            arguments => 1 / Math.Cos(arguments[0].Deg2Rad()),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "asec",
+            arguments => Math.Acos(1 / arguments[0]).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "cot",
+            arguments => 1 / Math.Tan(arguments[0].Deg2Rad()),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "acot",
+            arguments => Math.Atan(1 / arguments[0]).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "sinh",
+            arguments => Math.Sinh(arguments[0].Deg2Rad()),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "asinh",
+            arguments => Math.Asinh(arguments[0]).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "cosh",
+            arguments => Math.Cosh(arguments[0].Deg2Rad()),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "acosh",
+            arguments => Math.Acosh(arguments[0]).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "tanh",
+            arguments => Math.Tanh(arguments[0].Deg2Rad()),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "atanh",
+            arguments => Math.Atanh(arguments[0]).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "csch",
+            arguments => 1 / Math.Sinh(arguments[0].Deg2Rad()),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "acsch",
+            arguments => Math.Asinh(1 / arguments[0]).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "sech",
+            arguments => 1 / Math.Cosh(arguments[0].Deg2Rad()),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "asech",
+            arguments => Math.Acosh(1 / arguments[0]).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "coth",
+            arguments => 1 / Math.Tanh(arguments[0].Deg2Rad()),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "acoth",
+            arguments => Math.Atanh(1 / arguments[0]).Rad2Deg(),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "P",
+            arguments =>
+            {
+                long n = (long)arguments[0];
+                long r = (long)arguments[1];
+                return Utilities.Permutation(n, r);
+            },
+            2
+        ),
+        new FunctionalOperator
+        (
+            "C",
+            arguments =>
+            {
+                long n = (long)arguments[0];
+                long r = (long)arguments[1];
+                return Utilities.Combination(n, r);
+            },
+            2
+        ),
+        new FunctionalOperator
+        (
+            "H",
+            arguments =>
+            {
+                long n = (long)arguments[0];
+                long r = (long)arguments[1];
+                return Utilities.Combination(n + r - 1, r);
+            },
+            2
+        ),
+        new FunctionalOperator
+        (
+            "log",
+            arguments => Utilities.Log(arguments[0], arguments[1]),
+            2
+        ),
+        new FunctionalOperator
+        (
+            "log10",
+            arguments => Math.Log10(arguments[0]),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "log2",
+            arguments => Math.Log2(arguments[0]),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "ln",
+            arguments => Math.Log(arguments[0]),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "ceil",
+            arguments => Math.Ceiling(arguments[0]),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "floor",
+            arguments => Math.Floor(arguments[0]),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "round",
+            arguments => Math.Round(arguments[0]),
+            1
+        ),
+        new FunctionalOperator
+        (
+            "abs",
+            arguments => Math.Abs(arguments[0]),
+            1
+        )
+    };
+
+    private static readonly List<PrefixUnaryOperator> builtInPrefixUnaryOperator = new()
+    {
+        new PrefixUnaryOperator
+        (
+            "-",
+            OperatorPrecedence.Unary,
+            input =>
+            {
+                return -input;
+            }
+        )
+    };
+
+    private static readonly List<PostfixUnaryOperator> builtInPostfixUnaryOperators = new()
+    {
+        new PostfixUnaryOperator
+        (
+            "!",
+            OperatorPrecedence.Exponentiation,
+            input =>
+            {
+                return ((long)input).Factorial();
+            }
+        ),
+        new PostfixUnaryOperator
+        (
+            "torad",
+            OperatorPrecedence.Exponentiation,
+            input =>
+            {
+                return input.Deg2Rad();
+            }
+        ),
+        new PostfixUnaryOperator
+        (
+            "todeg",
+            OperatorPrecedence.Exponentiation,
+            input =>
+            {
+                return input.Rad2Deg();
+            }
+        )
+    };
+
     /// <summary>
     /// Initializes a new instance of <see cref="MathExpression"/> with <see cref="Expression"/> set to an empty <see cref="string"/>.
     /// </summary>
