@@ -28,60 +28,42 @@ public class MathExpression : IMathExpression
             "+",
             OperatorPrecedence.Additive,
             OperatorAssociativity.Left,
-            (right, left) =>
-            {
-                return right + left;
-            }
+            (right, left) => right + left
         ),
         new BinaryOperator
         (
             "-",
             OperatorPrecedence.Additive,
             OperatorAssociativity.Left,
-            (right, left) =>
-            {
-                return right - left;
-            }
+            (right, left) => right - left
         ),
         new BinaryOperator
         (
             "*",
             OperatorPrecedence.Multiplicative,
             OperatorAssociativity.Left,
-            (right, left) =>
-            {
-                return right * left;
-            }
+            (right, left) => right * left
         ),
         new BinaryOperator
         (
             "/",
             OperatorPrecedence.Multiplicative,
             OperatorAssociativity.Left,
-            (right, left) =>
-            {
-                return right / left;
-            }
+            (right, left) => right / left
         ),
         new BinaryOperator
         (
             "^",
             OperatorPrecedence.Exponentiation,
             OperatorAssociativity.Right,
-            (right, left) =>
-            {
-                return right.ToThePowerOf(left);
-            }
+            (right, left) => right.ToThePowerOf(left)
         ),
         new BinaryOperator
         (
             "%",
             OperatorPrecedence.Multiplicative,
             OperatorAssociativity.Left,
-            (right, left) =>
-            {
-                return right % left;
-            }
+            (right, left) => right % left
         )
     };
 
@@ -104,19 +86,13 @@ public class MathExpression : IMathExpression
         new FunctionalOperator
         (
             "sqrt",
-            arguments =>
-            {
-                return Math.Sqrt(arguments[0]);
-            },
+            arguments => Math.Sqrt(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "sin",
-            arguments =>
-            {
-                return Math.Sin(arguments[0].Deg2Rad());
-            },
+            arguments => Math.Sin(arguments[0].Deg2Rad()),
             1
         ),
         new FunctionalOperator
@@ -337,6 +313,16 @@ public class MathExpression : IMathExpression
             "abs",
             arguments => Math.Abs(arguments[0]),
             1
+        ),
+        new FunctionalOperator
+        (
+            "min",
+            arguments => arguments.Min()
+        ),
+        new FunctionalOperator
+        (
+            "max",
+            arguments => arguments.Max()
         )
     };
 
@@ -346,10 +332,7 @@ public class MathExpression : IMathExpression
         (
             "-",
             OperatorPrecedence.Unary,
-            input =>
-            {
-                return -input;
-            }
+            input => -input
         )
     };
 
@@ -359,28 +342,19 @@ public class MathExpression : IMathExpression
         (
             "!",
             OperatorPrecedence.Exponentiation,
-            input =>
-            {
-                return ((long)input).Factorial();
-            }
+            input => ((long)input).Factorial()
         ),
         new PostfixUnaryOperator
         (
             "torad",
             OperatorPrecedence.Exponentiation,
-            input =>
-            {
-                return input.Deg2Rad();
-            }
+            input => input.Deg2Rad()
         ),
         new PostfixUnaryOperator
         (
             "todeg",
             OperatorPrecedence.Exponentiation,
-            input =>
-            {
-                return input.Rad2Deg();
-            }
+            input => input.Rad2Deg()
         )
     };
 
