@@ -21,15 +21,27 @@ public class MathExpression : IMathExpression
         set => expression = value ?? throw new ArgumentNullException(nameof(Expression));
     }
 
+    private IList<FunctionalOperator> customFunctions = new List<FunctionalOperator>();
+
     /// <summary>
     /// Any <see cref="FunctionalOperator"/> in this <see cref="IList{T}"/> will be used when <see cref="Evaluate"/> is called.
     /// </summary>
-    public IList<FunctionalOperator> CustomFunctions { get; set; } = new List<FunctionalOperator>();
+    public IList<FunctionalOperator> CustomFunctions
+    {
+        get => customFunctions;
+        set => customFunctions = value ?? throw new ArgumentNullException(nameof(CustomFunctions));
+    }
+
+    private IList<ConstantOperator> customConstants = new List<ConstantOperator>();
 
     /// <summary>
     /// Any <see cref="ConstantOperator"/> in this <see cref="IList{T}"/> will be used when <see cref="Evaluate"/> is called.
     /// </summary>
-    public IList<ConstantOperator> CustomConstants { get; set; } = new List<ConstantOperator>();
+    public IList<ConstantOperator> CustomConstants
+    {
+        get => customConstants;
+        set => customConstants = value ?? throw new ArgumentNullException(nameof(CustomConstants));
+    }
 
     private static readonly List<BinaryOperator> builtInBinaryOperators = new()
     {
@@ -386,12 +398,42 @@ public class MathExpression : IMathExpression
     }
 
     /// <summary>
-    /// Initializes a new instance of <see cref="MathExpression"/> and copies the <see cref="Expression"/> of <paramref name="mathExpression"/> into the new instance.
+    /// Initializes a new instance of <see cref="MathExpression"/> with <see cref="CustomFunctions"/> set to <paramref name="customFunctions"/> and <see cref="CustomConstants"/> set to <paramref name="customConstants"/>.
+    /// </summary>
+    /// <param name="customFunctions">The <see cref="IList{T}"/> to set <see cref="CustomFunctions"/> to.</param>
+    /// <param name="customConstants">The <see cref="IList{T}"/> to set <see cref="CustomConstants"/> to.</param>
+    /// <exception cref="ArgumentNullException">When either of the arguments are <see langword="null"/>.</exception>
+    public MathExpression(IList<FunctionalOperator> customFunctions, IList<ConstantOperator> customConstants)
+    {
+        CustomFunctions = customFunctions ?? throw new ArgumentNullException(nameof(customFunctions));
+        CustomConstants = customConstants ?? throw new ArgumentNullException(nameof(customConstants));
+    }
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="MathExpression"/> with <see cref="Expression"/> set to <paramref name="expression"/>, <see cref="CustomFunctions"/> set to <paramref name="customFunctions"/> and <see cref="CustomConstants"/> set to <paramref name="customConstants"/>.
+    /// </summary>
+    /// <param name="expression"><inheritdoc cref="MathExpression(string)" path="/param[@name='expression']"/></param>
+    /// <param name="customFunctions"><inheritdoc cref="MathExpression(IList{FunctionalOperator}, IList{ConstantOperator})" path="/param[@name='customFunctions']"/></param>
+    /// <param name="customConstants"><inheritdoc cref="MathExpression(IList{FunctionalOperator}, IList{ConstantOperator})" path="/param[@name='customConstants']"/></param>
+    /// <exception cref="ArgumentNullException"></exception>
+    public MathExpression(string expression, IList<FunctionalOperator> customFunctions, IList<ConstantOperator> customConstants)
+    {
+        Expression = expression ?? throw new ArgumentNullException(nameof(expression));
+        CustomFunctions = customFunctions ?? throw new ArgumentNullException(nameof(customFunctions));
+        CustomConstants = customConstants ?? throw new ArgumentNullException(nameof(customConstants));
+    }
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="MathExpression"/> and copies each member of <paramref name="mathExpression"/> into the new instance.
     /// </summary>
     /// <param name="mathExpression">The <see cref="MathExpression"/> to copy.</param>
+    /// <exception cref="ArgumentNullException">If <paramref name="mathExpression"/> is <see langword="null"/>.</exception>
     public MathExpression(MathExpression mathExpression)
     {
-        Expression = mathExpression.Expression ?? throw new ArgumentNullException(nameof(mathExpression));
+        ArgumentNullException.ThrowIfNull(mathExpression);
+        Expression = mathExpression.Expression;
+        CustomFunctions = mathExpression.CustomFunctions?.ToList();
+        CustomConstants = mathExpression.CustomConstants?.ToList();
     }
     
     /// <summary>
