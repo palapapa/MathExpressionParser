@@ -14,5 +14,6 @@ internal enum ParserState
     ExpectingOpeningParenthesis = 1 << 6,
     ExpectingClosingParenthesis = 1 << 7,
     ExpectingComma = 1 << 8,
-    ExpectingNewline = 1 << 9
+    ExpectingNewline = 1 << 9,
+    InFunction = 1 << 10
 }
