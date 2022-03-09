@@ -555,26 +555,56 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         return Evaluate().GetHashCode();
     }
 
+    /// <summary>
+    /// Checks if the value of <see cref="Evaluate"/> of <paramref name="left"/> is smaller than that of <paramref name="right"/>.
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is smaller than that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator <(MathExpression left, MathExpression right)
     {
         return left is null ? right is not null : left.CompareTo(right) < 0;
     }
 
+    /// <summary>
+    /// Checks if the value of <see cref="Evaluate"/> of <paramref name="left"/> is smaller than or equal to that of <paramref name="right"/>.
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is smaller or equal to than that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator <=(MathExpression left, MathExpression right)
     {
         return left is null || left.CompareTo(right) <= 0;
     }
 
+    /// <summary>
+    /// Checks if the value of <see cref="Evaluate"/> of <paramref name="left"/> is larger than that of <paramref name="right"/>.
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is larger than that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator >(MathExpression left, MathExpression right)
     {
         return left is not null && left.CompareTo(right) > 0;
     }
 
+    /// <summary>
+    /// Checks if the value of <see cref="Evaluate"/> of <paramref name="left"/> is larger than or equal to that of <paramref name="right"/>.
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is larger than or equal to that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator >=(MathExpression left, MathExpression right)
     {
         return left is null ? right is null : left.CompareTo(right) >= 0;
     }
 
+    /// <summary>
+    /// Checks if the value of <see cref="Evaluate"/> of <paramref name="left"/> is equal to that of <paramref name="right"/>.
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is equal to that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(MathExpression left, MathExpression right)
     {
         if (left is null)
@@ -585,8 +615,68 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         return left.Equals(right);
     }
 
+    /// <summary>
+    /// Checks if the value of <see cref="Evaluate"/> of <paramref name="left"/> is not equal to that of <paramref name="right"/>.
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is not equal to that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(MathExpression left, MathExpression right)
     {
         return !(left == right);
+    }
+
+    /// <summary>
+    /// Converts <paramref name="mathExpression"/> to a <see cref="double"/> with the value of <see cref="Evaluate"/> of <paramref name="mathExpression"/>.
+    /// </summary>
+    /// <param name="mathExpression"></param>
+    /// <returns>Value of <see cref="Evaluate"/> of <paramref name="mathExpression"/>.</returns>
+    public static implicit operator double(MathExpression mathExpression)
+    {
+        return mathExpression.Evaluate();
+    }
+
+    /// <summary>
+    /// Adds the value of <see cref="Evaluate"/> of the two <see cref="MathExpression"/> together.
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns></returns>
+    public static double operator +(MathExpression left, MathExpression right)
+    {
+        return left.Evaluate() + right.Evaluate();
+    }
+
+    /// <summary>
+    /// Substracts the value of <see cref="Evaluate"/> of <paramref name="right"/> from that of <paramref name="left"/>.
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns></returns>
+    public static double operator -(MathExpression left, MathExpression right)
+    {
+        return left.Evaluate() - right.Evaluate();
+    }
+
+    /// <summary>
+    /// Multiplies the value of <see cref="Evaluate"/> of the two <see cref="MathExpression"/> together.
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns></returns>
+    public static double operator *(MathExpression left, MathExpression right)
+    {
+        return left.Evaluate() * right.Evaluate();
+    }
+
+    /// <summary>
+    /// Divide the value of <see cref="Evaluate"/> of <paramref name="left"/> by that of <paramref name="right"/>.
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns></returns>
+    public static double operator /(MathExpression left, MathExpression right)
+    {
+        return left.Evaluate() / right.Evaluate();
     }
 }
