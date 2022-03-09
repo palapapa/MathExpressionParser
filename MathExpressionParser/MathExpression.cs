@@ -7,7 +7,7 @@ namespace MathExpressionParser;
 /// <summary>
 /// Represents a mathematical expression.
 /// </summary>
-public class MathExpression : IMathExpression
+public class MathExpression : IMathExpression, IComparable<MathExpression>, IEquatable<MathExpression>
 {
     private string expression = "";
 
@@ -529,5 +529,64 @@ public class MathExpression : IMathExpression
     public double Evaluate()
     {
         throw new NotImplementedException();
+    }
+
+    public int CompareTo(MathExpression other)
+    {
+        if (other is null)
+        {
+            return 1;
+        }
+        return Evaluate().CompareTo(other.Evaluate());
+    }
+
+    public bool Equals(MathExpression other)
+    {
+        return Evaluate() == other.Evaluate();
+    }
+
+    public override bool Equals(object obj)
+    {
+        return (obj is double val && val == Evaluate()) || (obj is IMathExpression expression && expression.Evaluate() == Evaluate());
+    }
+
+    public override int GetHashCode()
+    {
+        return Evaluate().GetHashCode();
+    }
+
+    public static bool operator <(MathExpression left, MathExpression right)
+    {
+        return left is null ? right is not null : left.CompareTo(right) < 0;
+    }
+
+    public static bool operator <=(MathExpression left, MathExpression right)
+    {
+        return left is null || left.CompareTo(right) <= 0;
+    }
+
+    public static bool operator >(MathExpression left, MathExpression right)
+    {
+        return left is not null && left.CompareTo(right) > 0;
+    }
+
+    public static bool operator >=(MathExpression left, MathExpression right)
+    {
+        return left is null ? right is null : left.CompareTo(right) >= 0;
+    }
+
+    public static bool operator ==(MathExpression left, MathExpression right)
+    {
+        if (left is null)
+        {
+            return right is null;
+        }
+
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(MathExpression left, MathExpression right)
+    {
+        return !(left == right);
     }
 }
