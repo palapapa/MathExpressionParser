@@ -2,7 +2,7 @@
 
 internal record class ConstantOperatorToken : Token
 {
-    public ConstantOperatorToken(Token token) : base(token)
+    public ConstantOperatorToken(string content, int position) : base(content, position)
     {
     }
 }

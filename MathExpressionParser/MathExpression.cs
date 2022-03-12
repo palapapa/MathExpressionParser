@@ -522,7 +522,26 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     }
 
     /// <summary>
-    /// Evaluates the <see cref="Expression"/>.
+    /// Checks if <see cref="Expression"/> is a valid math expression.
+    /// </summary>
+    /// <returns>A <see cref="ParserException"/> instance that contains information about the error, or <see langword="null"/> if the expression is valid.</returns>
+    public ParserException Validate()
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Tries to evaluate <see cref="Expression"/>.
+    /// </summary>
+    /// <param name="result">The result of the evaluation if it succeeds.</param>
+    /// <returns><see langword="true"/> if <see cref="Expression"/> is valid, or <see langword="false"/> if it's not.</returns>
+    public bool TryEvaluate(out double result)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Evaluates <see cref="Expression"/>.
     /// </summary>
     /// <returns>The value of the <see cref="Expression"/>.</returns>
     /// <exception cref="ParserException">If <see cref="Expression"/> is not a valid math expression.</exception>

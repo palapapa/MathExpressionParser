@@ -2,7 +2,7 @@
 
 internal record class BinaryOperatorToken : Token
 {
-    public BinaryOperatorToken(Token token) : base(token)
+    public BinaryOperatorToken(string content, int position) : base(content, position)
     {
     }
 }

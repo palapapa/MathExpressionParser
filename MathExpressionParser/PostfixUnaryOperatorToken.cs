@@ -2,7 +2,7 @@
 
 internal record class PostfixUnaryOperatorToken : Token
 {
-    public PostfixUnaryOperatorToken(Token token) : base(token)
+    public PostfixUnaryOperatorToken(string content, int position) : base(content, position)
     {
     }
 }
