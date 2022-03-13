@@ -451,25 +451,32 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
             if (Expression[i].IsDigit())
             {
                 int originalI = i;
+                string token = "";
                 for (int j = i; j < Expression.Length; j++)
                 {
                     if ((!Expression[j].IsDigit() && Expression[j] is not 'E' and not 'e' and not '+' and not '-' and not '.') ||
                         ((Expression[j] is '+' or '-') && Expression.BoundElememtAt(j - 1) is not 'E' and not 'e'))
                     {
-                        tokens.Add(new(Expression[i..j], i));
+                        token = Expression[i..j];
+                        tokens.Add(new(token, i));
                         i = j - 1;
                         break;
                     }
                     else if (j == Expression.Length - 1)
                     {
-                        tokens.Add(new(Expression[i..(j + 1)], i));
+                        token = Expression[i..(j + 1)];
+                        tokens.Add(new(token, i));
                         i = j;
                         break;
                     }
                 }
-                if (!double.TryParse(tokens.Last(), out _))
+                if (!double.TryParse(tokens.Last(), out double value))
                 {
                     throw new ParserException($"Invalid number format at position {originalI}", new ParserExceptionContext(originalI, ParserExceptionType.InvalidNumberFormat));
+                }
+                else
+                {
+                    tokens[^1] = new NumberToken(token, originalI, value);
                 }
             }
             else if (Expression[i].IsLetter() || Expression[i] is '_')
@@ -497,6 +504,45 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
             else // symbols
             {
                 tokens.Add(new(Expression[i].ToString(), i));
+            }
+        }
+        for (int i = 0; i < tokens.Count; i++)
+        {
+            if (tokens[i] == "-" && (i == 0 || tokens[i - 1] is BinaryOperatorToken or OpeningParenthesisToken))
+            {
+                tokens[i] = new PrefixUnaryOperatorToken("-", tokens[i].Position);
+            }
+            else if (builtInBinaryOperators.Any(o => o.Name == tokens[i]))
+            {
+                tokens[i] = new BinaryOperatorToken(tokens[i], tokens[i].Position);
+            }
+            else if (builtInConstantOperators.Any(o => o.Name == tokens[i]) || CustomConstants.Any(o => o.Name == tokens[i]))
+            {
+                tokens[i] = new ConstantOperatorToken(tokens[i], tokens[i].Position);
+            }
+            else if (builtInFunctionalOperators.Any(o => o.Name == tokens[i]) || customFunctions.Any(o => o.Name == tokens[i]))
+            {
+                tokens[i] = new FunctionalOperatorToken(tokens[i], tokens[i].Position, -1);
+            }
+            else if (builtInPostfixUnaryOperators.Any(o => o.Name == tokens[i]))
+            {
+                tokens[i] = new PostfixUnaryOperatorToken(tokens[i], tokens[i].Position);
+            }
+            else if (builtInPrefixUnaryOperator.Any(o => o.Name == tokens[i]))
+            {
+                tokens[i] = new PrefixUnaryOperatorToken(tokens[i], tokens[i].Position);
+            }
+            else if (tokens[i] == "(")
+            {
+                tokens[i] = new OpeningParenthesisToken(tokens[i].Position);
+            }
+            else if (tokens[i] == ")")
+            {
+                tokens[i] = new ClosingParenthesisToken(tokens[i].Position);
+            }
+            else if (tokens[i] == ",")
+            {
+                tokens[i] = new CommaToken(tokens[i].Position);
             }
         }
         return tokens;

@@ -18,86 +18,107 @@ public class MathExpressionTests
                 "123 + 456",
                 new()
                 {
-                    new("123", 0),
-                    new("+", 4),
-                    new("456", 6)
+                    new NumberToken("123", 0, 123),
+                    new BinaryOperatorToken("+", 4),
+                    new NumberToken("456", 6, 456)
                 }
             },
             {
                 "123+456",
                 new()
                 {
-                    new("123", 0),
-                    new("+", 3),
-                    new("456", 4)
+                    new NumberToken("123", 0, 123),
+                    new BinaryOperatorToken("+", 3),
+                    new NumberToken("456", 4, 456)
                 }
             },
             {
                 "123-456",
                 new()
                 {
-                    new("123", 0),
-                    new("-", 3),
-                    new("456", 4)
+                    new NumberToken("123", 0, 123),
+                    new BinaryOperatorToken("-", 3),
+                    new NumberToken("456", 4, 456)
                 }
             },
             {
                 "123 + (-456)",
                 new()
                 {
-                    new("123", 0),
-                    new("+", 4),
-                    new("(", 6),
-                    new("-", 7),
-                    new("456", 8),
-                    new(")", 11)
+                    new NumberToken("123", 0, 123),
+                    new BinaryOperatorToken("+", 4),
+                    new OpeningParenthesisToken(6),
+                    new PrefixUnaryOperatorToken("-", 7),
+                    new NumberToken("456", 8, 456),
+                    new ClosingParenthesisToken(11)
                 }
             },
             {
                 "log10(sqrt(1E4))",
                 new()
                 {
-                    new("log10", 0),
-                    new("(", 5),
-                    new("sqrt", 6),
-                    new("(", 10),
-                    new("1E4", 11),
-                    new(")", 14),
-                    new(")", 15)
+                    new FunctionalOperatorToken("log10", 0, -1),
+                    new OpeningParenthesisToken(5),
+                    new FunctionalOperatorToken("sqrt", 6, -1),
+                    new OpeningParenthesisToken(10),
+                    new NumberToken("1E4", 11, 1e4),
+                    new ClosingParenthesisToken(14),
+                    new ClosingParenthesisToken(15)
                 }
             },
             {
-                "log(3.2e+2, sqrt(1E-4))",
+                "log(log(3.2e+2, 1e1), sqrt(1E-4))",
                 new()
                 {
-                    new("log", 0),
-                    new("(", 3),
-                    new("3.2e+2", 4),
-                    new(",", 10),
-                    new("sqrt", 12),
-                    new("(", 16),
-                    new("1E-4", 17),
-                    new(")", 21),
-                    new(")", 22)
+                    new FunctionalOperatorToken("log", 0, -1),
+                    new OpeningParenthesisToken(3),
+                    new FunctionalOperatorToken("log", 4, -1),
+                    new OpeningParenthesisToken(7),
+                    new NumberToken("3.2e+2", 8, 3.2e+2),
+                    new CommaToken(14),
+                    new NumberToken("1e1", 16, 1e1),
+                    new ClosingParenthesisToken(19),
+                    new CommaToken(20),
+                    new FunctionalOperatorToken("sqrt", 22, -1),
+                    new OpeningParenthesisToken(26),
+                    new NumberToken("1E-4", 27, 1e-4),
+                    new ClosingParenthesisToken(31),
+                    new ClosingParenthesisToken(32)
                 }
             },
             {
                 "1 + (2 * (3 + 4))",
                 new()
                 {
-                    new("1", 0),
-                    new("+", 2),
-                    new("(", 4),
-                    new("2", 5),
-                    new("*", 7),
-                    new("(", 9),
-                    new("3", 10),
-                    new("+", 12),
-                    new("4", 14),
-                    new(")", 15),
-                    new(")", 16)
+                    new NumberToken("1", 0, 1),
+                    new BinaryOperatorToken("+", 2),
+                    new OpeningParenthesisToken(4),
+                    new NumberToken("2", 5, 2),
+                    new BinaryOperatorToken("*", 7),
+                    new OpeningParenthesisToken(9),
+                    new NumberToken("3", 10, 3),
+                    new BinaryOperatorToken("+", 12),
+                    new NumberToken("4", 14, 4),
+                    new ClosingParenthesisToken(15),
+                    new ClosingParenthesisToken(16)
                 }
             },
+            {
+                "-pi * -sin(-e torad)",
+                new()
+                {
+                    new PrefixUnaryOperatorToken("-", 0),
+                    new ConstantOperatorToken("pi", 1),
+                    new BinaryOperatorToken("*", 4),
+                    new PrefixUnaryOperatorToken("-", 6),
+                    new FunctionalOperatorToken("sin", 7, -1),
+                    new OpeningParenthesisToken(10),
+                    new PrefixUnaryOperatorToken("-", 11),
+                    new ConstantOperatorToken("e", 12),
+                    new PostfixUnaryOperatorToken("torad", 14),
+                    new ClosingParenthesisToken(19)
+                }
+            }
         };
         foreach (KeyValuePair<string, List<Token>> pair in expressionToTokens)
         {

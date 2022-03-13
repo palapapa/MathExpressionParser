@@ -4,9 +4,9 @@ internal record class NumberToken : Token
 {
     public double Value { get; }
     
-    public NumberToken(string content, int position) : base(content, position)
+    public NumberToken(string content, int position, double value) : base(content, position)
     {
-        Value = content.ToDouble();
+        Value = value;
     }
 
     public static implicit operator double(NumberToken token)

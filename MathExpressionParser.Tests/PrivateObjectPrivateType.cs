@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.TestTools.UnitTesting;
 /// <summary>
 /// This class represents the live NON public INTERNAL object in the system
 /// </summary>
-public class PrivateObject
+internal class PrivateObject
 {
     // bind everything
     private const BindingFlags BindToEveryThing = BindingFlags.Default | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public;
@@ -860,7 +860,7 @@ public class PrivateObject
 /// <summary>
 /// This class represents a private class for the Private Accessor functionality.
 /// </summary>
-public class PrivateType
+internal class PrivateType
 {
     /// <summary>
     /// Binds to everything
