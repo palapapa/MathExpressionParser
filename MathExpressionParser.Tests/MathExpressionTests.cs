@@ -67,7 +67,7 @@ public class MathExpressionTests
                 }
             },
             {
-                "log(log(3.2e+2, 1e1), sqrt(1E-4))",
+                "log(log(3.2e+2, -1e1), sqrt(1E-4))",
                 new()
                 {
                     new FunctionalOperatorToken("log", 0, -1),
@@ -76,14 +76,15 @@ public class MathExpressionTests
                     new OpeningParenthesisToken(7),
                     new NumberToken("3.2e+2", 8, 3.2e+2),
                     new CommaToken(14),
-                    new NumberToken("1e1", 16, 1e1),
-                    new ClosingParenthesisToken(19),
-                    new CommaToken(20),
-                    new FunctionalOperatorToken("sqrt", 22, -1),
-                    new OpeningParenthesisToken(26),
-                    new NumberToken("1E-4", 27, 1e-4),
-                    new ClosingParenthesisToken(31),
-                    new ClosingParenthesisToken(32)
+                    new PrefixUnaryOperatorToken("-", 16),
+                    new NumberToken("1e1", 17, 1e1),
+                    new ClosingParenthesisToken(20),
+                    new CommaToken(21),
+                    new FunctionalOperatorToken("sqrt", 23, -1),
+                    new OpeningParenthesisToken(27),
+                    new NumberToken("1E-4", 28, 1e-4),
+                    new ClosingParenthesisToken(32),
+                    new ClosingParenthesisToken(33)
                 }
             },
             {

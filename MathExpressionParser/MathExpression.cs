@@ -508,7 +508,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         }
         for (int i = 0; i < tokens.Count; i++)
         {
-            if (tokens[i] == "-" && (i == 0 || tokens[i - 1] is BinaryOperatorToken or OpeningParenthesisToken))
+            if (tokens[i] == "-" && (i == 0 || tokens[i - 1] is BinaryOperatorToken or OpeningParenthesisToken or CommaToken))
             {
                 tokens[i] = new PrefixUnaryOperatorToken("-", tokens[i].Position);
             }
