@@ -25,7 +25,7 @@ internal record class Token
         return Content;
     }
 
-    public static implicit operator string(Token token)
+    public static explicit operator string(Token token)
     {
         return token.Content;
     }

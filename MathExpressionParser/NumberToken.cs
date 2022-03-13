@@ -9,7 +9,7 @@ internal record class NumberToken : Token
         Value = value;
     }
 
-    public static implicit operator double(NumberToken token)
+    public static explicit operator double(NumberToken token)
     {
         return token.Value;
     }

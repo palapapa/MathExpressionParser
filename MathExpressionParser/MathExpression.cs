@@ -470,7 +470,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
                         break;
                     }
                 }
-                if (!double.TryParse(tokens.Last(), out double value))
+                if (!double.TryParse(tokens.Last().ToString(), out double value))
                 {
                     throw new ParserException($"Invalid number format at position {originalI}", new ParserExceptionContext(originalI, ParserExceptionType.InvalidNumberFormat));
                 }
@@ -508,39 +508,39 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         }
         for (int i = 0; i < tokens.Count; i++)
         {
-            if (tokens[i] == "-" && (i == 0 || tokens[i - 1] is BinaryOperatorToken or OpeningParenthesisToken or CommaToken))
+            if (tokens[i].ToString() == "-" && (i == 0 || tokens[i - 1] is BinaryOperatorToken or OpeningParenthesisToken or CommaToken))
             {
                 tokens[i] = new PrefixUnaryOperatorToken("-", tokens[i].Position);
             }
-            else if (builtInBinaryOperators.Any(o => o.Name == tokens[i]))
+            else if (builtInBinaryOperators.Any(o => o.Name == tokens[i].ToString()))
             {
-                tokens[i] = new BinaryOperatorToken(tokens[i], tokens[i].Position);
+                tokens[i] = new BinaryOperatorToken(tokens[i].ToString(), tokens[i].Position);
             }
-            else if (builtInConstantOperators.Any(o => o.Name == tokens[i]) || CustomConstants.Any(o => o.Name == tokens[i]))
+            else if (builtInConstantOperators.Any(o => o.Name == tokens[i].ToString()) || CustomConstants.Any(o => o.Name == tokens[i].ToString()))
             {
-                tokens[i] = new ConstantOperatorToken(tokens[i], tokens[i].Position);
+                tokens[i] = new ConstantOperatorToken(tokens[i].ToString(), tokens[i].Position);
             }
-            else if (builtInFunctionalOperators.Any(o => o.Name == tokens[i]) || customFunctions.Any(o => o.Name == tokens[i]))
+            else if (builtInFunctionalOperators.Any(o => o.Name == tokens[i].ToString()) || customFunctions.Any(o => o.Name == tokens[i].ToString()))
             {
-                tokens[i] = new FunctionalOperatorToken(tokens[i], tokens[i].Position, -1);
+                tokens[i] = new FunctionalOperatorToken(tokens[i].ToString(), tokens[i].Position, -1);
             }
-            else if (builtInPostfixUnaryOperators.Any(o => o.Name == tokens[i]))
+            else if (builtInPostfixUnaryOperators.Any(o => o.Name == tokens[i].ToString()))
             {
-                tokens[i] = new PostfixUnaryOperatorToken(tokens[i], tokens[i].Position);
+                tokens[i] = new PostfixUnaryOperatorToken(tokens[i].ToString(), tokens[i].Position);
             }
-            else if (builtInPrefixUnaryOperator.Any(o => o.Name == tokens[i]))
+            else if (builtInPrefixUnaryOperator.Any(o => o.Name == tokens[i].ToString()))
             {
-                tokens[i] = new PrefixUnaryOperatorToken(tokens[i], tokens[i].Position);
+                tokens[i] = new PrefixUnaryOperatorToken(tokens[i].ToString(), tokens[i].Position);
             }
-            else if (tokens[i] == "(")
+            else if (tokens[i].ToString() == "(")
             {
                 tokens[i] = new OpeningParenthesisToken(tokens[i].Position);
             }
-            else if (tokens[i] == ")")
+            else if (tokens[i].ToString() == ")")
             {
                 tokens[i] = new ClosingParenthesisToken(tokens[i].Position);
             }
-            else if (tokens[i] == ",")
+            else if (tokens[i].ToString() == ",")
             {
                 tokens[i] = new CommaToken(tokens[i].Position);
             }
@@ -553,7 +553,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// </summary>
     /// <param name="mathExpression">The <see cref="MathExpression"/> to convert.</param>
     /// <returns><see cref="Expression"/> or <see langword="null"/> if <paramref name="mathExpression"/> is null.</returns>
-    public static implicit operator string(MathExpression mathExpression)
+    public static explicit operator string(MathExpression mathExpression)
     {
         return mathExpression?.ToString();
     }
@@ -696,7 +696,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// </summary>
     /// <param name="mathExpression"></param>
     /// <returns>Value of <see cref="Evaluate"/> of <paramref name="mathExpression"/>.</returns>
-    public static implicit operator double(MathExpression mathExpression)
+    public static explicit operator double(MathExpression mathExpression)
     {
         return mathExpression.Evaluate();
     }
