@@ -9,6 +9,7 @@ public enum OperatorAssociativity
     /// Left-to-right associativity.
     /// </summary>
     Left,
+
     /// <summary>
     /// Right-to-left associativity.
     /// </summary>

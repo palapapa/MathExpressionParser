@@ -508,7 +508,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         }
         for (int i = 0; i < tokens.Count; i++)
         {
-            if (tokens[i].ToString() == "-" && (i == 0 || tokens[i - 1] is BinaryOperatorToken or OpeningParenthesisToken or CommaToken))
+            if (tokens[i].ToString() == "-" && (i == 0 || tokens[i - 1] is BinaryOperatorToken or OpeningParenthesisToken or CommaToken or PrefixUnaryOperatorToken))
             {
                 tokens[i] = new PrefixUnaryOperatorToken("-", tokens[i].Position);
             }
@@ -520,7 +520,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
             {
                 tokens[i] = new ConstantOperatorToken(tokens[i].ToString(), tokens[i].Position);
             }
-            else if (builtInFunctionalOperators.Any(o => o.Name == tokens[i].ToString()) || customFunctions.Any(o => o.Name == tokens[i].ToString()))
+            else if (builtInFunctionalOperators.Any(o => o.Name == tokens[i].ToString()) || CustomFunctions.Any(o => o.Name == tokens[i].ToString()))
             {
                 tokens[i] = new FunctionalOperatorToken(tokens[i].ToString(), tokens[i].Position, -1);
             }
@@ -543,6 +543,13 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
             else if (tokens[i].ToString() == ",")
             {
                 tokens[i] = new CommaToken(tokens[i].Position);
+            }
+            else
+            {
+                if (tokens[i] is not NumberToken)
+                {
+                    throw new ParserException($"\"{tokens[i]}\" is not a known operator", new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnknownOperator));
+                }
             }
         }
         return tokens;
@@ -573,7 +580,195 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <returns>A <see cref="ParserException"/> instance that contains information about the error, or <see langword="null"/> if the expression is valid.</returns>
     public ParserException Validate()
     {
-        throw new NotImplementedException();
+        foreach (FunctionalOperator f in CustomFunctions)
+        {
+            if (f.Name.Length is 0 || f.Name[0].IsDigit() || f.Name.Any(c => !c.IsDigit() && !c.IsLetter() && c is not '_'))
+            {
+                return new($"\"{f.Name}\" is not a valid function name",
+                    new ParserExceptionContext(-1, ParserExceptionType.InvalidCustomFunctionName));
+            }
+            if (f.Calculate is null)
+            {
+                return new($"\"{f.Name}\" has a null {nameof(FunctionalOperator.Calculate)}",
+                    new ParserExceptionContext(-1, ParserExceptionType.NullCustomFunctionDelegate));
+            }
+        }
+        foreach (ConstantOperator c in CustomConstants)
+        {
+            if (c.Name.Length is 0 || c.Name[0].IsDigit() || c.Name.Any(c => !c.IsDigit() && !c.IsLetter() && c is not '_'))
+            {
+                return new($"\"{c.Name}\" is not a valid constant name",
+                    new ParserExceptionContext(-1, ParserExceptionType.InvalidCustomConstantName));
+            }
+        }
+        List<string> duplicateFunctions = CustomFunctions.GroupBy(f => f.Name).Where(grouping => grouping.Count() > 1).Select(grouping => grouping.Key).ToList();
+        if (duplicateFunctions.Count != 0)
+        {
+            return new ParserException($"Custom functions \"{string.Join(' ', duplicateFunctions)}\" have multiple definitions", new ParserExceptionContext(-1, ParserExceptionType.DuplicateCustomFunctions));
+        }
+        List<string> duplicateConstants = CustomConstants.GroupBy(c => c.Name).Where(grouping => grouping.Count() > 1).Select(grouping => grouping.Key).ToList();
+        if (duplicateConstants.Count != 0)
+        {
+            return new ParserException($"Custom constants \"{string.Join(' ', duplicateConstants)}\" have multiple definitions", new ParserExceptionContext(-1, ParserExceptionType.DuplicateCustomConstants));
+        }
+        Stack<ParserState> states = new();
+        states.Push(ParserState.Start);
+        List<Token> tokens;
+        try
+        {
+            tokens = Tokenize();
+        }
+        catch (ParserException e)
+        {
+            return e;
+        }
+        if (tokens.Count is 0)
+        {
+            return null;
+        }
+        for (int i = 0; i < tokens.Count; i++)
+        {
+            ParserState currentState = states.Peek();
+            if (tokens[i] is BinaryOperatorToken)
+            {
+                if (currentState.HasFlag(ParserState.ExpectingBinaryOperator))
+                {
+                    states.Pop();
+                    states.Push(ParserState.Start);
+                }
+                else
+                {
+                    return new($"Unexpected binary operator \"{tokens[i]}\" at position {tokens[i].Position}",
+                        new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnexpectedBinaryOperator));
+                }
+            }
+            else if (tokens[i] is ClosingParenthesisToken)
+            {
+                if (currentState.HasFlag(ParserState.ExpectingClosingParenthesis) &&
+                    states.Skip(1).FirstOrDefault().HasFlag(ParserState.ExpectingClosingParenthesis))
+                {
+                    states.Pop();
+                    states.Pop();
+                    states.Push(ParserState.AfterClosingParenthesis);
+                }
+                else
+                {
+                    return new($"Unexpected closing parenthesis at position {tokens[i].Position}",
+                        new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnexpectedClosingParenthesis));
+                }
+            }
+            else if (tokens[i] is CommaToken)
+            {
+                if (currentState.HasFlag(ParserState.ExpectingComma) &&
+                    states.Skip(1).FirstOrDefault().HasFlag(ParserState.InFunction))
+                {
+                    states.Pop();
+                    states.Push(ParserState.Start);
+                }
+                else
+                {
+                    return new($"Unexpected comma at position {tokens[i].Position}",
+                        new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnexpectedComma));
+                }
+            }
+            else if (tokens[i] is ConstantOperatorToken)
+            {
+                if (currentState.HasFlag(ParserState.ExpectingConstant))
+                {
+                    states.Pop();
+                    states.Push(ParserState.AfterNumber);
+                }
+                else
+                {
+                    return new($"Unexpected constant \"{tokens[i]}\" at position {tokens[i].Position}",
+                        new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnexpectedConstantOperator));
+                }
+            }
+            else if (tokens[i] is FunctionalOperatorToken)
+            {
+                if (currentState.HasFlag(ParserState.ExpectingFunctionalOperator))
+                {
+                    states.Pop();
+                    states.Push(ParserState.ExpectingOpeningParenthesis | ParserState.InFunction);
+                }
+                else
+                {
+                    return new($"Unexpected function \"{tokens[i].Position}\" at position {tokens[i].Position}",
+                        new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnexpectedFunctionalOperator));
+                }
+            }
+            else if (tokens[i] is NumberToken)
+            {
+                if (currentState.HasFlag(ParserState.ExpectingNumber))
+                {
+                    states.Pop();
+                    states.Push(ParserState.AfterNumber);
+                }
+                else
+                {
+                    return new($"Unexpected number \"{tokens[i]}\" at position {tokens[i].Position}",
+                        new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnexpectedNumber));
+                }
+            }
+            else if (tokens[i] is OpeningParenthesisToken)
+            {
+                if (currentState.HasFlag(ParserState.ExpectingOpeningParenthesis))
+                {
+                    ParserState state = states.Pop();
+                    if (state.HasFlag(ParserState.InFunction))
+                    {
+                        states.Push(ParserState.ExpectingClosingParenthesis | ParserState.InFunction);
+                    }
+                    else
+                    {
+                        states.Push(ParserState.ExpectingClosingParenthesis);
+                    }
+                    states.Push(ParserState.Start);
+                }
+                else
+                {
+                    return new($"Unexpected opening parenthesis at position {tokens[i].Position}",
+                        new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnexpectedOpeningParenthesis));
+                }
+            }
+            else if (tokens[i] is PostfixUnaryOperatorToken)
+            {
+                if (currentState.HasFlag(ParserState.ExpectingPostfixUnaryOperator))
+                {
+                    states.Pop();
+                    states.Push(ParserState.AfterPostfix);
+                }
+                else
+                {
+                    return new($"Unexpected postfix unary operator \"{tokens[i]}\" at position {tokens[i].Position}",
+                        new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnexpectedPostfixUnaryOperator));
+                }
+            }
+            else if (tokens[i] is PrefixUnaryOperatorToken)
+            {
+                if (currentState.HasFlag(ParserState.ExpectingPrefixUnaryOperator))
+                {
+                    states.Pop();
+                    states.Push(ParserState.ExpectingOperand);
+                }
+                else
+                {
+                    return new($"Unexpected prefix unary operator \"{tokens[i]}\" at position {tokens[i].Position}",
+                        new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnexpectedPrefixUnaryOperator));
+                }
+            }
+        }
+        if (tokens[^1] is BinaryOperatorToken or CommaToken or FunctionalOperatorToken or OpeningParenthesisToken or PrefixUnaryOperatorToken)
+        {
+            return new($"Expression ended unexpectedly",
+                new ParserExceptionContext(Expression.Length, ParserExceptionType.UnexpectedNewline));
+        }
+        if (states.Count != 1)
+        {
+            return new($"One or more closing parentheses are missing",
+                new ParserExceptionContext(Expression.Length, ParserExceptionType.TooManyOpeningParentheses));
+        }
+        return null;
     }
 
     /// <summary>

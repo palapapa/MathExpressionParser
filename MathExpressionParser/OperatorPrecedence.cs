@@ -9,14 +9,17 @@ public enum OperatorPrecedence
     /// This precedence level is parsed fourth.
     /// </summary>
     Additive,
+
     /// <summary>
     /// This precedence level is parsed third.
     /// </summary>
     Multiplicative,
+
     /// <summary>
     /// This precedence level is parsed second.
     /// </summary>
     Unary,
+
     /// <summary>
     /// This precedence level is parsed first.
     /// </summary>

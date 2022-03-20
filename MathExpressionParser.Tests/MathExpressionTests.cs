@@ -119,6 +119,31 @@ public class MathExpressionTests
                     new PostfixUnaryOperatorToken("torad", 14),
                     new ClosingParenthesisToken(19)
                 }
+            },
+            {
+                "\t ",
+                new()
+            },
+            {
+                "---1",
+                new()
+                {
+                    new PrefixUnaryOperatorToken("-", 0),
+                    new PrefixUnaryOperatorToken("-", 1),
+                    new PrefixUnaryOperatorToken("-", 2),
+                    new NumberToken("1", 3, 1)
+                }
+            },
+            {
+                "1---1",
+                new()
+                {
+                    new NumberToken("1", 0, 1),
+                    new BinaryOperatorToken("-", 1),
+                    new PrefixUnaryOperatorToken("-", 2),
+                    new PrefixUnaryOperatorToken("-", 3),
+                    new NumberToken("1", 4, 1)
+                }
             }
         };
         foreach (KeyValuePair<string, List<Token>> pair in expressionToTokens)
@@ -173,6 +198,159 @@ public class MathExpressionTests
                 e => e.Context.Position == tuple.Item2 && e.Context.Type == ParserExceptionType.InvalidNumberFormat,
                 $"It should be thrown when the format of a number is invalid.{tuple}"
             );
+        }
+    }
+
+    [TestMethod]
+    public void Validate_GettingResult_CorrectResult()
+    {
+        List<(string, ParserExceptionContext)> tuples = new()
+        {
+            new
+            (
+                "-pi * -sin(-e torad)",
+                null
+            ),
+            new
+            (
+                "log(log(3.2e+2, -1e1), sqrt(1E-4))",
+                null
+            ),
+            new
+            (
+                "\t\t  \n",
+                null
+            ),
+            new
+            (
+                "1e + 1",
+                new(0, ParserExceptionType.InvalidNumberFormat)
+            ),
+            new
+            (
+                "1 1",
+                new(2, ParserExceptionType.UnexpectedNumber)
+            ),
+            new
+            (
+                "-pi * -sin(-e torad",
+                new(19, ParserExceptionType.TooManyOpeningParentheses)
+            ),
+            new
+            (
+                "((1 + 1 +))",
+                new(9, ParserExceptionType.UnexpectedClosingParenthesis)
+            ),
+            new
+            (
+                "1++",
+                new(2, ParserExceptionType.UnexpectedBinaryOperator)
+            ),
+            new
+            (
+                "1 + (2! ^ 3)) + sin(5)",
+                new(12, ParserExceptionType.UnexpectedClosingParenthesis)
+            ),
+            new
+            (
+                "1 + (2! ^ 3) + sin(5))",
+                new(21, ParserExceptionType.UnexpectedClosingParenthesis)
+            ),
+            new
+            (
+                "1(1+1",
+                new(1, ParserExceptionType.UnexpectedOpeningParenthesis)
+            ),
+            new
+            (
+                "1 + 1, 1 + 1",
+                new(5, ParserExceptionType.UnexpectedComma)
+            ),
+            new
+            (
+                "sin(,1)",
+                new(4, ParserExceptionType.UnexpectedComma)
+            ),
+            new
+            (
+                "sin(1,)",
+                new(6, ParserExceptionType.UnexpectedClosingParenthesis)
+            ),
+            new
+            (
+                "log(1, log(1, log(1, 1)))",
+                null
+            ),
+            new
+            (
+                "log(1, log(log(1, 1), log(1, 1)))",
+                null
+            ),
+            new
+            (
+                "sin(pi pi)",
+                new(7, ParserExceptionType.UnexpectedConstantOperator)
+            ),
+            new
+            (
+                "sin(pipi)",
+                new(4, ParserExceptionType.UnknownOperator)
+            ),
+            new
+            (
+                "sinn(pi)",
+                new(0, ParserExceptionType.UnknownOperator)
+            ),
+            new
+            (
+                "2sin(1)",
+                new(1, ParserExceptionType.UnexpectedFunctionalOperator)
+            ),
+            new
+            (
+                "1 1",
+                new(2, ParserExceptionType.UnexpectedNumber)
+            ),
+            new
+            (
+                "sin((1)",
+                new(7, ParserExceptionType.TooManyOpeningParentheses)
+            ),
+            new
+            (
+                "sin((((((1))))))",
+                null
+            ),
+            new
+            (
+                "10!!",
+                null
+            ),
+            new
+            (
+                "1*!",
+                new(2, ParserExceptionType.UnexpectedPostfixUnaryOperator)
+            ),
+            new
+            (
+                "--1",
+                new(1, ParserExceptionType.UnexpectedPrefixUnaryOperator)
+            ),
+            new
+            (
+                "sin(1",
+                new(5, ParserExceptionType.TooManyOpeningParentheses)
+            ),
+            new
+            (
+                "1 +",
+                new(3, ParserExceptionType.UnexpectedNewline)
+            )
+        };
+        foreach ((string, ParserExceptionContext) tuple in tuples)
+        {
+            MathExpression mathExpression = new(tuple.Item1);
+            Assert.AreEqual(tuple.Item2, mathExpression.Validate()?.Context);
         }
     }
 }
