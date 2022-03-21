@@ -516,11 +516,11 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
             {
                 tokens[i] = new BinaryOperatorToken(tokens[i].ToString(), tokens[i].Position);
             }
-            else if (builtInConstantOperators.Any(o => o.Name == tokens[i].ToString()) || CustomConstants.Any(o => o.Name == tokens[i].ToString()))
+            else if (builtInConstantOperators.Concat(CustomConstants).Any(o => o.Name == tokens[i].ToString()))
             {
                 tokens[i] = new ConstantOperatorToken(tokens[i].ToString(), tokens[i].Position);
             }
-            else if (builtInFunctionalOperators.Any(o => o.Name == tokens[i].ToString()) || CustomFunctions.Any(o => o.Name == tokens[i].ToString()))
+            else if (builtInFunctionalOperators.Concat(CustomFunctions).Any(o => o.Name == tokens[i].ToString()))
             {
                 tokens[i] = new FunctionalOperatorToken(tokens[i].ToString(), tokens[i].Position, -1);
             }
@@ -553,6 +553,61 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
             }
         }
         return tokens;
+    }
+
+    /// <summary>
+    /// Returns the same <see cref="List{T}"/> as <paramref name="tokens"/> but with every <see cref="FunctionalOperatorToken.ArgumentCount"/> set to the correct number.
+    /// This method assumes the provided <paramref name="tokens"/> represent a valid expression.
+    /// </summary>
+    /// <param name="tokens"></param>
+    /// <returns></returns>
+    private static List<Token> CalculateArgumentCount(List<Token> tokens)
+    {
+        List<Token> result = tokens.ToList();
+        for (int i = 0; i < result.Count; i++)
+        {
+            if (result[i] is FunctionalOperatorToken f)
+            {
+                int argumentCount = 1;
+                for (int j = i + 2; j < result.Count; j++)
+                {
+                    if (result[j] is CommaToken)
+                    {
+                        argumentCount++;
+                    }
+                    else if (result[j] is OpeningParenthesisToken)
+                    {
+                        int opening = 1;
+                        for (int k = j + 1; k < result.Count; k++) // skips to the corresponding closing parenthesis
+                        {
+                            if (tokens[k] is OpeningParenthesisToken)
+                            {
+                                opening++;
+                            }
+                            else if (tokens[k] is ClosingParenthesisToken)
+                            {
+                                opening--;
+                            }
+                            if (opening is 0)
+                            {
+                                j = k;
+                                break;
+                            }
+                        }
+                    }
+                    else if (result[j] is ClosingParenthesisToken)
+                    {
+                        if (tokens[j - 1] is OpeningParenthesisToken)
+                        {
+                            argumentCount = 0;
+                        }
+                        break;
+                    }
+                }
+                result[i] = f with { ArgumentCount = argumentCount };
+            }
+        }
+        return result;
     }
 
     /// <summary>
@@ -601,15 +656,17 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
                     new ParserExceptionContext(-1, ParserExceptionType.InvalidCustomConstantName));
             }
         }
-        List<string> duplicateFunctions = CustomFunctions.GroupBy(f => f.Name).Where(grouping => grouping.Count() > 1).Select(grouping => grouping.Key).ToList();
+        List<string> duplicateFunctions = CustomFunctions.Concat(builtInFunctionalOperators).GroupBy(f => f.Name).Where(grouping => grouping.Count() > 1).Select(grouping => grouping.Key).ToList();
         if (duplicateFunctions.Count != 0)
         {
-            return new ParserException($"Custom functions \"{string.Join(' ', duplicateFunctions)}\" have multiple definitions", new ParserExceptionContext(-1, ParserExceptionType.DuplicateCustomFunctions));
+            return new ParserException($"Custom functions \"{string.Join(' ', duplicateFunctions)}\" have multiple definitions",
+                new ParserExceptionContext(-1, ParserExceptionType.DuplicateCustomFunctions));
         }
-        List<string> duplicateConstants = CustomConstants.GroupBy(c => c.Name).Where(grouping => grouping.Count() > 1).Select(grouping => grouping.Key).ToList();
+        List<string> duplicateConstants = CustomConstants.Concat(builtInConstantOperators).GroupBy(c => c.Name).Where(grouping => grouping.Count() > 1).Select(grouping => grouping.Key).ToList();
         if (duplicateConstants.Count != 0)
         {
-            return new ParserException($"Custom constants \"{string.Join(' ', duplicateConstants)}\" have multiple definitions", new ParserExceptionContext(-1, ParserExceptionType.DuplicateCustomConstants));
+            return new ParserException($"Custom constants \"{string.Join(' ', duplicateConstants)}\" have multiple definitions",
+                new ParserExceptionContext(-1, ParserExceptionType.DuplicateCustomConstants));
         }
         Stack<ParserState> states = new();
         states.Push(ParserState.Start);
@@ -644,8 +701,10 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
             }
             else if (tokens[i] is ClosingParenthesisToken)
             {
-                if (currentState.HasFlag(ParserState.ExpectingClosingParenthesis) &&
-                    states.Skip(1).FirstOrDefault().HasFlag(ParserState.ExpectingClosingParenthesis))
+                if ((currentState.HasFlag(ParserState.ExpectingClosingParenthesis) &&
+                    states.Skip(1).FirstOrDefault().HasFlag(ParserState.ExpectingClosingParenthesis)) ||
+                    (states.Skip(1).FirstOrDefault().HasFlag(ParserState.InFunction) &&
+                    tokens[i - 1] is OpeningParenthesisToken)) // the conditions after "||" take care of the case where a function has no arguments
                 {
                     states.Pop();
                     states.Pop();
@@ -768,6 +827,20 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
             return new($"One or more closing parentheses are missing",
                 new ParserExceptionContext(Expression.Length, ParserExceptionType.TooManyOpeningParentheses));
         }
+        // At this point, everything other than argument counts has been validated.
+        tokens = CalculateArgumentCount(tokens);
+        for (int i = 0; i < tokens.Count; i++)
+        {
+            if (tokens[i] is FunctionalOperatorToken f)
+            {
+                FunctionalOperator correspondingFunction = builtInFunctionalOperators.FirstOrDefault(function => function.Name == f.Content) ?? CustomFunctions.First(function => function.Name == f.Content);
+                if (correspondingFunction.ArgumentCounts.Count is not 0 && !correspondingFunction.ArgumentCounts.Contains(f.ArgumentCount))
+                {
+                    return new ParserException($"Function \"{f.Content}\" at position {f.Position} has {f.ArgumentCount} arguments, but the function expected {string.Join(", ", correspondingFunction.ArgumentCounts)} arguments",
+                        new ParserExceptionContext(f.Position, ParserExceptionType.IncorrectArgumentCount));
+                }
+            }
+        }
         return null;
     }
 
@@ -775,8 +848,8 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// Tries to evaluate <see cref="Expression"/>.
     /// </summary>
     /// <param name="result">The result of the evaluation if it succeeds.</param>
-    /// <returns><see langword="true"/> if <see cref="Expression"/> is valid, or <see langword="false"/> if it's not.</returns>
-    public bool TryEvaluate(out double result)
+    /// <returns>A <see cref="ParserException"/> instance containing information about the error if <paramref name="result"/> is not a valid math expression, or <see langword="null"/> if it is.</returns>
+    public ParserException TryEvaluate(out double result)
     {
         throw new NotImplementedException();
     }

@@ -268,6 +268,16 @@ public class MathExpressionTests
             ),
             new
             (
+                "log((1, 1))",
+                new(6, ParserExceptionType.UnexpectedComma)
+            ),
+            new
+            (
+                "log((, 1))",
+                new(5, ParserExceptionType.UnexpectedComma)
+            ),
+            new
+            (
                 "sin(,1)",
                 new(4, ParserExceptionType.UnexpectedComma)
             ),
@@ -345,12 +355,82 @@ public class MathExpressionTests
             (
                 "1 +",
                 new(3, ParserExceptionType.UnexpectedNewline)
+            ),
+            new
+            (
+                "sin(1, 1)",
+                new(0, ParserExceptionType.IncorrectArgumentCount)
+            ),
+            new
+            (
+                "sin()",
+                new(0, ParserExceptionType.IncorrectArgumentCount)
             )
         };
         foreach ((string, ParserExceptionContext) tuple in tuples)
         {
             MathExpression mathExpression = new(tuple.Item1);
-            Assert.AreEqual(tuple.Item2, mathExpression.Validate()?.Context);
+            ParserExceptionContext result = mathExpression.Validate()?.Context;
+            if (tuple.Item2 != result)
+            {
+                Assert.Fail($"{tuple.Item1} Expected: {tuple.Item2 ?? (object)"null"} Actual: {result ?? (object)"null"}");
+            }
+        }
+    }
+
+    [TestMethod]
+    public void CalculateArgumentCount_GettingResult_CorrectResult()
+    {
+        List<(List<Token>, List<Token>)> tuples = new()
+        {
+            new
+            (
+                new()
+                {
+                    new FunctionalOperatorToken("log", 0, -1),
+                    new OpeningParenthesisToken(3),
+                    new FunctionalOperatorToken("log", 4, -1),
+                    new OpeningParenthesisToken(7),
+                    new NumberToken("3.2e+2", 8, 3.2e+2),
+                    new CommaToken(14),
+                    new PrefixUnaryOperatorToken("-", 16),
+                    new NumberToken("1e1", 17, 1e1),
+                    new ClosingParenthesisToken(20),
+                    new CommaToken(21),
+                    new FunctionalOperatorToken("sqrt", 23, -1),
+                    new OpeningParenthesisToken(27),
+                    new NumberToken("1E-4", 28, 1e-4),
+                    new ClosingParenthesisToken(32),
+                    new ClosingParenthesisToken(33)
+                },
+                new()
+                {
+                    new FunctionalOperatorToken("log", 0, 2),
+                    new OpeningParenthesisToken(3),
+                    new FunctionalOperatorToken("log", 4, 2),
+                    new OpeningParenthesisToken(7),
+                    new NumberToken("3.2e+2", 8, 3.2e+2),
+                    new CommaToken(14),
+                    new PrefixUnaryOperatorToken("-", 16),
+                    new NumberToken("1e1", 17, 1e1),
+                    new ClosingParenthesisToken(20),
+                    new CommaToken(21),
+                    new FunctionalOperatorToken("sqrt", 23, 1),
+                    new OpeningParenthesisToken(27),
+                    new NumberToken("1E-4", 28, 1e-4),
+                    new ClosingParenthesisToken(32),
+                    new ClosingParenthesisToken(33)
+                }
+            )
+        };
+        PrivateType mathExpression = new(typeof(MathExpression));
+        foreach ((List<Token>, List<Token>) tuple in tuples)
+        {
+            List<Token> result = (List<Token>)mathExpression.InvokeStatic("CalculateArgumentCount", tuple.Item1);
+            if (!tuple.Item2.SequenceEqual(result))
+            {
+                Assert.Fail($"Actual: {string.Join(", ", result.Where(token => token is FunctionalOperatorToken).Select(token => ((FunctionalOperatorToken)token).ArgumentCount))}");
+            }
         }
     }
 }
