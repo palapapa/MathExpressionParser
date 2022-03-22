@@ -204,7 +204,7 @@ public class MathExpressionTests
     [TestMethod]
     public void Validate_GettingResult_CorrectResult()
     {
-        List<(string, ParserExceptionContext)> tuples = new()
+        List<(string, ParserExceptionContext)> tuples0 = new()
         {
             new
             (
@@ -367,7 +367,7 @@ public class MathExpressionTests
                 new(0, ParserExceptionType.IncorrectArgumentCount)
             )
         };
-        foreach ((string, ParserExceptionContext) tuple in tuples)
+        foreach ((string, ParserExceptionContext) tuple in tuples0)
         {
             MathExpression mathExpression = new(tuple.Item1);
             ParserExceptionContext result = mathExpression.Validate()?.Context;
@@ -375,6 +375,59 @@ public class MathExpressionTests
             {
                 Assert.Fail($"{tuple.Item1} Expected: {tuple.Item2 ?? (object)"null"} Actual: {result ?? (object)"null"}");
             }
+        }
+        FunctionalOperator functionWithInvalidName = new("1a", nums => nums[0]);
+        FunctionalOperator function = new("f", nums => nums[0]);
+        FunctionalOperator sin = new("sin", nums => nums[0]);
+        ConstantOperator constantWithInvalidName = new("$", 0);
+        ConstantOperator constant = new("x", 0);
+        ConstantOperator pi = new("pi", 0);
+        List<(MathExpression, ParserExceptionContext)> tuples1 = new()
+        {
+            new
+            (
+                new(functionWithInvalidName.ToSingletonList(), null),
+                new(-1, ParserExceptionType.InvalidCustomFunctionName)
+            ),
+            new
+            (
+                new(new List<FunctionalOperator> { null }, null),
+                new(-1, ParserExceptionType.NullCustomFunction)
+            ),
+            new
+            (
+                new(null, new List<ConstantOperator> { constantWithInvalidName }),
+                new(-1, ParserExceptionType.InvalidCustomConstantName)
+            ),
+            new
+            (
+                new(null, new List<ConstantOperator> { null }),
+                new(-1, ParserExceptionType.NullCustomConstant)
+            ),
+            new
+            (
+                new(new List<FunctionalOperator> { function, function }, null),
+                new(-1, ParserExceptionType.DuplicateCustomFunctions)
+            ),
+            new
+            (
+                new(new List<FunctionalOperator> { sin }, null),
+                new(-1, ParserExceptionType.DuplicateCustomFunctions)
+            ),
+            new
+            (
+                new(null, new List<ConstantOperator> { constant, constant }),
+                new(-1, ParserExceptionType.DuplicateCustomConstants)
+            ),
+            new
+            (
+                new(null, new List<ConstantOperator> { pi }),
+                new(-1, ParserExceptionType.DuplicateCustomConstants)
+            )
+        };
+        foreach ((MathExpression, ParserExceptionContext) tuple in tuples1)
+        {
+            Assert.AreEqual(tuple.Item2, tuple.Item1.Validate().Context);
         }
     }
 

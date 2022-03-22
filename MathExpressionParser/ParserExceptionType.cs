@@ -21,14 +21,19 @@ public enum ParserExceptionType
     InvalidCustomFunctionName,
 
     /// <summary>
-    /// An error where a custom <see cref="FunctionalOperator"/> has a null <see cref="FunctionalOperatorDelegate"/>.
+    /// An error where <see cref="MathExpression.CustomFunctions"/> contains a <see langword="null"/> element.
     /// </summary>
-    NullCustomFunctionDelegate,
+    NullCustomFunction,
 
     /// <summary>
     /// An error where some of the custom constants provided have names that either start with a number, are empty, or contain characters that are not alphanumeric or are not underscores.
     /// </summary>
     InvalidCustomConstantName,
+
+    /// <summary>
+    /// An error where <see cref="MathExpression.CustomConstants"/> contains a <see langword="null"/> element.
+    /// </summary>
+    NullCustomConstant,
 
     /// <summary>
     /// An error where <see cref="MathExpression.CustomFunctions"/> contains <see cref="FunctionalOperator"/>s with the same name.

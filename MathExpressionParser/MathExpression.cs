@@ -398,19 +398,20 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     }
 
     /// <summary>
-    /// Initializes a new instance of <see cref="MathExpression"/> with <see cref="CustomFunctions"/> set to <paramref name="customFunctions"/> and <see cref="CustomConstants"/> set to <paramref name="customConstants"/>.
+    /// Initializes a new instance of <see cref="MathExpression"/> with <see cref="CustomFunctions"/> set to <paramref name="customFunctions"/>, <see cref="CustomConstants"/> set to <paramref name="customConstants"/>, and <see cref="Expression"/> set to an empty <see cref="string"/>. <br/>
+    /// If <paramref name="customFunctions"/> or <paramref name="customConstants"/> is <see langword="null"/>, it will remain as an empty <see cref="IList{T}"/>.
     /// </summary>
-    /// <param name="customFunctions">The <see cref="IList{T}"/> to set <see cref="CustomFunctions"/> to.</param>
-    /// <param name="customConstants">The <see cref="IList{T}"/> to set <see cref="CustomConstants"/> to.</param>
-    /// <exception cref="ArgumentNullException">When either of the arguments are <see langword="null"/>.</exception>
+    /// <param name="customFunctions">The <see cref="IList{T}"/> to set <see cref="CustomFunctions"/> to, or <see langword="null"/> if you wish to leave it empty.</param>
+    /// <param name="customConstants">The <see cref="IList{T}"/> to set <see cref="CustomConstants"/> to, or <see langword="null"/> if you wish to leave it empty.</param>
     public MathExpression(IList<FunctionalOperator> customFunctions, IList<ConstantOperator> customConstants)
     {
-        CustomFunctions = customFunctions ?? throw new ArgumentNullException(nameof(customFunctions));
-        CustomConstants = customConstants ?? throw new ArgumentNullException(nameof(customConstants));
+        CustomFunctions = customFunctions ?? new List<FunctionalOperator>();
+        CustomConstants = customConstants ?? new List<ConstantOperator>();
     }
 
     /// <summary>
-    /// Initializes a new instance of <see cref="MathExpression"/> with <see cref="Expression"/> set to <paramref name="expression"/>, <see cref="CustomFunctions"/> set to <paramref name="customFunctions"/> and <see cref="CustomConstants"/> set to <paramref name="customConstants"/>.
+    /// Initializes a new instance of <see cref="MathExpression"/> with <see cref="Expression"/> set to <paramref name="expression"/>, <see cref="CustomFunctions"/> set to <paramref name="customFunctions"/> and <see cref="CustomConstants"/> set to <paramref name="customConstants"/>. <br/>
+    /// If <paramref name="customFunctions"/> or <paramref name="customConstants"/> is <see langword="null"/>, it will remain as an empty <see cref="IList{T}"/>.
     /// </summary>
     /// <param name="expression"><inheritdoc cref="MathExpression(string)" path="/param[@name='expression']"/></param>
     /// <param name="customFunctions"><inheritdoc cref="MathExpression(IList{FunctionalOperator}, IList{ConstantOperator})" path="/param[@name='customFunctions']"/></param>
@@ -419,8 +420,8 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     public MathExpression(string expression, IList<FunctionalOperator> customFunctions, IList<ConstantOperator> customConstants)
     {
         Expression = expression ?? throw new ArgumentNullException(nameof(expression));
-        CustomFunctions = customFunctions ?? throw new ArgumentNullException(nameof(customFunctions));
-        CustomConstants = customConstants ?? throw new ArgumentNullException(nameof(customConstants));
+        CustomFunctions = customFunctions ?? new List<FunctionalOperator>();
+        CustomConstants = customConstants ?? new List<ConstantOperator>();
     }
 
     /// <summary>
@@ -637,19 +638,24 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     {
         foreach (FunctionalOperator f in CustomFunctions)
         {
+            if (f is null)
+            {
+                return new($"{nameof(CustomFunctions)} contains a null element",
+                    new ParserExceptionContext(-1, ParserExceptionType.NullCustomFunction));
+            }
             if (f.Name.Length is 0 || f.Name[0].IsDigit() || f.Name.Any(c => !c.IsDigit() && !c.IsLetter() && c is not '_'))
             {
                 return new($"\"{f.Name}\" is not a valid function name",
                     new ParserExceptionContext(-1, ParserExceptionType.InvalidCustomFunctionName));
             }
-            if (f.Calculate is null)
-            {
-                return new($"\"{f.Name}\" has a null {nameof(FunctionalOperator.Calculate)}",
-                    new ParserExceptionContext(-1, ParserExceptionType.NullCustomFunctionDelegate));
-            }
         }
         foreach (ConstantOperator c in CustomConstants)
         {
+            if (c is null)
+            {
+                return new($"{nameof(CustomConstants)} contains a null element",
+                    new ParserExceptionContext(-1, ParserExceptionType.NullCustomConstant));
+            }
             if (c.Name.Length is 0 || c.Name[0].IsDigit() || c.Name.Any(c => !c.IsDigit() && !c.IsLetter() && c is not '_'))
             {
                 return new($"\"{c.Name}\" is not a valid constant name",
