@@ -391,17 +391,17 @@ public class MathExpressionTests
             ),
             new
             (
-                new(new List<FunctionalOperator> { null }, null),
+                new(((FunctionalOperator)null).ToSingletonList(), null),
                 new(-1, ParserExceptionType.NullCustomFunction)
             ),
             new
             (
-                new(null, new List<ConstantOperator> { constantWithInvalidName }),
+                new(null, constantWithInvalidName.ToSingletonList()),
                 new(-1, ParserExceptionType.InvalidCustomConstantName)
             ),
             new
             (
-                new(null, new List<ConstantOperator> { null }),
+                new(null, ((ConstantOperator)null).ToSingletonList()),
                 new(-1, ParserExceptionType.NullCustomConstant)
             ),
             new
@@ -411,7 +411,7 @@ public class MathExpressionTests
             ),
             new
             (
-                new(new List<FunctionalOperator> { sin }, null),
+                new(sin.ToSingletonList(), null),
                 new(-1, ParserExceptionType.DuplicateCustomFunctions)
             ),
             new
@@ -421,7 +421,7 @@ public class MathExpressionTests
             ),
             new
             (
-                new(null, new List<ConstantOperator> { pi }),
+                new(null, pi.ToSingletonList()),
                 new(-1, ParserExceptionType.DuplicateCustomConstants)
             )
         };

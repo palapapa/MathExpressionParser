@@ -21,6 +21,8 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         set => expression = value ?? throw new ArgumentNullException(nameof(Expression));
     }
 
+    private List<Token> cachedTokens = new();
+
     private IList<FunctionalOperator> customFunctions = new List<FunctionalOperator>();
 
     /// <summary>
@@ -553,6 +555,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
                 }
             }
         }
+        cachedTokens = tokens;
         return tokens;
     }
 
