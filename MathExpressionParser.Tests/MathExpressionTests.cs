@@ -370,10 +370,10 @@ public class MathExpressionTests
         foreach ((string, ParserExceptionContext) tuple in tuples0)
         {
             MathExpression mathExpression = new(tuple.Item1);
-            ParserExceptionContext result = mathExpression.Validate()?.Context;
-            if (tuple.Item2 != result)
+            ParserException result = mathExpression.Validate();
+            if (tuple.Item2 != result?.Context)
             {
-                Assert.Fail($"{tuple.Item1} Expected: {tuple.Item2 ?? (object)"null"} Actual: {result ?? (object)"null"}");
+                Assert.Fail($"{tuple.Item1} Expected: {tuple.Item2 ?? (object)"null"} Actual: {result.Context ?? (object)"null"} {result.Message}");
             }
         }
         FunctionalOperator functionWithInvalidName = new("1a", nums => nums[0]);
@@ -382,6 +382,9 @@ public class MathExpressionTests
         ConstantOperator constantWithInvalidName = new("$", 0);
         ConstantOperator constant = new("x", 0);
         ConstantOperator pi = new("pi", 0);
+        FunctionalOperator functionWithConflictingName = new("abc", nums => nums[0]);
+        ConstantOperator constantWithConflictingName = new("abc", 0);
+        ConstantOperator constantWithNaN = new("NaN", double.NaN);
         List<(MathExpression, ParserExceptionContext)> tuples1 = new()
         {
             new
@@ -407,27 +410,37 @@ public class MathExpressionTests
             new
             (
                 new(new List<FunctionalOperator> { function, function }, null),
-                new(-1, ParserExceptionType.DuplicateCustomFunctions)
+                new(-1, ParserExceptionType.ConflictingNames)
             ),
             new
             (
                 new(sin.ToSingletonList(), null),
-                new(-1, ParserExceptionType.DuplicateCustomFunctions)
+                new(-1, ParserExceptionType.ConflictingNames)
             ),
             new
             (
                 new(null, new List<ConstantOperator> { constant, constant }),
-                new(-1, ParserExceptionType.DuplicateCustomConstants)
+                new(-1, ParserExceptionType.ConflictingNames)
             ),
             new
             (
                 new(null, pi.ToSingletonList()),
-                new(-1, ParserExceptionType.DuplicateCustomConstants)
+                new(-1, ParserExceptionType.ConflictingNames)
+            ),
+            new
+            (
+                new(functionWithConflictingName.ToSingletonList(), constantWithConflictingName.ToSingletonList()),
+                new(-1, ParserExceptionType.ConflictingNames)
+            ),
+            new
+            (
+                new(null, constantWithNaN.ToSingletonList()),
+                new(-1, ParserExceptionType.NaNConstant)
             )
         };
         foreach ((MathExpression, ParserExceptionContext) tuple in tuples1)
         {
-            Assert.AreEqual(tuple.Item2, tuple.Item1.Validate().Context);
+            Assert.AreEqual(tuple.Item2, tuple.Item1.Validate()?.Context, tuple.Item1.Validate()?.Message);
         }
     }
 

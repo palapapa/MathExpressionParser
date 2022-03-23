@@ -31,19 +31,19 @@ public enum ParserExceptionType
     InvalidCustomConstantName,
 
     /// <summary>
-    /// An error where <see cref="MathExpression.CustomConstants"/> contains a <see langword="null"/> element.
+    /// An error where <see cref="MathExpression.CustomConstants"/> contain a <see langword="null"/> element.
     /// </summary>
     NullCustomConstant,
 
     /// <summary>
-    /// An error where <see cref="MathExpression.CustomFunctions"/> contains <see cref="FunctionalOperator"/>s with the same name.
+    /// An error where <see cref="MathExpression.CustomConstants"/> have a <see cref="ConstantOperator.Value"/> of <see cref="double.NaN"/>.
     /// </summary>
-    DuplicateCustomFunctions,
+    NaNConstant,
 
     /// <summary>
-    /// An error where <see cref="MathExpression.CustomConstants"/> contains <see cref="ConstantOperator"/>s with the same name.
+    /// An error where two <see cref="Operator"/>s in a <see cref="MathExpression"/> share the same name.
     /// </summary>
-    DuplicateCustomConstants,
+    ConflictingNames,
 
     /// <summary>
     /// An error where a <see cref="BinaryOperator"/> is used incorrectly.

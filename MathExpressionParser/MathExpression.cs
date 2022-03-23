@@ -382,6 +382,14 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         )
     };
 
+    private static readonly List<Operator> builtInOperators =
+        builtInBinaryOperators.Cast<Operator>()
+        .Concat(builtInConstantOperators.Cast<Operator>())
+        .Concat(builtInFunctionalOperators.Cast<Operator>())
+        .Concat(builtInPostfixUnaryOperators.Cast<Operator>())
+        .Concat(builtInPrefixUnaryOperator.Cast<Operator>())
+        .ToList();
+
     /// <summary>
     /// Initializes a new instance of <see cref="MathExpression"/> with <see cref="Expression"/> set to an empty <see cref="string"/>.
     /// </summary>
@@ -659,23 +667,29 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
                 return new($"{nameof(CustomConstants)} contains a null element",
                     new ParserExceptionContext(-1, ParserExceptionType.NullCustomConstant));
             }
+            if (c.Value is double.NaN)
+            {
+                return new($"Constant \"{c.Name}\" have a value of NaN",
+                    new ParserExceptionContext(-1, ParserExceptionType.NaNConstant));
+            }
             if (c.Name.Length is 0 || c.Name[0].IsDigit() || c.Name.Any(c => !c.IsDigit() && !c.IsLetter() && c is not '_'))
             {
                 return new($"\"{c.Name}\" is not a valid constant name",
                     new ParserExceptionContext(-1, ParserExceptionType.InvalidCustomConstantName));
             }
         }
-        List<string> duplicateFunctions = CustomFunctions.Concat(builtInFunctionalOperators).GroupBy(f => f.Name).Where(grouping => grouping.Count() > 1).Select(grouping => grouping.Key).ToList();
-        if (duplicateFunctions.Count != 0)
+        List<string> conflictingOperators = CustomFunctions.Cast<Operator>()
+            .Concat(CustomConstants.Cast<Operator>())
+            .Concat(builtInFunctionalOperators.Cast<Operator>())
+            .Concat(builtInConstantOperators.Cast<Operator>())
+            .GroupBy(o => o.Name)
+            .Where(grouping => grouping.Count() > 1)
+            .Select(grouping => grouping.Key)
+            .ToList();
+        if (conflictingOperators.Count > 0)
         {
-            return new ParserException($"Custom functions \"{string.Join(' ', duplicateFunctions)}\" have multiple definitions",
-                new ParserExceptionContext(-1, ParserExceptionType.DuplicateCustomFunctions));
-        }
-        List<string> duplicateConstants = CustomConstants.Concat(builtInConstantOperators).GroupBy(c => c.Name).Where(grouping => grouping.Count() > 1).Select(grouping => grouping.Key).ToList();
-        if (duplicateConstants.Count != 0)
-        {
-            return new ParserException($"Custom constants \"{string.Join(' ', duplicateConstants)}\" have multiple definitions",
-                new ParserExceptionContext(-1, ParserExceptionType.DuplicateCustomConstants));
+            return new($"Operators \"{string.Join(", ", conflictingOperators)}\" have multiple definitions",
+                new ParserExceptionContext(-1, ParserExceptionType.ConflictingNames));
         }
         Stack<ParserState> states = new();
         states.Push(ParserState.Start);
@@ -873,6 +887,18 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Compares the value of <see cref="Evaluate"/> of this instance to that of <paramref name="other"/>.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns>
+    /// <list type="bullet">
+    /// <item>> 0 if the value of <see cref="Evaluate"/> of this instance is larger than that of <paramref name="other"/>.</item>
+    /// <item>= 0 if the value of <see cref="Evaluate"/> of this instance is the same as that of <paramref name="other"/>.</item>
+    /// <item>&lt; 0 if the value of <see cref="Evaluate"/> of this instance is smaller than that of <paramref name="other"/>.</item>
+    /// </list>
+    /// </returns>
+    /// <exception cref="ParserException">If either this instance or <paramref name="other"/> throws <see cref="ParserException"/> on calling its <see cref="Evaluate"/>.</exception>
     public int CompareTo(MathExpression other)
     {
         if (other is null)
@@ -882,16 +908,32 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         return Evaluate().CompareTo(other.Evaluate());
     }
 
+    /// <summary>
+    /// Check if the value of <see cref="Evaluate"/> of this instance is equal to that of <paramref name="other"/>.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    /// <exception cref="ParserException"><inheritdoc cref="CompareTo(MathExpression)" path="/exception[@cref='ParserException']"/></exception>
     public bool Equals(MathExpression other)
     {
         return Evaluate() == other.Evaluate();
     }
 
+    /// <summary>
+    /// <inheritdoc cref="Equals(MathExpression)" path="/summary"/>
+    /// </summary>
+    /// <param name="obj">A <see cref="double"/> or a <see cref="IMathExpression"/>.</param>
+    /// <returns> If <paramref name="obj"/> is not a <see cref="double"/> or an <see cref="IMathExpression"/>, this always returns <see langword="false"/>.</returns>
     public override bool Equals(object obj)
     {
         return (obj is double val && val == Evaluate()) || (obj is IMathExpression expression && expression.Evaluate() == Evaluate());
     }
 
+    /// <summary>
+    /// <inheritdoc cref="object.GetHashCode" path="/summary"/>
+    /// </summary>
+    /// <returns><inheritdoc cref="object.GetHashCode" path="/returns"/></returns>
+    /// <exception cref="ParserException">If this instance throws <see cref="ParserException"/> on calling its <see cref="Evaluate"/>.</exception>
     public override int GetHashCode()
     {
         return Evaluate().GetHashCode();
@@ -903,6 +945,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is smaller than that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ParserException"><inheritdoc cref="operator +(MathExpression, MathExpression)" path="/exception[@cref='ParserException']"/></exception>
     public static bool operator <(MathExpression left, MathExpression right)
     {
         return left is null ? right is not null : left.CompareTo(right) < 0;
@@ -914,6 +957,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is smaller or equal to than that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ParserException"><inheritdoc cref="operator +(MathExpression, MathExpression)" path="/exception[@cref='ParserException']"/></exception>
     public static bool operator <=(MathExpression left, MathExpression right)
     {
         return left is null || left.CompareTo(right) <= 0;
@@ -925,6 +969,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is larger than that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ParserException"><inheritdoc cref="operator +(MathExpression, MathExpression)" path="/exception[@cref='ParserException']"/></exception>
     public static bool operator >(MathExpression left, MathExpression right)
     {
         return left is not null && left.CompareTo(right) > 0;
@@ -936,6 +981,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is larger than or equal to that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ParserException"><inheritdoc cref="operator +(MathExpression, MathExpression)" path="/exception[@cref='ParserException']"/></exception>
     public static bool operator >=(MathExpression left, MathExpression right)
     {
         return left is null ? right is null : left.CompareTo(right) >= 0;
@@ -947,6 +993,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is equal to that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ParserException"><inheritdoc cref="operator +(MathExpression, MathExpression)" path="/exception[@cref='ParserException']"/></exception>
     public static bool operator ==(MathExpression left, MathExpression right)
     {
         if (left is null)
@@ -963,6 +1010,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns><see langword="true"/> if the value of <see cref="Evaluate"/> of <paramref name="left"/> is not equal to that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ParserException"><inheritdoc cref="operator +(MathExpression, MathExpression)" path="/exception[@cref='ParserException']"/></exception>
     public static bool operator !=(MathExpression left, MathExpression right)
     {
         return !(left == right);
@@ -973,6 +1021,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// </summary>
     /// <param name="mathExpression"></param>
     /// <returns>Value of <see cref="Evaluate"/> of <paramref name="mathExpression"/>.</returns>
+    /// <exception cref="ParserException">If <paramref name="mathExpression"/> throws <see cref="ParserException"/> on calling its <see cref="Evaluate"/>.</exception>
     public static explicit operator double(MathExpression mathExpression)
     {
         return mathExpression.Evaluate();
@@ -984,6 +1033,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns></returns>
+    /// <exception cref="ParserException">When either of the arguments throws <see cref="ParserException"/> on calling its <see cref="Evaluate"/>.</exception>
     public static double operator +(MathExpression left, MathExpression right)
     {
         return left.Evaluate() + right.Evaluate();
@@ -995,6 +1045,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns></returns>
+    /// <exception cref="ParserException"><inheritdoc cref="operator +(MathExpression, MathExpression)" path="/exception[@cref='ParserException']"/></exception>
     public static double operator -(MathExpression left, MathExpression right)
     {
         return left.Evaluate() - right.Evaluate();
@@ -1006,6 +1057,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns></returns>
+    /// <exception cref="ParserException"><inheritdoc cref="operator +(MathExpression, MathExpression)" path="/exception[@cref='ParserException']"/></exception>
     public static double operator *(MathExpression left, MathExpression right)
     {
         return left.Evaluate() * right.Evaluate();
@@ -1017,6 +1069,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns></returns>
+    /// <exception cref="ParserException"><inheritdoc cref="operator +(MathExpression, MathExpression)" path="/exception[@cref='ParserException']"/></exception>
     public static double operator /(MathExpression left, MathExpression right)
     {
         return left.Evaluate() / right.Evaluate();
