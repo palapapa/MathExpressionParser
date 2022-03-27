@@ -1,13 +1,89 @@
 # MathExpressionParser
 
 [![](https://img.shields.io/travis/com/palapapa/MathExpressionParser/master?style=for-the-badge)](https://travis-ci.com/github/palapapa/MathExpressionParser) <br>
-A customizable math expression parsing library that supports custom operators, functions, and variables.
+A light-weight customizable math expression parsing library that supports custom functions and variables, with a complete error handling system(`ParserException`).
 
-# Docs
+## Getting Started
+
+### Evaluating a expression
+
+```csharp
+MathExpression expr = new("log(log(3.2e+2, -(-1e1)), sqrt(1E-4))");
+double value = expr.Evaluate(); // value is -0.19941686566
+```
+
+### Adding custom functions and constants
+
+```csharp
+MathExpression expr = new("f(x)");
+expr.CustomFunctions.Add(new FunctionalOperator("f", x => x[0] * 2, 1));
+expr.CustomConstants.Add(new ConstantOperator("x", 100));
+double value = expr.Evaluate(); // value is 200
+```
+
+### Error handling
+
+```csharp
+MathExpression expr = new("sin(1,)");
+Console.WriteLine(expr.Validate().Context); // prints ParserExceptionContext { Position = 6, Type = UnexpectedClosingParenthesis }
+```
+For all types of error that can happen, see [here](#parserexceptiontype-type).
+
+### Supported built-in operators, functions, and constants
+
+- \+ (binary operator)
+- \- (binary operator)
+- \* (binary operator)
+- / (binary operator)
+- ^ (binary operator)
+- % (binary operator)
+- pi (constant)
+- e (constant)
+- sqrt (function)
+- sin (function)
+- asin (function)
+- cos (function)
+- acos (function)
+- tan (function)
+- atan (function)
+- csc (function)
+- acsc (function)
+- sec (function)
+- asec (function)
+- cot (function)
+- acot (function)
+- sinh (function)
+- asinh (function)
+- cosh (function)
+- acosh (function)
+- tanh (function)
+- atanh (function)
+- csch (function)
+- acsch (function)
+- sech (function)
+- asech (function)
+- coth (function)
+- acoth (function)
+- P (function)
+- C (function)
+- H (function)
+- log (function)
+- log10 (function)
+- log2 (function)
+- ln (function)
+- ceil (function)
+- floor (function)
+- round (function)
+- abs (function)
+- min (function)
+- max (function)
+- ! (postfix unary operator)
+- torad (postfix unary operator)
+- todeg (postfix unary operator)
+
+# Complete Docs
 
 <a name='assembly'></a>
-
-# MathExpressionParser
 
 ## Contents
 
