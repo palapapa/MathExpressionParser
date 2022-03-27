@@ -148,22 +148,22 @@ public class MathExpressionTests
         };
         foreach (KeyValuePair<string, List<Token>> pair in expressionToTokens)
         {
-            List<Token> tokens = null;
+            object[] args = new object[] { null };
             try
             {
                 PrivateObject mathExpression = new(new MathExpression(pair.Key));
-                tokens = (List<Token>)mathExpression.Invoke("Tokenize");
+                mathExpression.Invoke("TryTokenize", args);
             }
             catch (Exception e)
             {
                 Assert.Fail($"{e.Message} {pair.Key}");
             }
             StringBuilder tokensExpanded = new();
-            foreach (Token token in tokens)
+            foreach (Token token in (List<Token>)args[0])
             {
                 tokensExpanded.Append($"\"{token}\" ");
             }
-            if (!tokens.SequenceEqual(pair.Value))
+            if (!((List<Token>)args[0]).SequenceEqual(pair.Value))
             {
                 Assert.Fail($"Tokens not correct: {pair.Key} => {tokensExpanded}.");
             }
@@ -172,32 +172,28 @@ public class MathExpressionTests
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException), "ArgumentNullException should be thrown when the input is null.", AllowDerivedTypes = false)]
-    public void Tokenize_ArgumentNull_ArgumentNullException()
+    public void TryTokenize_ArgumentNull_ArgumentNullException()
     {
         PrivateObject mathExpression = new(new MathExpression((string)null));
         mathExpression.Invoke("Tokenize");
     }
 
     [TestMethod]
-    public void Tokenize_InvalidNumberFormat_ParserException()
+    public void TryTokenize_InvalidNumberFormat_ParserException()
     {
-        List<(string, int)> tuples = new()
+        List<(string, ParserExceptionContext)> tuples = new()
         {
-            ("1 + 1ee", 4),
-            ("3 + sin(1..e3)", 8),
-            ("3 / (1e3..)", 5),
-            ("2er3", 0),
-            ("1 - 2.3E--2", 4)
+            ("1 + 1ee", new(4, ParserExceptionType.InvalidNumberFormat)),
+            ("3 + sin(1..e3)", new(8, ParserExceptionType.InvalidNumberFormat)),
+            ("3 / (1e3..)", new(5, ParserExceptionType.InvalidNumberFormat)),
+            ("2er3", new(0, ParserExceptionType.InvalidNumberFormat)),
+            ("1 - 2.3E--2", new(4, ParserExceptionType.InvalidNumberFormat))
         };
-        foreach ((string, int) tuple in tuples)
+        foreach ((string, ParserExceptionContext) tuple in tuples)
         {
             PrivateObject mathExpression = new(new MathExpression(tuple.Item1));
-            TestUtilities.AssertException<ParserException>
-            (
-                () => mathExpression.Invoke("Tokenize"),
-                e => e.Context.Position == tuple.Item2 && e.Context.Type == ParserExceptionType.InvalidNumberFormat,
-                $"It should be thrown when the format of a number is invalid.{tuple}"
-            );
+            ParserException error = (ParserException)mathExpression.Invoke("TryTokenize", new List<Token>());
+            Assert.AreEqual(tuple.Item2, error.Context);
         }
     }
 

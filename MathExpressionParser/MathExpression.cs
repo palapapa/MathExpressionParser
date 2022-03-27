@@ -447,16 +447,11 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         CustomConstants = mathExpression.CustomConstants?.ToList();
     }
     
-    /// <summary>
-    /// Tokenizes a math expression into numbers(including scientific notation), operators(including functions), whitespaces, and commas.
-    /// </summary>
-    /// <returns>A <see cref="List{T}"/> of tokens.</returns>
-    /// <exception cref="ArgumentNullException">When the <see name="Expression"/> is null.</exception>
-    /// <exception cref="ParserException">When a number in <see name="Expression"/> is of invalid format.</exception>
-    private List<Token> Tokenize()
+    private ParserException TryTokenize(out List<Token> result)
     {
         ArgumentNullException.ThrowIfNull(Expression, nameof(Expression));
         List<Token> tokens = new();
+        result = null;
         for (int i = 0; i < Expression.Length; i++)
         {
             if (Expression[i].IsDigit())
@@ -483,7 +478,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
                 }
                 if (!double.TryParse(tokens.Last().ToString(), out double value))
                 {
-                    throw new ParserException($"Invalid number format at position {originalI}", new ParserExceptionContext(originalI, ParserExceptionType.InvalidNumberFormat));
+                    return new ParserException($"Invalid number format at position {originalI}", new ParserExceptionContext(originalI, ParserExceptionType.InvalidNumberFormat));
                 }
                 else
                 {
@@ -559,11 +554,12 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
             {
                 if (tokens[i] is not NumberToken)
                 {
-                    throw new ParserException($"\"{tokens[i]}\" is not a known operator", new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnknownOperator));
+                    return new ParserException($"\"{tokens[i]}\" is not a known operator", new ParserExceptionContext(tokens[i].Position, ParserExceptionType.UnknownOperator));
                 }
             }
         }
-        return tokens;
+        result = tokens;
+        return null;
     }
 
     /// <summary>
@@ -692,14 +688,10 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         }
         Stack<ParserState> states = new();
         states.Push(ParserState.Start);
-        List<Token> tokens;
-        try
+        ParserException error = TryTokenize(out List<Token> tokens);
+        if (error is not null)
         {
-            tokens = Tokenize();
-        }
-        catch (ParserException e)
-        {
-            return e;
+            return error;
         }
         if (tokens.Count is 0)
         {
