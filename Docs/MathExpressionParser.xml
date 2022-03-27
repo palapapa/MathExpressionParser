@@ -182,7 +182,7 @@
             <returns>
             A <see cref="T:MathExpressionParser.ParserException"/> instance containing information about the error if <paramref name="result"/> is not a valid math expression, or <see langword="null"/> if it is. <br/>
             If a non-<see langword="null"/> <see cref="T:MathExpressionParser.ParserException"/> is returned, <paramref name="result"/> will be set to <see cref="F:System.Double.NaN"/>. <br/>
-            If <see cref="P:MathExpressionParser.MathExpression.Expression"/> is whitespace or empty, <paramref name="result"/> will be set to <see cref="F:System.Double.NaN"/>, <br/>
+            If <see cref="P:MathExpressionParser.MathExpression.Expression"/> is whitespace or empty, <paramref name="result"/> will be set to <see cref="F:System.Double.NaN"/>. <br/>
             Otherwise, <paramref name="result"/> will be set to the result of the evaluation.
             </returns>
         </member>

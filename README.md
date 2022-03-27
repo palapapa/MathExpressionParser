@@ -656,7 +656,7 @@ Tries to evaluate [Expression](#P-MathExpressionParser-MathExpression-Expression
 
 A [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') instance containing information about the error if `result` is not a valid math expression, or `null` if it is.
 If a non-`null`[ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') is returned, `result` will be set to [NaN](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double.NaN 'System.Double.NaN').
-If [Expression](#P-MathExpressionParser-MathExpression-Expression 'MathExpressionParser.MathExpression.Expression') is whitespace or empty, `result` will be set to [NaN](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double.NaN 'System.Double.NaN'),
+If [Expression](#P-MathExpressionParser-MathExpression-Expression 'MathExpressionParser.MathExpression.Expression') is whitespace or empty, `result` will be set to [NaN](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double.NaN 'System.Double.NaN').
 Otherwise, `result` will be set to the result of the evaluation.
 
 ##### Parameters

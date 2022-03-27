@@ -866,7 +866,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <returns>
     /// A <see cref="ParserException"/> instance containing information about the error if <paramref name="result"/> is not a valid math expression, or <see langword="null"/> if it is. <br/>
     /// If a non-<see langword="null"/> <see cref="ParserException"/> is returned, <paramref name="result"/> will be set to <see cref="double.NaN"/>. <br/>
-    /// If <see cref="Expression"/> is whitespace or empty, <paramref name="result"/> will be set to <see cref="double.NaN"/>, <br/>
+    /// If <see cref="Expression"/> is whitespace or empty, <paramref name="result"/> will be set to <see cref="double.NaN"/>. <br/>
     /// Otherwise, <paramref name="result"/> will be set to the result of the evaluation.
     /// </returns>
     public ParserException TryEvaluate(out double result)
