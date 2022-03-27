@@ -1,12 +1,4 @@
-# MathExpressionParser
-
-[![](https://img.shields.io/travis/com/palapapa/MathExpressionParser/master?style=for-the-badge)](https://travis-ci.com/github/palapapa/MathExpressionParser) <br>
-A customizable math expression parsing library that supports custom operators, functions, and variables.
-
-# Docs
-
 <a name='assembly'></a>
-
 # MathExpressionParser
 
 ## Contents
@@ -102,7 +94,6 @@ A customizable math expression parsing library that supports custom operators, f
   - [UnknownOperator](#F-MathExpressionParser-ParserExceptionType-UnknownOperator 'MathExpressionParser.ParserExceptionType.UnknownOperator')
 
 <a name='T-MathExpressionParser-BinaryOperator'></a>
-
 ## BinaryOperator `type`
 
 ##### Namespace
@@ -114,7 +105,6 @@ MathExpressionParser
 Represents a operator that takes the left and right tokens as its operands.
 
 <a name='P-MathExpressionParser-BinaryOperator-Precedence'></a>
-
 ### Precedence `property`
 
 ##### Summary
@@ -122,7 +112,6 @@ Represents a operator that takes the left and right tokens as its operands.
 The order in which this [Operator](#T-MathExpressionParser-Operator 'MathExpressionParser.Operator') will be parsed.
 
 <a name='T-MathExpressionParser-BinaryOperatorDelegate'></a>
-
 ## BinaryOperatorDelegate `type`
 
 ##### Namespace
@@ -144,7 +133,6 @@ The computed result of a [BinaryOperator](#T-MathExpressionParser-BinaryOperator
 | left | [T:MathExpressionParser.BinaryOperatorDelegate](#T-T-MathExpressionParser-BinaryOperatorDelegate 'T:MathExpressionParser.BinaryOperatorDelegate') | The left operand of a [BinaryOperator](#T-MathExpressionParser-BinaryOperator 'MathExpressionParser.BinaryOperator'). |
 
 <a name='T-MathExpressionParser-ConstantOperator'></a>
-
 ## ConstantOperator `type`
 
 ##### Namespace
@@ -156,7 +144,6 @@ MathExpressionParser
 Represents a constant in a [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression').
 
 <a name='M-MathExpressionParser-ConstantOperator-#ctor-System-String,System-Double-'></a>
-
 ### #ctor(name,value) `constructor`
 
 ##### Summary
@@ -177,7 +164,6 @@ Initailizes a new instance of [ConstantOperator](#T-MathExpressionParser-Constan
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') | When `name` is null. |
 
 <a name='P-MathExpressionParser-ConstantOperator-Value'></a>
-
 ### Value `property`
 
 ##### Summary
@@ -185,7 +171,6 @@ Initailizes a new instance of [ConstantOperator](#T-MathExpressionParser-Constan
 The value this [ConstantOperator](#T-MathExpressionParser-ConstantOperator 'MathExpressionParser.ConstantOperator') holds.
 
 <a name='T-MathExpressionParser-FunctionalOperator'></a>
-
 ## FunctionalOperator `type`
 
 ##### Namespace
@@ -197,7 +182,6 @@ MathExpressionParser
 Represents a function in a [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression').
 
 <a name='M-MathExpressionParser-FunctionalOperator-#ctor-System-String,MathExpressionParser-FunctionalOperatorDelegate,System-Int32[]-'></a>
-
 ### #ctor(name,calculate,argumentCounts) `constructor`
 
 ##### Summary
@@ -219,7 +203,6 @@ Initializes a new instance of [FunctionalOperator](#T-MathExpressionParser-Funct
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') | When either `name` or `calculate` is null. |
 
 <a name='P-MathExpressionParser-FunctionalOperator-ArgumentCounts'></a>
-
 ### ArgumentCounts `property`
 
 ##### Summary
@@ -233,10 +216,11 @@ The possible number of arguments this [FunctionalOperator](#T-MathExpressionPars
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') | When this is set to `null`. |
 
 <a name='P-MathExpressionParser-FunctionalOperator-Calculate'></a>
-
 ### Calculate `property`
 
 ##### Summary
+
+
 
 ##### Exceptions
 
@@ -245,7 +229,6 @@ The possible number of arguments this [FunctionalOperator](#T-MathExpressionPars
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') | When this is set to `null`. |
 
 <a name='T-MathExpressionParser-FunctionalOperatorDelegate'></a>
-
 ## FunctionalOperatorDelegate `type`
 
 ##### Namespace
@@ -267,7 +250,6 @@ The value of a [FunctionalOperator](#T-MathExpressionParser-FunctionalOperator '
 | arguments | [T:MathExpressionParser.FunctionalOperatorDelegate](#T-T-MathExpressionParser-FunctionalOperatorDelegate 'T:MathExpressionParser.FunctionalOperatorDelegate') | An [IList\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IList`1 'System.Collections.Generic.IList`1') of arguments passed to a [FunctionalOperator](#T-MathExpressionParser-FunctionalOperator 'MathExpressionParser.FunctionalOperator') in a [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression'). |
 
 <a name='T-MathExpressionParser-IMathExpression'></a>
-
 ## IMathExpression `type`
 
 ##### Namespace
@@ -279,7 +261,6 @@ MathExpressionParser
 Exposes common properties and methods of mathematical expressions.
 
 <a name='P-MathExpressionParser-IMathExpression-Expression'></a>
-
 ### Expression `property`
 
 ##### Summary
@@ -287,7 +268,6 @@ Exposes common properties and methods of mathematical expressions.
 Represents the math expression.
 
 <a name='M-MathExpressionParser-IMathExpression-Evaluate'></a>
-
 ### Evaluate() `method`
 
 ##### Summary
@@ -303,7 +283,6 @@ The value of [Expression](#P-MathExpressionParser-IMathExpression-Expression 'Ma
 This method has no parameters.
 
 <a name='T-MathExpressionParser-MathExpression'></a>
-
 ## MathExpression `type`
 
 ##### Namespace
@@ -315,7 +294,6 @@ MathExpressionParser
 Represents a mathematical expression.
 
 <a name='M-MathExpressionParser-MathExpression-#ctor'></a>
-
 ### #ctor() `constructor`
 
 ##### Summary
@@ -327,7 +305,6 @@ Initializes a new instance of [MathExpression](#T-MathExpressionParser-MathExpre
 This constructor has no parameters.
 
 <a name='M-MathExpressionParser-MathExpression-#ctor-System-String-'></a>
-
 ### #ctor(expression) `constructor`
 
 ##### Summary
@@ -347,12 +324,11 @@ Initializes a new instance of [MathExpression](#T-MathExpressionParser-MathExpre
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') | When `expression` is `null`. |
 
 <a name='M-MathExpressionParser-MathExpression-#ctor-System-Collections-Generic-IList{MathExpressionParser-FunctionalOperator},System-Collections-Generic-IList{MathExpressionParser-ConstantOperator}-'></a>
-
 ### #ctor(customFunctions,customConstants) `constructor`
 
 ##### Summary
 
-Initializes a new instance of [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') with [CustomFunctions](#P-MathExpressionParser-MathExpression-CustomFunctions 'MathExpressionParser.MathExpression.CustomFunctions') set to `customFunctions`, [CustomConstants](#P-MathExpressionParser-MathExpression-CustomConstants 'MathExpressionParser.MathExpression.CustomConstants') set to `customConstants`, and [Expression](#P-MathExpressionParser-MathExpression-Expression 'MathExpressionParser.MathExpression.Expression') set to an empty [String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String').
+Initializes a new instance of [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') with [CustomFunctions](#P-MathExpressionParser-MathExpression-CustomFunctions 'MathExpressionParser.MathExpression.CustomFunctions') set to `customFunctions`, [CustomConstants](#P-MathExpressionParser-MathExpression-CustomConstants 'MathExpressionParser.MathExpression.CustomConstants') set to `customConstants`, and [Expression](#P-MathExpressionParser-MathExpression-Expression 'MathExpressionParser.MathExpression.Expression') set to an empty [String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String'). 
 If `customFunctions` or `customConstants` is `null`, it will remain as an empty [IList\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IList`1 'System.Collections.Generic.IList`1').
 
 ##### Parameters
@@ -363,12 +339,11 @@ If `customFunctions` or `customConstants` is `null`, it will remain as an empty 
 | customConstants | [System.Collections.Generic.IList{MathExpressionParser.ConstantOperator}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IList 'System.Collections.Generic.IList{MathExpressionParser.ConstantOperator}') | The [IList\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IList`1 'System.Collections.Generic.IList`1') to set [CustomConstants](#P-MathExpressionParser-MathExpression-CustomConstants 'MathExpressionParser.MathExpression.CustomConstants') to, or `null` if you wish to leave it empty. |
 
 <a name='M-MathExpressionParser-MathExpression-#ctor-System-String,System-Collections-Generic-IList{MathExpressionParser-FunctionalOperator},System-Collections-Generic-IList{MathExpressionParser-ConstantOperator}-'></a>
-
 ### #ctor(expression,customFunctions,customConstants) `constructor`
 
 ##### Summary
 
-Initializes a new instance of [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') with [Expression](#P-MathExpressionParser-MathExpression-Expression 'MathExpressionParser.MathExpression.Expression') set to `expression`, [CustomFunctions](#P-MathExpressionParser-MathExpression-CustomFunctions 'MathExpressionParser.MathExpression.CustomFunctions') set to `customFunctions` and [CustomConstants](#P-MathExpressionParser-MathExpression-CustomConstants 'MathExpressionParser.MathExpression.CustomConstants') set to `customConstants`.
+Initializes a new instance of [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') with [Expression](#P-MathExpressionParser-MathExpression-Expression 'MathExpressionParser.MathExpression.Expression') set to `expression`, [CustomFunctions](#P-MathExpressionParser-MathExpression-CustomFunctions 'MathExpressionParser.MathExpression.CustomFunctions') set to `customFunctions` and [CustomConstants](#P-MathExpressionParser-MathExpression-CustomConstants 'MathExpressionParser.MathExpression.CustomConstants') set to `customConstants`. 
 If `customFunctions` or `customConstants` is `null`, it will remain as an empty [IList\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IList`1 'System.Collections.Generic.IList`1').
 
 ##### Parameters
@@ -386,7 +361,6 @@ If `customFunctions` or `customConstants` is `null`, it will remain as an empty 
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') |  |
 
 <a name='M-MathExpressionParser-MathExpression-#ctor-MathExpressionParser-MathExpression-'></a>
-
 ### #ctor(mathExpression) `constructor`
 
 ##### Summary
@@ -406,7 +380,6 @@ Initializes a new instance of [MathExpression](#T-MathExpressionParser-MathExpre
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') | If `mathExpression` is `null`. |
 
 <a name='P-MathExpressionParser-MathExpression-CustomConstants'></a>
-
 ### CustomConstants `property`
 
 ##### Summary
@@ -414,7 +387,6 @@ Initializes a new instance of [MathExpression](#T-MathExpressionParser-MathExpre
 Any [ConstantOperator](#T-MathExpressionParser-ConstantOperator 'MathExpressionParser.ConstantOperator') in this [IList\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IList`1 'System.Collections.Generic.IList`1') will be used when [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate') is called.
 
 <a name='P-MathExpressionParser-MathExpression-CustomFunctions'></a>
-
 ### CustomFunctions `property`
 
 ##### Summary
@@ -422,7 +394,6 @@ Any [ConstantOperator](#T-MathExpressionParser-ConstantOperator 'MathExpressionP
 Any [FunctionalOperator](#T-MathExpressionParser-FunctionalOperator 'MathExpressionParser.FunctionalOperator') in this [IList\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IList`1 'System.Collections.Generic.IList`1') will be used when [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate') is called.
 
 <a name='P-MathExpressionParser-MathExpression-Expression'></a>
-
 ### Expression `property`
 
 ##### Summary
@@ -436,7 +407,6 @@ The [String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-U
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') | When this is set to `null`. |
 
 <a name='M-MathExpressionParser-MathExpression-CompareTo-MathExpressionParser-MathExpression-'></a>
-
 ### CompareTo(other) `method`
 
 ##### Summary
@@ -444,6 +414,8 @@ The [String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-U
 Compares the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate') of this instance to that of `other`.
 
 ##### Returns
+
+
 
 ##### Parameters
 
@@ -458,7 +430,6 @@ Compares the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') | If either this instance or `other` throws [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') on calling its [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate'). |
 
 <a name='M-MathExpressionParser-MathExpression-Equals-MathExpressionParser-MathExpression-'></a>
-
 ### Equals(other) `method`
 
 ##### Summary
@@ -466,6 +437,8 @@ Compares the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate
 Check if the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate') of this instance is equal to that of `other`.
 
 ##### Returns
+
+
 
 ##### Parameters
 
@@ -480,10 +453,11 @@ Check if the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') |  |
 
 <a name='M-MathExpressionParser-MathExpression-Equals-System-Object-'></a>
-
 ### Equals(obj) `method`
 
 ##### Summary
+
+
 
 ##### Returns
 
@@ -496,7 +470,6 @@ If `obj` is not a [Double](http://msdn.microsoft.com/query/dev14.query?appId=Dev
 | obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | A [Double](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double 'System.Double') or a [IMathExpression](#T-MathExpressionParser-IMathExpression 'MathExpressionParser.IMathExpression'). |
 
 <a name='M-MathExpressionParser-MathExpression-Evaluate'></a>
-
 ### Evaluate() `method`
 
 ##### Summary
@@ -518,7 +491,6 @@ This method has no parameters.
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') | If [Expression](#P-MathExpressionParser-MathExpression-Expression 'MathExpressionParser.MathExpression.Expression') is not a valid math expression. |
 
 <a name='M-MathExpressionParser-MathExpression-GetArgumentCount-System-Collections-Generic-List{MathExpressionParser-Token}-'></a>
-
 ### GetArgumentCount(tokens) `method`
 
 ##### Summary
@@ -528,6 +500,8 @@ This method assumes the provided `tokens` represent a valid expression.
 
 ##### Returns
 
+
+
 ##### Parameters
 
 | Name | Type | Description |
@@ -535,12 +509,15 @@ This method assumes the provided `tokens` represent a valid expression.
 | tokens | [System.Collections.Generic.List{MathExpressionParser.Token}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List 'System.Collections.Generic.List{MathExpressionParser.Token}') |  |
 
 <a name='M-MathExpressionParser-MathExpression-GetHashCode'></a>
-
 ### GetHashCode() `method`
 
 ##### Summary
 
+
+
 ##### Returns
+
+
 
 ##### Parameters
 
@@ -553,7 +530,6 @@ This method has no parameters.
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') | If this instance throws [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') on calling its [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate'). |
 
 <a name='M-MathExpressionParser-MathExpression-ToString'></a>
-
 ### ToString() `method`
 
 ##### Summary
@@ -569,7 +545,6 @@ Converts this [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpre
 This method has no parameters.
 
 <a name='M-MathExpressionParser-MathExpression-TryEvaluate-System-Double@-'></a>
-
 ### TryEvaluate(result) `method`
 
 ##### Summary
@@ -578,9 +553,9 @@ Tries to evaluate [Expression](#P-MathExpressionParser-MathExpression-Expression
 
 ##### Returns
 
-A [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') instance containing information about the error if `result` is not a valid math expression, or `null` if it is.
-If a non-`null`[ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') is returned, `result` will be set to [NaN](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double.NaN 'System.Double.NaN').
-If [Expression](#P-MathExpressionParser-MathExpression-Expression 'MathExpressionParser.MathExpression.Expression') is whitespace or empty, `result` will be set to [NaN](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double.NaN 'System.Double.NaN'),
+A [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') instance containing information about the error if `result` is not a valid math expression, or `null` if it is. 
+If a non-`null`[ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') is returned, `result` will be set to [NaN](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double.NaN 'System.Double.NaN'). 
+If [Expression](#P-MathExpressionParser-MathExpression-Expression 'MathExpressionParser.MathExpression.Expression') is whitespace or empty, `result` will be set to [NaN](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double.NaN 'System.Double.NaN'), 
 Otherwise, `result` will be set to the result of the evaluation.
 
 ##### Parameters
@@ -590,7 +565,6 @@ Otherwise, `result` will be set to the result of the evaluation.
 | result | [System.Double@](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double@ 'System.Double@') | The result of the evaluation if it succeeds. |
 
 <a name='M-MathExpressionParser-MathExpression-Validate'></a>
-
 ### Validate() `method`
 
 ##### Summary
@@ -606,7 +580,6 @@ A [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParse
 This method has no parameters.
 
 <a name='M-MathExpressionParser-MathExpression-op_Addition-MathExpressionParser-MathExpression,MathExpressionParser-MathExpression-'></a>
-
 ### op_Addition(left,right) `method`
 
 ##### Summary
@@ -614,6 +587,8 @@ This method has no parameters.
 Adds the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate') of the two [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') together.
 
 ##### Returns
+
+
 
 ##### Parameters
 
@@ -629,7 +604,6 @@ Adds the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'Ma
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') | When either of the arguments throws [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') on calling its [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate'). |
 
 <a name='M-MathExpressionParser-MathExpression-op_Division-MathExpressionParser-MathExpression,MathExpressionParser-MathExpression-'></a>
-
 ### op_Division(left,right) `method`
 
 ##### Summary
@@ -637,6 +611,8 @@ Adds the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'Ma
 Divide the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate') of `left` by that of `right`.
 
 ##### Returns
+
+
 
 ##### Parameters
 
@@ -652,7 +628,6 @@ Divide the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate '
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') |  |
 
 <a name='M-MathExpressionParser-MathExpression-op_Equality-MathExpressionParser-MathExpression,MathExpressionParser-MathExpression-'></a>
-
 ### op_Equality(left,right) `method`
 
 ##### Summary
@@ -677,7 +652,6 @@ Checks if the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluat
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') |  |
 
 <a name='M-MathExpressionParser-MathExpression-op_Explicit-MathExpressionParser-MathExpression-~System-String'></a>
-
 ### op_Explicit(mathExpression) `method`
 
 ##### Summary
@@ -695,7 +669,6 @@ Converts this [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpre
 | mathExpression | [MathExpressionParser.MathExpression)~System.String](#T-MathExpressionParser-MathExpression-~System-String 'MathExpressionParser.MathExpression)~System.String') | The [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') to convert. |
 
 <a name='M-MathExpressionParser-MathExpression-op_Explicit-MathExpressionParser-MathExpression-~System-Double'></a>
-
 ### op_Explicit(mathExpression) `method`
 
 ##### Summary
@@ -719,7 +692,6 @@ Value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpress
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') | If `mathExpression` throws [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') on calling its [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate'). |
 
 <a name='M-MathExpressionParser-MathExpression-op_GreaterThan-MathExpressionParser-MathExpression,MathExpressionParser-MathExpression-'></a>
-
 ### op_GreaterThan(left,right) `method`
 
 ##### Summary
@@ -744,7 +716,6 @@ Checks if the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluat
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') |  |
 
 <a name='M-MathExpressionParser-MathExpression-op_GreaterThanOrEqual-MathExpressionParser-MathExpression,MathExpressionParser-MathExpression-'></a>
-
 ### op_GreaterThanOrEqual(left,right) `method`
 
 ##### Summary
@@ -769,7 +740,6 @@ Checks if the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluat
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') |  |
 
 <a name='M-MathExpressionParser-MathExpression-op_Inequality-MathExpressionParser-MathExpression,MathExpressionParser-MathExpression-'></a>
-
 ### op_Inequality(left,right) `method`
 
 ##### Summary
@@ -794,7 +764,6 @@ Checks if the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluat
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') |  |
 
 <a name='M-MathExpressionParser-MathExpression-op_LessThan-MathExpressionParser-MathExpression,MathExpressionParser-MathExpression-'></a>
-
 ### op_LessThan(left,right) `method`
 
 ##### Summary
@@ -819,7 +788,6 @@ Checks if the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluat
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') |  |
 
 <a name='M-MathExpressionParser-MathExpression-op_LessThanOrEqual-MathExpressionParser-MathExpression,MathExpressionParser-MathExpression-'></a>
-
 ### op_LessThanOrEqual(left,right) `method`
 
 ##### Summary
@@ -844,7 +812,6 @@ Checks if the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluat
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') |  |
 
 <a name='M-MathExpressionParser-MathExpression-op_Multiply-MathExpressionParser-MathExpression,MathExpressionParser-MathExpression-'></a>
-
 ### op_Multiply(left,right) `method`
 
 ##### Summary
@@ -852,6 +819,8 @@ Checks if the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluat
 Multiplies the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate') of the two [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') together.
 
 ##### Returns
+
+
 
 ##### Parameters
 
@@ -867,7 +836,6 @@ Multiplies the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evalua
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') |  |
 
 <a name='M-MathExpressionParser-MathExpression-op_Subtraction-MathExpressionParser-MathExpression,MathExpressionParser-MathExpression-'></a>
-
 ### op_Subtraction(left,right) `method`
 
 ##### Summary
@@ -875,6 +843,8 @@ Multiplies the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evalua
 Substracts the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evaluate 'MathExpressionParser.MathExpression.Evaluate') of `right` from that of `left`.
 
 ##### Returns
+
+
 
 ##### Parameters
 
@@ -890,7 +860,6 @@ Substracts the value of [Evaluate](#M-MathExpressionParser-MathExpression-Evalua
 | [MathExpressionParser.ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') |  |
 
 <a name='T-MathExpressionParser-Operator'></a>
-
 ## Operator `type`
 
 ##### Namespace
@@ -902,7 +871,6 @@ MathExpressionParser
 Base class for different types of operators in an [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression').
 
 <a name='M-MathExpressionParser-Operator-#ctor-System-String-'></a>
-
 ### #ctor(name) `constructor`
 
 ##### Summary
@@ -922,7 +890,6 @@ Base constructor for all derived [Operator](#T-MathExpressionParser-Operator 'Ma
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') | When `name` is `null`. |
 
 <a name='P-MathExpressionParser-Operator-Name'></a>
-
 ### Name `property`
 
 ##### Summary
@@ -936,7 +903,6 @@ The [String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-U
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') | When this is set to `null`. |
 
 <a name='T-MathExpressionParser-OperatorAssociativity'></a>
-
 ## OperatorAssociativity `type`
 
 ##### Namespace
@@ -948,7 +914,6 @@ MathExpressionParser
 Represents the associativity of an [Operator](#T-MathExpressionParser-Operator 'MathExpressionParser.Operator').
 
 <a name='F-MathExpressionParser-OperatorAssociativity-Left'></a>
-
 ### Left `constants`
 
 ##### Summary
@@ -956,7 +921,6 @@ Represents the associativity of an [Operator](#T-MathExpressionParser-Operator '
 Left-to-right associativity.
 
 <a name='F-MathExpressionParser-OperatorAssociativity-Right'></a>
-
 ### Right `constants`
 
 ##### Summary
@@ -964,7 +928,6 @@ Left-to-right associativity.
 Right-to-left associativity.
 
 <a name='T-MathExpressionParser-OperatorPrecedence'></a>
-
 ## OperatorPrecedence `type`
 
 ##### Namespace
@@ -976,7 +939,6 @@ MathExpressionParser
 Represents the precedence of an [Operator](#T-MathExpressionParser-Operator 'MathExpressionParser.Operator'). An `enum` option with a higher value is parsed first.
 
 <a name='F-MathExpressionParser-OperatorPrecedence-Additive'></a>
-
 ### Additive `constants`
 
 ##### Summary
@@ -984,7 +946,6 @@ Represents the precedence of an [Operator](#T-MathExpressionParser-Operator 'Mat
 This precedence level is parsed fourth.
 
 <a name='F-MathExpressionParser-OperatorPrecedence-Exponentiation'></a>
-
 ### Exponentiation `constants`
 
 ##### Summary
@@ -992,7 +953,6 @@ This precedence level is parsed fourth.
 This precedence level is parsed first.
 
 <a name='F-MathExpressionParser-OperatorPrecedence-Multiplicative'></a>
-
 ### Multiplicative `constants`
 
 ##### Summary
@@ -1000,7 +960,6 @@ This precedence level is parsed first.
 This precedence level is parsed third.
 
 <a name='F-MathExpressionParser-OperatorPrecedence-Unary'></a>
-
 ### Unary `constants`
 
 ##### Summary
@@ -1008,7 +967,6 @@ This precedence level is parsed third.
 This precedence level is parsed second.
 
 <a name='T-MathExpressionParser-ParserException'></a>
-
 ## ParserException `type`
 
 ##### Namespace
@@ -1020,7 +978,6 @@ MathExpressionParser
 An [Exception](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Exception 'System.Exception') that is thrown when [Evaluate](#M-MathExpressionParser-IMathExpression-Evaluate 'MathExpressionParser.IMathExpression.Evaluate') encounters an unexpected situation.
 
 <a name='M-MathExpressionParser-ParserException-#ctor'></a>
-
 ### #ctor() `constructor`
 
 ##### Summary
@@ -1032,7 +989,6 @@ Initializes a new instance of [ParserException](#T-MathExpressionParser-ParserEx
 This constructor has no parameters.
 
 <a name='M-MathExpressionParser-ParserException-#ctor-System-String-'></a>
-
 ### #ctor(message) `constructor`
 
 ##### Summary
@@ -1046,7 +1002,6 @@ Initializes a new instance of [ParserException](#T-MathExpressionParser-ParserEx
 | message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The reason why this [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') was thrown. |
 
 <a name='M-MathExpressionParser-ParserException-#ctor-System-String,System-Exception-'></a>
-
 ### #ctor(message,innerException) `constructor`
 
 ##### Summary
@@ -1061,7 +1016,6 @@ Initializes a new instance of the [ParserException](#T-MathExpressionParser-Pars
 | innerException | [System.Exception](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Exception 'System.Exception') |  |
 
 <a name='M-MathExpressionParser-ParserException-#ctor-System-String,MathExpressionParser-ParserExceptionContext-'></a>
-
 ### #ctor(message,context) `constructor`
 
 ##### Summary
@@ -1082,12 +1036,11 @@ Initializes a new instance of the [ParserException](#T-MathExpressionParser-Pars
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') | When `context` is `null`. |
 
 <a name='M-MathExpressionParser-ParserException-#ctor-System-String,MathExpressionParser-ParserExceptionContext,System-Exception-'></a>
-
 ### #ctor(message,context,innerException) `constructor`
 
 ##### Summary
 
-Initializes a new instance of the [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') with a specified error message, a [ParserExceptionContext](#T-MathExpressionParser-ParserExceptionContext 'MathExpressionParser.ParserExceptionContext') with information about this exception,
+Initializes a new instance of the [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') with a specified error message, a [ParserExceptionContext](#T-MathExpressionParser-ParserExceptionContext 'MathExpressionParser.ParserExceptionContext') with information about this exception, 
 and a reference to the inner exception that is the cause of this exception.
 
 ##### Parameters
@@ -1105,7 +1058,6 @@ and a reference to the inner exception that is the cause of this exception.
 | [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') |  |
 
 <a name='M-MathExpressionParser-ParserException-#ctor-System-Runtime-Serialization-SerializationInfo,System-Runtime-Serialization-StreamingContext-'></a>
-
 ### #ctor() `constructor`
 
 ##### Summary
@@ -1117,7 +1069,6 @@ and a reference to the inner exception that is the cause of this exception.
 This constructor has no parameters.
 
 <a name='P-MathExpressionParser-ParserException-Context'></a>
-
 ### Context `property`
 
 ##### Summary
@@ -1125,7 +1076,6 @@ This constructor has no parameters.
 Represents extra information regarding this instance of [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException').
 
 <a name='M-MathExpressionParser-ParserException-GetObjectData-System-Runtime-Serialization-SerializationInfo,System-Runtime-Serialization-StreamingContext-'></a>
-
 ### GetObjectData() `method`
 
 ##### Summary
@@ -1137,7 +1087,6 @@ Represents extra information regarding this instance of [ParserException](#T-Mat
 This method has no parameters.
 
 <a name='T-MathExpressionParser-ParserExceptionContext'></a>
-
 ## ParserExceptionContext `type`
 
 ##### Namespace
@@ -1155,7 +1104,6 @@ A record class that contains additional information regarding a [ParserException
 | Position | [T:MathExpressionParser.ParserExceptionContext](#T-T-MathExpressionParser-ParserExceptionContext 'T:MathExpressionParser.ParserExceptionContext') | The position in the [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') where the [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') occurs. Set this to a value less than zero if it is not applicable. |
 
 <a name='M-MathExpressionParser-ParserExceptionContext-#ctor-System-Int32,MathExpressionParser-ParserExceptionType-'></a>
-
 ### #ctor(Position,Type) `constructor`
 
 ##### Summary
@@ -1170,7 +1118,6 @@ A record class that contains additional information regarding a [ParserException
 | Type | [MathExpressionParser.ParserExceptionType](#T-MathExpressionParser-ParserExceptionType 'MathExpressionParser.ParserExceptionType') | The type of error that happened. |
 
 <a name='P-MathExpressionParser-ParserExceptionContext-Position'></a>
-
 ### Position `property`
 
 ##### Summary
@@ -1178,7 +1125,6 @@ A record class that contains additional information regarding a [ParserException
 The position in the [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') where the [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') occurs. If this is not applicable, it will be less than zero.
 
 <a name='P-MathExpressionParser-ParserExceptionContext-Type'></a>
-
 ### Type `property`
 
 ##### Summary
@@ -1186,7 +1132,6 @@ The position in the [MathExpression](#T-MathExpressionParser-MathExpression 'Mat
 The kind of error that caused a [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') to be thrown.
 
 <a name='T-MathExpressionParser-ParserExceptionType'></a>
-
 ## ParserExceptionType `type`
 
 ##### Namespace
@@ -1198,7 +1143,6 @@ MathExpressionParser
 Represents the kind of error that caused a [ParserException](#T-MathExpressionParser-ParserException 'MathExpressionParser.ParserException') to be thrown.
 
 <a name='F-MathExpressionParser-ParserExceptionType-ConflictingNames'></a>
-
 ### ConflictingNames `constants`
 
 ##### Summary
@@ -1206,7 +1150,6 @@ Represents the kind of error that caused a [ParserException](#T-MathExpressionPa
 An error where two [Operator](#T-MathExpressionParser-Operator 'MathExpressionParser.Operator')s in a [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') share the same name.
 
 <a name='F-MathExpressionParser-ParserExceptionType-IncorrectArgumentCount'></a>
-
 ### IncorrectArgumentCount `constants`
 
 ##### Summary
@@ -1214,7 +1157,6 @@ An error where two [Operator](#T-MathExpressionParser-Operator 'MathExpressionPa
 An error where either too many or too few arguments were passed to a [FunctionalOperator](#T-MathExpressionParser-FunctionalOperator 'MathExpressionParser.FunctionalOperator').
 
 <a name='F-MathExpressionParser-ParserExceptionType-InvalidCustomConstantName'></a>
-
 ### InvalidCustomConstantName `constants`
 
 ##### Summary
@@ -1222,7 +1164,6 @@ An error where either too many or too few arguments were passed to a [Functional
 An error where some of the custom constants provided have names that either start with a number, are empty, or contain characters that are not alphanumeric or are not underscores.
 
 <a name='F-MathExpressionParser-ParserExceptionType-InvalidCustomFunctionName'></a>
-
 ### InvalidCustomFunctionName `constants`
 
 ##### Summary
@@ -1230,7 +1171,6 @@ An error where some of the custom constants provided have names that either star
 An error where some of the custom functions provided have names that either start with a number, are empty, or contain characters that are not alphanumeric or are not underscores.
 
 <a name='F-MathExpressionParser-ParserExceptionType-InvalidNumberFormat'></a>
-
 ### InvalidNumberFormat `constants`
 
 ##### Summary
@@ -1238,7 +1178,6 @@ An error where some of the custom functions provided have names that either star
 An error where a number with an invalid format was found in a [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression').
 
 <a name='F-MathExpressionParser-ParserExceptionType-NaNConstant'></a>
-
 ### NaNConstant `constants`
 
 ##### Summary
@@ -1246,7 +1185,6 @@ An error where a number with an invalid format was found in a [MathExpression](#
 An error where [CustomConstants](#P-MathExpressionParser-MathExpression-CustomConstants 'MathExpressionParser.MathExpression.CustomConstants') have a [Value](#P-MathExpressionParser-ConstantOperator-Value 'MathExpressionParser.ConstantOperator.Value') of [NaN](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double.NaN 'System.Double.NaN').
 
 <a name='F-MathExpressionParser-ParserExceptionType-NullCustomConstant'></a>
-
 ### NullCustomConstant `constants`
 
 ##### Summary
@@ -1254,7 +1192,6 @@ An error where [CustomConstants](#P-MathExpressionParser-MathExpression-CustomCo
 An error where [CustomConstants](#P-MathExpressionParser-MathExpression-CustomConstants 'MathExpressionParser.MathExpression.CustomConstants') contain a `null` element.
 
 <a name='F-MathExpressionParser-ParserExceptionType-NullCustomFunction'></a>
-
 ### NullCustomFunction `constants`
 
 ##### Summary
@@ -1262,7 +1199,6 @@ An error where [CustomConstants](#P-MathExpressionParser-MathExpression-CustomCo
 An error where [CustomFunctions](#P-MathExpressionParser-MathExpression-CustomFunctions 'MathExpressionParser.MathExpression.CustomFunctions') contains a `null` element.
 
 <a name='F-MathExpressionParser-ParserExceptionType-TooManyOpeningParentheses'></a>
-
 ### TooManyOpeningParentheses `constants`
 
 ##### Summary
@@ -1270,7 +1206,6 @@ An error where [CustomFunctions](#P-MathExpressionParser-MathExpression-CustomFu
 An error where a opening parenthesiis is used without a corresponding opening parenthesis.
 
 <a name='F-MathExpressionParser-ParserExceptionType-UnexpectedBinaryOperator'></a>
-
 ### UnexpectedBinaryOperator `constants`
 
 ##### Summary
@@ -1278,7 +1213,6 @@ An error where a opening parenthesiis is used without a corresponding opening pa
 An error where a [BinaryOperator](#T-MathExpressionParser-BinaryOperator 'MathExpressionParser.BinaryOperator') is used incorrectly.
 
 <a name='F-MathExpressionParser-ParserExceptionType-UnexpectedClosingParenthesis'></a>
-
 ### UnexpectedClosingParenthesis `constants`
 
 ##### Summary
@@ -1286,7 +1220,6 @@ An error where a [BinaryOperator](#T-MathExpressionParser-BinaryOperator 'MathEx
 An error where a closing parenthesis is used incorrectly, or where a closing parenthesis is used without a corresponding opening parenthesis.
 
 <a name='F-MathExpressionParser-ParserExceptionType-UnexpectedComma'></a>
-
 ### UnexpectedComma `constants`
 
 ##### Summary
@@ -1294,7 +1227,6 @@ An error where a closing parenthesis is used incorrectly, or where a closing par
 An error where a comma is used incorrectly.
 
 <a name='F-MathExpressionParser-ParserExceptionType-UnexpectedConstantOperator'></a>
-
 ### UnexpectedConstantOperator `constants`
 
 ##### Summary
@@ -1302,7 +1234,6 @@ An error where a comma is used incorrectly.
 An error where a [ConstantOperator](#T-MathExpressionParser-ConstantOperator 'MathExpressionParser.ConstantOperator') is used incorrectly.
 
 <a name='F-MathExpressionParser-ParserExceptionType-UnexpectedFunctionalOperator'></a>
-
 ### UnexpectedFunctionalOperator `constants`
 
 ##### Summary
@@ -1310,7 +1241,6 @@ An error where a [ConstantOperator](#T-MathExpressionParser-ConstantOperator 'Ma
 An error where a [FunctionalOperator](#T-MathExpressionParser-FunctionalOperator 'MathExpressionParser.FunctionalOperator') is used incorrectly.
 
 <a name='F-MathExpressionParser-ParserExceptionType-UnexpectedNewline'></a>
-
 ### UnexpectedNewline `constants`
 
 ##### Summary
@@ -1318,7 +1248,6 @@ An error where a [FunctionalOperator](#T-MathExpressionParser-FunctionalOperator
 An error where a [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') ended unexpectedly.
 
 <a name='F-MathExpressionParser-ParserExceptionType-UnexpectedNumber'></a>
-
 ### UnexpectedNumber `constants`
 
 ##### Summary
@@ -1326,7 +1255,6 @@ An error where a [MathExpression](#T-MathExpressionParser-MathExpression 'MathEx
 An error where a number is used incorrectly.
 
 <a name='F-MathExpressionParser-ParserExceptionType-UnexpectedOpeningParenthesis'></a>
-
 ### UnexpectedOpeningParenthesis `constants`
 
 ##### Summary
@@ -1334,7 +1262,6 @@ An error where a number is used incorrectly.
 An error where a opening parenthesis is used incorrectly.
 
 <a name='F-MathExpressionParser-ParserExceptionType-UnexpectedPostfixUnaryOperator'></a>
-
 ### UnexpectedPostfixUnaryOperator `constants`
 
 ##### Summary
@@ -1342,7 +1269,6 @@ An error where a opening parenthesis is used incorrectly.
 An error where a [PostfixUnaryOperator](#T-MathExpressionParser-PostfixUnaryOperator 'MathExpressionParser.PostfixUnaryOperator') is used incorrectly.
 
 <a name='F-MathExpressionParser-ParserExceptionType-UnexpectedPrefixUnaryOperator'></a>
-
 ### UnexpectedPrefixUnaryOperator `constants`
 
 ##### Summary
@@ -1350,7 +1276,6 @@ An error where a [PostfixUnaryOperator](#T-MathExpressionParser-PostfixUnaryOper
 An error where a [PrefixUnaryOperator](#T-MathExpressionParser-PrefixUnaryOperator 'MathExpressionParser.PrefixUnaryOperator') is used incorrectly.
 
 <a name='F-MathExpressionParser-ParserExceptionType-UnknownOperator'></a>
-
 ### UnknownOperator `constants`
 
 ##### Summary
