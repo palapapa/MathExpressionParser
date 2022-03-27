@@ -1,0 +1,570 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MathExpressionParser</name>
+    </assembly>
+    <members>
+        <member name="T:MathExpressionParser.BinaryOperator">
+            <summary>
+            Represents a operator that takes the left and right tokens as its operands.
+            </summary>
+        </member>
+        <member name="P:MathExpressionParser.BinaryOperator.Precedence">
+            <summary>
+            The order in which this <see cref="T:MathExpressionParser.Operator"/> will be parsed.
+            </summary>
+        </member>
+        <member name="T:MathExpressionParser.BinaryOperatorDelegate">
+            <summary>
+            A delegate used to compute the result of a <see cref="T:MathExpressionParser.BinaryOperator"/>.
+            </summary>
+            <param name="left">The left operand of a <see cref="T:MathExpressionParser.BinaryOperator"/>.</param>
+            <param name="right">The right operand of a <see cref="T:MathExpressionParser.BinaryOperator"/>.</param>
+            <returns>The computed result of a <see cref="T:MathExpressionParser.BinaryOperator"/>.</returns>
+        </member>
+        <member name="T:MathExpressionParser.ConstantOperator">
+            <summary>
+            Represents a constant in a <see cref="T:MathExpressionParser.MathExpression"/>.
+            </summary>
+        </member>
+        <member name="P:MathExpressionParser.ConstantOperator.Value">
+            <summary>
+            The value this <see cref="T:MathExpressionParser.ConstantOperator"/> holds.
+            </summary>
+        </member>
+        <member name="M:MathExpressionParser.ConstantOperator.#ctor(System.String,System.Double)">
+            <summary>
+            Initailizes a new instance of <see cref="T:MathExpressionParser.ConstantOperator"/>.
+            </summary>
+            <param name="name"><inheritdoc cref="P:MathExpressionParser.Operator.Name" path="/summary"/></param>
+            <param name="value">The value of this <see cref="T:MathExpressionParser.ConstantOperator"/>.</param>
+            <exception cref="T:System.ArgumentNullException">When <paramref name="name"/> is null.</exception>
+        </member>
+        <member name="T:MathExpressionParser.FunctionalOperator">
+            <summary>
+            Represents a function in a <see cref="T:MathExpressionParser.MathExpression"/>.
+            </summary>
+        </member>
+        <member name="P:MathExpressionParser.FunctionalOperator.Calculate">
+            <summary>
+            <inheritdoc cref="T:MathExpressionParser.FunctionalOperatorDelegate" path="/summary"/>
+            </summary>
+            <exception cref="T:System.ArgumentNullException">When this is set to <see langword="null"/>.</exception>
+        </member>
+        <member name="P:MathExpressionParser.FunctionalOperator.ArgumentCounts">
+            <summary>
+            The possible number of arguments this <see cref="T:MathExpressionParser.FunctionalOperator"/> can take. If this has 0 elements, this <see cref="T:MathExpressionParser.FunctionalOperator"/> can take any number of arguments.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">When this is set to <see langword="null"/>.</exception>
+        </member>
+        <member name="M:MathExpressionParser.FunctionalOperator.#ctor(System.String,MathExpressionParser.FunctionalOperatorDelegate,System.Int32[])">
+            <summary>
+            Initializes a new instance of <see cref="T:MathExpressionParser.FunctionalOperator"/>.
+            </summary>
+            <param name="name"><inheritdoc cref="P:MathExpressionParser.Operator.Name" path="/summary"/></param>
+            <param name="calculate"><inheritdoc cref="P:MathExpressionParser.FunctionalOperator.Calculate" path="/summary"/></param>
+            <param name="argumentCounts"><inheritdoc cref="P:MathExpressionParser.FunctionalOperator.ArgumentCounts" path="/summary"/></param>
+            <exception cref="T:System.ArgumentNullException">When either <paramref name="name"/> or <paramref name="calculate"/> is null.</exception>
+        </member>
+        <member name="T:MathExpressionParser.FunctionalOperatorDelegate">
+            <summary>
+            A <see langword="delegate"/> used to calculate the value of a <see cref="T:MathExpressionParser.FunctionalOperator"/>.
+            </summary>
+            <param name="arguments">An <see cref="T:System.Collections.Generic.IList`1"/> of arguments passed to a <see cref="T:MathExpressionParser.FunctionalOperator"/> in a <see cref="T:MathExpressionParser.MathExpression"/>.</param>
+            <returns>The value of a <see cref="T:MathExpressionParser.FunctionalOperator"/></returns>
+        </member>
+        <member name="T:MathExpressionParser.IMathExpression">
+            <summary>
+            Exposes common properties and methods of mathematical expressions.
+            </summary>
+        </member>
+        <member name="P:MathExpressionParser.IMathExpression.Expression">
+            <summary>
+            Represents the math expression.
+            </summary>
+        </member>
+        <member name="M:MathExpressionParser.IMathExpression.Evaluate">
+            <summary>
+            Evaluates the <see cref="P:MathExpressionParser.IMathExpression.Expression"/> and returns a value.
+            </summary>
+            <returns>The value of <see cref="P:MathExpressionParser.IMathExpression.Expression"/>.</returns>
+        </member>
+        <member name="T:MathExpressionParser.MathExpression">
+            <summary>
+            Represents a mathematical expression.
+            </summary>
+        </member>
+        <member name="P:MathExpressionParser.MathExpression.Expression">
+            <summary>
+            The <see cref="T:System.String"/> representation of the math expression this <see cref="T:MathExpressionParser.MathExpression"/> holds.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">When this is set to <see langword="null"/>.</exception>
+        </member>
+        <member name="P:MathExpressionParser.MathExpression.CustomFunctions">
+            <summary>
+            Any <see cref="T:MathExpressionParser.FunctionalOperator"/> in this <see cref="T:System.Collections.Generic.IList`1"/> will be used when <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> is called.
+            </summary>
+        </member>
+        <member name="P:MathExpressionParser.MathExpression.CustomConstants">
+            <summary>
+            Any <see cref="T:MathExpressionParser.ConstantOperator"/> in this <see cref="T:System.Collections.Generic.IList`1"/> will be used when <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> is called.
+            </summary>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:MathExpressionParser.MathExpression"/> with <see cref="P:MathExpressionParser.MathExpression.Expression"/> set to an empty <see cref="T:System.String"/>.
+            </summary>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:MathExpressionParser.MathExpression"/> with <see cref="P:MathExpressionParser.MathExpression.Expression"/> set to <paramref name="expression"/>.
+            </summary>
+            <param name="expression">The math expression to use.</param>
+            <exception cref="T:System.ArgumentNullException">When <paramref name="expression"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.#ctor(System.Collections.Generic.IList{MathExpressionParser.FunctionalOperator},System.Collections.Generic.IList{MathExpressionParser.ConstantOperator})">
+            <summary>
+            Initializes a new instance of <see cref="T:MathExpressionParser.MathExpression"/> with <see cref="P:MathExpressionParser.MathExpression.CustomFunctions"/> set to <paramref name="customFunctions"/>, <see cref="P:MathExpressionParser.MathExpression.CustomConstants"/> set to <paramref name="customConstants"/>, and <see cref="P:MathExpressionParser.MathExpression.Expression"/> set to an empty <see cref="T:System.String"/>. <br/>
+            If <paramref name="customFunctions"/> or <paramref name="customConstants"/> is <see langword="null"/>, it will remain as an empty <see cref="T:System.Collections.Generic.IList`1"/>.
+            </summary>
+            <param name="customFunctions">The <see cref="T:System.Collections.Generic.IList`1"/> to set <see cref="P:MathExpressionParser.MathExpression.CustomFunctions"/> to, or <see langword="null"/> if you wish to leave it empty.</param>
+            <param name="customConstants">The <see cref="T:System.Collections.Generic.IList`1"/> to set <see cref="P:MathExpressionParser.MathExpression.CustomConstants"/> to, or <see langword="null"/> if you wish to leave it empty.</param>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.#ctor(System.String,System.Collections.Generic.IList{MathExpressionParser.FunctionalOperator},System.Collections.Generic.IList{MathExpressionParser.ConstantOperator})">
+            <summary>
+            Initializes a new instance of <see cref="T:MathExpressionParser.MathExpression"/> with <see cref="P:MathExpressionParser.MathExpression.Expression"/> set to <paramref name="expression"/>, <see cref="P:MathExpressionParser.MathExpression.CustomFunctions"/> set to <paramref name="customFunctions"/> and <see cref="P:MathExpressionParser.MathExpression.CustomConstants"/> set to <paramref name="customConstants"/>. <br/>
+            If <paramref name="customFunctions"/> or <paramref name="customConstants"/> is <see langword="null"/>, it will remain as an empty <see cref="T:System.Collections.Generic.IList`1"/>.
+            </summary>
+            <param name="expression"><inheritdoc cref="M:MathExpressionParser.MathExpression.#ctor(System.String)" path="/param[@name='expression']"/></param>
+            <param name="customFunctions"><inheritdoc cref="M:MathExpressionParser.MathExpression.#ctor(System.Collections.Generic.IList{MathExpressionParser.FunctionalOperator},System.Collections.Generic.IList{MathExpressionParser.ConstantOperator})" path="/param[@name='customFunctions']"/></param>
+            <param name="customConstants"><inheritdoc cref="M:MathExpressionParser.MathExpression.#ctor(System.Collections.Generic.IList{MathExpressionParser.FunctionalOperator},System.Collections.Generic.IList{MathExpressionParser.ConstantOperator})" path="/param[@name='customConstants']"/></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.#ctor(MathExpressionParser.MathExpression)">
+            <summary>
+            Initializes a new instance of <see cref="T:MathExpressionParser.MathExpression"/> and copies each member of <paramref name="mathExpression"/> into the new instance.
+            </summary>
+            <param name="mathExpression">The <see cref="T:MathExpressionParser.MathExpression"/> to copy.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="mathExpression"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.GetArgumentCount(System.Collections.Generic.List{MathExpressionParser.Token})">
+            <summary>
+            Returns the same <see cref="T:System.Collections.Generic.List`1"/> as <paramref name="tokens"/> but with every <see cref="P:MathExpressionParser.FunctionalOperatorToken.ArgumentCount"/> set to the correct number.
+            This method assumes the provided <paramref name="tokens"/> represent a valid expression.
+            </summary>
+            <param name="tokens"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_Explicit(MathExpressionParser.MathExpression)~System.String">
+            <summary>
+            Converts this <see cref="T:MathExpressionParser.MathExpression"/> instance to a <see cref="T:System.String"/>.
+            </summary>
+            <param name="mathExpression">The <see cref="T:MathExpressionParser.MathExpression"/> to convert.</param>
+            <returns><see cref="P:MathExpressionParser.MathExpression.Expression"/> or <see langword="null"/> if <paramref name="mathExpression"/> is null.</returns>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.ToString">
+            <summary>
+            Converts this <see cref="T:MathExpressionParser.MathExpression"/> instance to a <see cref="T:System.String"/>.
+            </summary>
+            <returns><see cref="P:MathExpressionParser.MathExpression.Expression"/>.</returns>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.Validate">
+            <summary>
+            Checks if <see cref="P:MathExpressionParser.MathExpression.Expression"/> is a valid math expression.
+            </summary>
+            <returns>A <see cref="T:MathExpressionParser.ParserException"/> instance that contains information about the error, or <see langword="null"/> if the expression is valid.</returns>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.TryEvaluate(System.Double@)">
+            <summary>
+            Tries to evaluate <see cref="P:MathExpressionParser.MathExpression.Expression"/>. This can still throw an exception if any <see cref="T:MathExpressionParser.FunctionalOperator"/> used throws an exception itself.
+            </summary>
+            <param name="result">The result of the evaluation if it succeeds.</param>
+            <returns>
+            A <see cref="T:MathExpressionParser.ParserException"/> instance containing information about the error if <paramref name="result"/> is not a valid math expression, or <see langword="null"/> if it is. <br/>
+            If a non-<see langword="null"/> <see cref="T:MathExpressionParser.ParserException"/> is returned, <paramref name="result"/> will be set to <see cref="F:System.Double.NaN"/>. <br/>
+            If <see cref="P:MathExpressionParser.MathExpression.Expression"/> is whitespace or empty, <paramref name="result"/> will be set to <see cref="F:System.Double.NaN"/>, <br/>
+            Otherwise, <paramref name="result"/> will be set to the result of the evaluation.
+            </returns>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.Evaluate">
+            <summary>
+            Evaluates <see cref="P:MathExpressionParser.MathExpression.Expression"/>.
+            </summary>
+            <returns>The value of the <see cref="P:MathExpressionParser.MathExpression.Expression"/>.</returns>
+            <exception cref="T:MathExpressionParser.ParserException">If <see cref="P:MathExpressionParser.MathExpression.Expression"/> is not a valid math expression.</exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.CompareTo(MathExpressionParser.MathExpression)">
+            <summary>
+            Compares the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of this instance to that of <paramref name="other"/>.
+            </summary>
+            <param name="other"></param>
+            <returns>
+            <list type="bullet">
+            <item>> 0 if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of this instance is larger than that of <paramref name="other"/>.</item>
+            <item>= 0 if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of this instance is the same as that of <paramref name="other"/>.</item>
+            <item>&lt; 0 if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of this instance is smaller than that of <paramref name="other"/>.</item>
+            </list>
+            </returns>
+            <exception cref="T:MathExpressionParser.ParserException">If either this instance or <paramref name="other"/> throws <see cref="T:MathExpressionParser.ParserException"/> on calling its <see cref="M:MathExpressionParser.MathExpression.Evaluate"/>.</exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.Equals(MathExpressionParser.MathExpression)">
+            <summary>
+            Check if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of this instance is equal to that of <paramref name="other"/>.
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+            <exception cref="T:MathExpressionParser.ParserException"><inheritdoc cref="M:MathExpressionParser.MathExpression.CompareTo(MathExpressionParser.MathExpression)" path="/exception[@cref='ParserException']"/></exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.Equals(System.Object)">
+            <summary>
+            <inheritdoc cref="M:MathExpressionParser.MathExpression.Equals(MathExpressionParser.MathExpression)" path="/summary"/>
+            </summary>
+            <param name="obj">A <see cref="T:System.Double"/> or a <see cref="T:MathExpressionParser.IMathExpression"/>.</param>
+            <returns> If <paramref name="obj"/> is not a <see cref="T:System.Double"/> or an <see cref="T:MathExpressionParser.IMathExpression"/>, this always returns <see langword="false"/>.</returns>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.GetHashCode">
+            <summary>
+            <inheritdoc cref="M:System.Object.GetHashCode" path="/summary"/>
+            </summary>
+            <returns><inheritdoc cref="M:System.Object.GetHashCode" path="/returns"/></returns>
+            <exception cref="T:MathExpressionParser.ParserException">If this instance throws <see cref="T:MathExpressionParser.ParserException"/> on calling its <see cref="M:MathExpressionParser.MathExpression.Evaluate"/>.</exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_LessThan(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)">
+            <summary>
+            Checks if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is smaller than that of <paramref name="right"/>.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns><see langword="true"/> if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is smaller than that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+            <exception cref="T:MathExpressionParser.ParserException"><inheritdoc cref="M:MathExpressionParser.MathExpression.op_Addition(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)" path="/exception[@cref='ParserException']"/></exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_LessThanOrEqual(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)">
+            <summary>
+            Checks if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is smaller than or equal to that of <paramref name="right"/>.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns><see langword="true"/> if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is smaller or equal to than that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+            <exception cref="T:MathExpressionParser.ParserException"><inheritdoc cref="M:MathExpressionParser.MathExpression.op_Addition(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)" path="/exception[@cref='ParserException']"/></exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_GreaterThan(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)">
+            <summary>
+            Checks if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is larger than that of <paramref name="right"/>.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns><see langword="true"/> if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is larger than that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+            <exception cref="T:MathExpressionParser.ParserException"><inheritdoc cref="M:MathExpressionParser.MathExpression.op_Addition(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)" path="/exception[@cref='ParserException']"/></exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_GreaterThanOrEqual(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)">
+            <summary>
+            Checks if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is larger than or equal to that of <paramref name="right"/>.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns><see langword="true"/> if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is larger than or equal to that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+            <exception cref="T:MathExpressionParser.ParserException"><inheritdoc cref="M:MathExpressionParser.MathExpression.op_Addition(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)" path="/exception[@cref='ParserException']"/></exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_Equality(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)">
+            <summary>
+            Checks if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is equal to that of <paramref name="right"/>.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns><see langword="true"/> if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is equal to that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+            <exception cref="T:MathExpressionParser.ParserException"><inheritdoc cref="M:MathExpressionParser.MathExpression.op_Addition(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)" path="/exception[@cref='ParserException']"/></exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_Inequality(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)">
+            <summary>
+            Checks if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is not equal to that of <paramref name="right"/>.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns><see langword="true"/> if the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> is not equal to that of <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+            <exception cref="T:MathExpressionParser.ParserException"><inheritdoc cref="M:MathExpressionParser.MathExpression.op_Addition(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)" path="/exception[@cref='ParserException']"/></exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_Explicit(MathExpressionParser.MathExpression)~System.Double">
+            <summary>
+            Converts <paramref name="mathExpression"/> to a <see cref="T:System.Double"/> with the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="mathExpression"/>.
+            </summary>
+            <param name="mathExpression"></param>
+            <returns>Value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="mathExpression"/>.</returns>
+            <exception cref="T:MathExpressionParser.ParserException">If <paramref name="mathExpression"/> throws <see cref="T:MathExpressionParser.ParserException"/> on calling its <see cref="M:MathExpressionParser.MathExpression.Evaluate"/>.</exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_Addition(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)">
+            <summary>
+            Adds the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of the two <see cref="T:MathExpressionParser.MathExpression"/> together.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+            <exception cref="T:MathExpressionParser.ParserException">When either of the arguments throws <see cref="T:MathExpressionParser.ParserException"/> on calling its <see cref="M:MathExpressionParser.MathExpression.Evaluate"/>.</exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_Subtraction(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)">
+            <summary>
+            Substracts the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="right"/> from that of <paramref name="left"/>.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+            <exception cref="T:MathExpressionParser.ParserException"><inheritdoc cref="M:MathExpressionParser.MathExpression.op_Addition(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)" path="/exception[@cref='ParserException']"/></exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_Multiply(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)">
+            <summary>
+            Multiplies the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of the two <see cref="T:MathExpressionParser.MathExpression"/> together.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+            <exception cref="T:MathExpressionParser.ParserException"><inheritdoc cref="M:MathExpressionParser.MathExpression.op_Addition(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)" path="/exception[@cref='ParserException']"/></exception>
+        </member>
+        <member name="M:MathExpressionParser.MathExpression.op_Division(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)">
+            <summary>
+            Divide the value of <see cref="M:MathExpressionParser.MathExpression.Evaluate"/> of <paramref name="left"/> by that of <paramref name="right"/>.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+            <exception cref="T:MathExpressionParser.ParserException"><inheritdoc cref="M:MathExpressionParser.MathExpression.op_Addition(MathExpressionParser.MathExpression,MathExpressionParser.MathExpression)" path="/exception[@cref='ParserException']"/></exception>
+        </member>
+        <member name="T:MathExpressionParser.Operator">
+            <summary>
+            Base class for different types of operators in an <see cref="T:MathExpressionParser.MathExpression"/>.
+            </summary>
+        </member>
+        <member name="P:MathExpressionParser.Operator.Name">
+            <summary>
+            The <see cref="T:System.String"/> representation of the this <see cref="T:MathExpressionParser.Operator"/>.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">When this is set to <see langword="null"/>.</exception>
+        </member>
+        <member name="M:MathExpressionParser.Operator.#ctor(System.String)">
+            <summary>
+            Base constructor for all derived <see cref="T:MathExpressionParser.Operator"/>s.
+            </summary>
+            <param name="name"><inheritdoc cref="P:MathExpressionParser.Operator.Name" path="/summary"/></param>
+            <exception cref="T:System.ArgumentNullException">When <paramref name="name"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="T:MathExpressionParser.OperatorAssociativity">
+            <summary>
+            Represents the associativity of an <see cref="T:MathExpressionParser.Operator"/>.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.OperatorAssociativity.Left">
+            <summary>
+            Left-to-right associativity.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.OperatorAssociativity.Right">
+            <summary>
+            Right-to-left associativity.
+            </summary>
+        </member>
+        <member name="T:MathExpressionParser.OperatorPrecedence">
+            <summary>
+            Represents the precedence of an <see cref="T:MathExpressionParser.Operator"/>. An <see langword="enum"/> option with a higher value is parsed first.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.OperatorPrecedence.Additive">
+            <summary>
+            This precedence level is parsed fourth.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.OperatorPrecedence.Multiplicative">
+            <summary>
+            This precedence level is parsed third.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.OperatorPrecedence.Unary">
+            <summary>
+            This precedence level is parsed second.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.OperatorPrecedence.Exponentiation">
+            <summary>
+            This precedence level is parsed first.
+            </summary>
+        </member>
+        <member name="T:MathExpressionParser.ParserException">
+            <summary>
+            An <see cref="T:System.Exception"/> that is thrown when <see cref="M:MathExpressionParser.IMathExpression.Evaluate"/> encounters an unexpected situation.
+            </summary>
+        </member>
+        <member name="P:MathExpressionParser.ParserException.Context">
+            <summary>
+            Represents extra information regarding this instance of <see cref="T:MathExpressionParser.ParserException"/>.
+            </summary>
+        </member>
+        <member name="M:MathExpressionParser.ParserException.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:MathExpressionParser.ParserException"/>.
+            </summary>
+        </member>
+        <member name="M:MathExpressionParser.ParserException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:MathExpressionParser.ParserException"/> with a specified error message.
+            </summary>
+            <param name="message">The reason why this <see cref="T:MathExpressionParser.ParserException"/> was thrown.</param>
+        </member>
+        <member name="M:MathExpressionParser.ParserException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MathExpressionParser.ParserException"/> with a specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message"><inheritdoc cref="M:MathExpressionParser.ParserException.#ctor(System.String)" path="/param[@name='message']"/></param>
+            <param name="innerException"><inheritdoc cref="M:System.Exception.#ctor(System.String,System.Exception)" path="/param[@name='innerException']"/></param>
+        </member>
+        <member name="M:MathExpressionParser.ParserException.#ctor(System.String,MathExpressionParser.ParserExceptionContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MathExpressionParser.ParserException"/> with a specified error message and a <see cref="T:MathExpressionParser.ParserExceptionContext"/> with information about this exception.
+            </summary>
+            <param name="message"><inheritdoc cref="M:MathExpressionParser.ParserException.#ctor(System.String)" path="/param[@name='message']"/></param>
+            <param name="context">A <see cref="T:MathExpressionParser.ParserExceptionContext"/> with information about this exception.</param>
+            <exception cref="T:System.ArgumentNullException">When <paramref name="context"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:MathExpressionParser.ParserException.#ctor(System.String,MathExpressionParser.ParserExceptionContext,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MathExpressionParser.ParserException"/> with a specified error message, a <see cref="T:MathExpressionParser.ParserExceptionContext"/> with information about this exception, 
+            and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message"><inheritdoc cref="M:MathExpressionParser.ParserException.#ctor(System.String)" path="/param[@name='message']"/></param>
+            <param name="context"><inheritdoc cref="M:MathExpressionParser.ParserException.#ctor(System.String,MathExpressionParser.ParserExceptionContext)" path="/param[@name='context']"/></param>
+            <param name="innerException"><inheritdoc cref="M:System.Exception.#ctor(System.String,System.Exception)" path="/param[@name='innerException']"/></param>
+            <exception cref="T:System.ArgumentNullException"><inheritdoc cref="M:MathExpressionParser.ParserException.#ctor(System.String,MathExpressionParser.ParserExceptionContext)" path="/exception[@cref='ArgumentNullException']"/></exception>
+        </member>
+        <member name="M:MathExpressionParser.ParserException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <inheritdoc cref="M:System.Exception.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"/>
+        </member>
+        <member name="M:MathExpressionParser.ParserException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <inheritdoc cref="M:System.Exception.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"/>
+        </member>
+        <member name="T:MathExpressionParser.ParserExceptionContext">
+            <summary>
+            A record class that contains additional information regarding a <see cref="T:MathExpressionParser.ParserException"/> instance.
+            </summary>
+            <param name="Position">The position in the <see cref="T:MathExpressionParser.MathExpression"/> where the <see cref="T:MathExpressionParser.ParserException"/> occurs. Set this to a value less than zero if it is not applicable.</param>
+            <param name="Type">The type of error that happened.</param>
+        </member>
+        <member name="M:MathExpressionParser.ParserExceptionContext.#ctor(System.Int32,MathExpressionParser.ParserExceptionType)">
+            <summary>
+            A record class that contains additional information regarding a <see cref="T:MathExpressionParser.ParserException"/> instance.
+            </summary>
+            <param name="Position">The position in the <see cref="T:MathExpressionParser.MathExpression"/> where the <see cref="T:MathExpressionParser.ParserException"/> occurs. Set this to a value less than zero if it is not applicable.</param>
+            <param name="Type">The type of error that happened.</param>
+        </member>
+        <member name="P:MathExpressionParser.ParserExceptionContext.Position">
+            <summary>
+            The position in the <see cref="T:MathExpressionParser.MathExpression"/> where the <see cref="T:MathExpressionParser.ParserException"/> occurs. If this is not applicable, it will be less than zero.
+            </summary>
+        </member>
+        <member name="P:MathExpressionParser.ParserExceptionContext.Type">
+            <summary>
+            The kind of error that caused a <see cref="T:MathExpressionParser.ParserException"/> to be thrown.
+            </summary>
+        </member>
+        <member name="T:MathExpressionParser.ParserExceptionType">
+            <summary>
+            Represents the kind of error that caused a <see cref="T:MathExpressionParser.ParserException"/> to be thrown.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.InvalidNumberFormat">
+            <summary>
+            An error where a number with an invalid format was found in a <see cref="T:MathExpressionParser.MathExpression"/>.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.IncorrectArgumentCount">
+            <summary>
+            An error where either too many or too few arguments were passed to a <see cref="T:MathExpressionParser.FunctionalOperator"/>.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.InvalidCustomFunctionName">
+            <summary>
+            An error where some of the custom functions provided have names that either start with a number, are empty, or contain characters that are not alphanumeric or are not underscores.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.NullCustomFunction">
+            <summary>
+            An error where <see cref="P:MathExpressionParser.MathExpression.CustomFunctions"/> contains a <see langword="null"/> element.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.InvalidCustomConstantName">
+            <summary>
+            An error where some of the custom constants provided have names that either start with a number, are empty, or contain characters that are not alphanumeric or are not underscores.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.NullCustomConstant">
+            <summary>
+            An error where <see cref="P:MathExpressionParser.MathExpression.CustomConstants"/> contain a <see langword="null"/> element.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.NaNConstant">
+            <summary>
+            An error where <see cref="P:MathExpressionParser.MathExpression.CustomConstants"/> have a <see cref="P:MathExpressionParser.ConstantOperator.Value"/> of <see cref="F:System.Double.NaN"/>.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.ConflictingNames">
+            <summary>
+            An error where two <see cref="T:MathExpressionParser.Operator"/>s in a <see cref="T:MathExpressionParser.MathExpression"/> share the same name.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.UnexpectedBinaryOperator">
+            <summary>
+            An error where a <see cref="T:MathExpressionParser.BinaryOperator"/> is used incorrectly.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.TooManyOpeningParentheses">
+            <summary>
+            An error where a opening parenthesiis is used without a corresponding opening parenthesis.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.UnexpectedClosingParenthesis">
+            <summary>
+            An error where a closing parenthesis is used incorrectly, or where a closing parenthesis is used without a corresponding opening parenthesis.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.UnexpectedComma">
+            <summary>
+            An error where a comma is used incorrectly.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.UnexpectedConstantOperator">
+            <summary>
+            An error where a <see cref="T:MathExpressionParser.ConstantOperator"/> is used incorrectly.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.UnexpectedFunctionalOperator">
+            <summary>
+            An error where a <see cref="T:MathExpressionParser.FunctionalOperator"/> is used incorrectly.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.UnexpectedNumber">
+            <summary>
+            An error where a number is used incorrectly.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.UnexpectedOpeningParenthesis">
+            <summary>
+            An error where a opening parenthesis is used incorrectly.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.UnexpectedPostfixUnaryOperator">
+            <summary>
+            An error where a <see cref="T:MathExpressionParser.PostfixUnaryOperator"/> is used incorrectly.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.UnexpectedPrefixUnaryOperator">
+            <summary>
+            An error where a <see cref="T:MathExpressionParser.PrefixUnaryOperator"/> is used incorrectly.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.UnknownOperator">
+            <summary>
+            An error where a <see cref="T:MathExpressionParser.Operator"/> in a <see cref="T:MathExpressionParser.MathExpression"/> is not found.
+            </summary>
+        </member>
+        <member name="F:MathExpressionParser.ParserExceptionType.UnexpectedNewline">
+            <summary>
+            An error where a <see cref="T:MathExpressionParser.MathExpression"/> ended unexpectedly.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -36,7 +36,6 @@ public class FunctionalOperator : Operator
     /// Initializes a new instance of <see cref="FunctionalOperator"/>.
     /// </summary>
     /// <param name="name"><inheritdoc cref="Operator.Name" path="/summary"/></param>
-    /// <param name="precedence"><inheritdoc cref="Operator.Precedence" path="/summary"/></param>
     /// <param name="calculate"><inheritdoc cref="Calculate" path="/summary"/></param>
     /// <param name="argumentCounts"><inheritdoc cref="ArgumentCounts" path="/summary"/></param>
     /// <exception cref="ArgumentNullException">When either <paramref name="name"/> or <paramref name="calculate"/> is null.</exception>

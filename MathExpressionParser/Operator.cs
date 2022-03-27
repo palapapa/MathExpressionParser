@@ -19,6 +19,11 @@ public abstract class Operator
         set => name = value ?? throw new ArgumentNullException(nameof(Name));
     }
 
+    /// <summary>
+    /// Base constructor for all derived <see cref="Operator"/>s.
+    /// </summary>
+    /// <param name="name"><inheritdoc cref="Name" path="/summary"/></param>
+    /// <exception cref="ArgumentNullException">When <paramref name="name"/> is <see langword="null"/>.</exception>
     public Operator(string name)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));

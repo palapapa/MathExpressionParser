@@ -62,18 +62,18 @@ public class ParserException : Exception
         Context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
+    /// <inheritdoc cref="Exception(SerializationInfo, StreamingContext)"/>
     protected ParserException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
         ArgumentNullException.ThrowIfNull(info, nameof(info));
-        ArgumentNullException.ThrowIfNull(context, nameof(context));
         Context = (ParserExceptionContext)info.GetValue("Context", typeof(ParserExceptionContext));
     }
 
+    /// <inheritdoc cref="Exception.GetObjectData(SerializationInfo, StreamingContext)"/>
     public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         base.GetObjectData(info, context);
         ArgumentNullException.ThrowIfNull(info, nameof(info));
-        ArgumentNullException.ThrowIfNull(context, nameof(context));
         info.AddValue("Context", Context, typeof(ParserExceptionContext));
     }
 }

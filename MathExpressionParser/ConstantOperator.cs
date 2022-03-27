@@ -16,7 +16,6 @@ public class ConstantOperator : Operator
     /// Initailizes a new instance of <see cref="ConstantOperator"/>.
     /// </summary>
     /// <param name="name"><inheritdoc cref="Operator.Name" path="/summary"/></param>
-    /// <param name="precedence"><inheritdoc cref="Operator.Precedence" path="/summary"/></param>
     /// <param name="value">The value of this <see cref="ConstantOperator"/>.</param>
     /// <exception cref="ArgumentNullException">When <paramref name="name"/> is null.</exception>
     public ConstantOperator(string name, double value) : base(name)
