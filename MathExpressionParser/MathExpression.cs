@@ -426,7 +426,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <param name="expression"><inheritdoc cref="MathExpression(string)" path="/param[@name='expression']"/></param>
     /// <param name="customFunctions"><inheritdoc cref="MathExpression(IList{FunctionalOperator}, IList{ConstantOperator})" path="/param[@name='customFunctions']"/></param>
     /// <param name="customConstants"><inheritdoc cref="MathExpression(IList{FunctionalOperator}, IList{ConstantOperator})" path="/param[@name='customConstants']"/></param>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentNullException"><inheritdoc cref="MathExpression(string)" path="/exception[@cref='ArgumentNullException']"/></exception>
     public MathExpression(string expression, IList<FunctionalOperator> customFunctions, IList<ConstantOperator> customConstants)
     {
         Expression = expression ?? throw new ArgumentNullException(nameof(expression));
