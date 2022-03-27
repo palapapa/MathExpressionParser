@@ -1,7 +1,7 @@
 # MathExpressionParser
 
 [![](https://img.shields.io/travis/com/palapapa/MathExpressionParser/master?style=for-the-badge)](https://travis-ci.com/github/palapapa/MathExpressionParser) <br>
-A light-weight customizable math expression parsing library that supports custom functions and variables, with a complete error handling system(`ParserException`).
+A lightweight customizable math expression parsing library that supports custom functions and variables, with a complete error handling system(`ParserException`).
 
 ## Getting Started
 
