@@ -50,16 +50,13 @@ internal static class Utilities
 
     public static long Factorial(this long x)
     {
-        if (x < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(x));
-        }
+        long positiveX = Math.Abs(x);
         long result = 1;
-        for (int i = 2; i <= x; i++)
+        for (int i = 2; i <= positiveX; i++)
         {
             result *= i;
         }
-        return result;
+        return x >= 0 ? result : -result;
     }
 
     public static long Permutation(long n, long r)

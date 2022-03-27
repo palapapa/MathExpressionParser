@@ -2,7 +2,7 @@ using System;
 
 namespace MathExpressionParser;
 
-internal class PrefixUnaryOperator : UnaryOperator
+internal class PrefixUnaryOperator : UnaryOperator, IOperatorLike
 {
     private PrefixUnaryOperatorDelegate calculate;
 
@@ -10,6 +10,11 @@ internal class PrefixUnaryOperator : UnaryOperator
     {
         get => calculate;
         set => calculate = value ?? throw new ArgumentNullException(nameof(Calculate));
+    }
+
+    public OperatorAssociativity Associativity
+    {
+        get => OperatorAssociativity.Right;
     }
 
     public PrefixUnaryOperator(string name, OperatorPrecedence precedence, PrefixUnaryOperatorDelegate calculate) : base(name, precedence)

@@ -86,13 +86,7 @@ public class UtilitiesTests
     {
         Assert.AreEqual(5L.Factorial(), 120);
         Assert.AreEqual(0L.Factorial(), 1);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentOutOfRangeException), $"{nameof(ArgumentOutOfRangeException)} should be thrown when the argument is negative.", AllowDerivedTypes = false)]
-    public void Factorial_NegativeArgument_ArgumentOutOfRangeException()
-    {
-        (-1L).Factorial();
+        Assert.AreEqual((-5L).Factorial(), -120);
     }
 
     [TestMethod]

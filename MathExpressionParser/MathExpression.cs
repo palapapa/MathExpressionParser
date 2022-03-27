@@ -116,145 +116,145 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         new FunctionalOperator
         (
             "sin",
-            arguments => Math.Sin(arguments[0].Deg2Rad()),
+            arguments => Math.Sin(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "asin",
-            arguments => Math.Asin(arguments[0]).Rad2Deg(),
+            arguments => Math.Asin(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "cos",
-            arguments => Math.Cos(arguments[0].Deg2Rad()),
+            arguments => Math.Cos(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "acos",
-            arguments => Math.Acos(arguments.First()).Rad2Deg(),
+            arguments => Math.Acos(arguments.First()),
             1
         ),
         new FunctionalOperator
         (
             "tan",
-            arguments => Math.Tan(arguments[0].Deg2Rad()),
+            arguments => Math.Tan(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "atan",
-            arguments => Math.Atan(arguments[0]).Rad2Deg(),
+            arguments => Math.Atan(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "csc",
-            arguments => 1 / Math.Sin(arguments[0].Deg2Rad()),
+            arguments => 1 / Math.Sin(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "acsc",
-            arguments => Math.Asin(1 / arguments[0]).Rad2Deg(),
+            arguments => Math.Asin(1 / arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "sec",
-            arguments => 1 / Math.Cos(arguments[0].Deg2Rad()),
+            arguments => 1 / Math.Cos(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "asec",
-            arguments => Math.Acos(1 / arguments[0]).Rad2Deg(),
+            arguments => Math.Acos(1 / arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "cot",
-            arguments => 1 / Math.Tan(arguments[0].Deg2Rad()),
+            arguments => 1 / Math.Tan(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "acot",
-            arguments => Math.Atan(1 / arguments[0]).Rad2Deg(),
+            arguments => Math.Atan(1 / arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "sinh",
-            arguments => Math.Sinh(arguments[0].Deg2Rad()),
+            arguments => Math.Sinh(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "asinh",
-            arguments => Math.Asinh(arguments[0]).Rad2Deg(),
+            arguments => Math.Asinh(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "cosh",
-            arguments => Math.Cosh(arguments[0].Deg2Rad()),
+            arguments => Math.Cosh(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "acosh",
-            arguments => Math.Acosh(arguments[0]).Rad2Deg(),
+            arguments => Math.Acosh(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "tanh",
-            arguments => Math.Tanh(arguments[0].Deg2Rad()),
+            arguments => Math.Tanh(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "atanh",
-            arguments => Math.Atanh(arguments[0]).Rad2Deg(),
+            arguments => Math.Atanh(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "csch",
-            arguments => 1 / Math.Sinh(arguments[0].Deg2Rad()),
+            arguments => 1 / Math.Sinh(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "acsch",
-            arguments => Math.Asinh(1 / arguments[0]).Rad2Deg(),
+            arguments => Math.Asinh(1 / arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "sech",
-            arguments => 1 / Math.Cosh(arguments[0].Deg2Rad()),
+            arguments => 1 / Math.Cosh(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "asech",
-            arguments => Math.Acosh(1 / arguments[0]).Rad2Deg(),
+            arguments => Math.Acosh(1 / arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "coth",
-            arguments => 1 / Math.Tanh(arguments[0].Deg2Rad()),
+            arguments => 1 / Math.Tanh(arguments[0]),
             1
         ),
         new FunctionalOperator
         (
             "acoth",
-            arguments => Math.Atanh(1 / arguments[0]).Rad2Deg(),
+            arguments => Math.Atanh(1 / arguments[0]),
             1
         ),
         new FunctionalOperator
@@ -350,7 +350,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         )
     };
 
-    private static readonly List<PrefixUnaryOperator> builtInPrefixUnaryOperator = new()
+    private static readonly List<PrefixUnaryOperator> builtInPrefixUnaryOperators = new()
     {
         new PrefixUnaryOperator
         (
@@ -387,7 +387,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         .Concat(builtInConstantOperators.Cast<Operator>())
         .Concat(builtInFunctionalOperators.Cast<Operator>())
         .Concat(builtInPostfixUnaryOperators.Cast<Operator>())
-        .Concat(builtInPrefixUnaryOperator.Cast<Operator>())
+        .Concat(builtInPrefixUnaryOperators.Cast<Operator>())
         .ToList();
 
     /// <summary>
@@ -539,7 +539,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
             {
                 tokens[i] = new PostfixUnaryOperatorToken(tokens[i].ToString(), tokens[i].Position);
             }
-            else if (builtInPrefixUnaryOperator.Any(o => o.Name == tokens[i].ToString()))
+            else if (builtInPrefixUnaryOperators.Any(o => o.Name == tokens[i].ToString()))
             {
                 tokens[i] = new PrefixUnaryOperatorToken(tokens[i].ToString(), tokens[i].Position);
             }
@@ -563,7 +563,6 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
                 }
             }
         }
-        cachedTokens = tokens;
         return tokens;
     }
 
@@ -573,7 +572,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// </summary>
     /// <param name="tokens"></param>
     /// <returns></returns>
-    private static List<Token> CalculateArgumentCount(List<Token> tokens)
+    private static List<Token> GetArgumentCount(List<Token> tokens)
     {
         List<Token> result = tokens.ToList();
         for (int i = 0; i < result.Count; i++)
@@ -851,7 +850,7 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
                 new ParserExceptionContext(Expression.Length, ParserExceptionType.TooManyOpeningParentheses));
         }
         // At this point, everything other than argument counts has been validated.
-        tokens = CalculateArgumentCount(tokens);
+        tokens = GetArgumentCount(tokens);
         for (int i = 0; i < tokens.Count; i++)
         {
             if (tokens[i] is FunctionalOperatorToken f)
@@ -859,22 +858,171 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
                 FunctionalOperator correspondingFunction = builtInFunctionalOperators.FirstOrDefault(function => function.Name == f.Content) ?? CustomFunctions.First(function => function.Name == f.Content);
                 if (correspondingFunction.ArgumentCounts.Count is not 0 && !correspondingFunction.ArgumentCounts.Contains(f.ArgumentCount))
                 {
-                    return new ParserException($"Function \"{f.Content}\" at position {f.Position} has {f.ArgumentCount} arguments, but the function expected {string.Join(", ", correspondingFunction.ArgumentCounts)} arguments",
+                    return new($"Function \"{f.Content}\" at position {f.Position} has {f.ArgumentCount} arguments, but the function expected {string.Join(", ", correspondingFunction.ArgumentCounts)} arguments",
                         new ParserExceptionContext(f.Position, ParserExceptionType.IncorrectArgumentCount));
                 }
             }
         }
+        cachedTokens = tokens;
         return null;
     }
 
     /// <summary>
-    /// Tries to evaluate <see cref="Expression"/>.
+    /// Tries to evaluate <see cref="Expression"/>. This can still throw an exception if any <see cref="FunctionalOperator"/> used throws an exception itself.
     /// </summary>
     /// <param name="result">The result of the evaluation if it succeeds.</param>
-    /// <returns>A <see cref="ParserException"/> instance containing information about the error if <paramref name="result"/> is not a valid math expression, or <see langword="null"/> if it is.</returns>
+    /// <returns>
+    /// A <see cref="ParserException"/> instance containing information about the error if <paramref name="result"/> is not a valid math expression, or <see langword="null"/> if it is. <br/>
+    /// If a non-<see langword="null"/> <see cref="ParserException"/> is returned, <paramref name="result"/> will be set to <see cref="double.NaN"/>. <br/>
+    /// If <see cref="Expression"/> is whitespace or empty, <paramref name="result"/> will be set to <see cref="double.NaN"/>, <br/>
+    /// Otherwise, <paramref name="result"/> will be set to the result of the evaluation.
+    /// </returns>
     public ParserException TryEvaluate(out double result)
     {
-        throw new NotImplementedException();
+        result = double.NaN;
+        if (Expression.IsWhitespace())
+        {
+            return null;
+        }
+        ParserException error = Validate();
+        if (error is not null)
+        {
+            return error;
+        }
+        List<Token> tokens = cachedTokens;
+        Stack<Token> output = new(), operators = new();
+        Dictionary<Token, Operator> tokenToOperator = new();
+        foreach (Token token in tokens)
+        {
+            if (token is BinaryOperatorToken)
+            {
+                tokenToOperator.Add(token, builtInBinaryOperators.First(o => o.Name == token.Content));
+            }
+            else if (token is ConstantOperatorToken)
+            {
+                tokenToOperator.Add(token, builtInConstantOperators.Concat(CustomConstants).First(o => o.Name == token.Content));
+            }
+            else if (token is FunctionalOperatorToken)
+            {
+                tokenToOperator.Add(token, builtInFunctionalOperators.Concat(CustomFunctions).First(o => o.Name == token.Content));
+            }
+            else if (token is PostfixUnaryOperatorToken)
+            {
+                tokenToOperator.Add(token, builtInPostfixUnaryOperators.First(o => o.Name == token.Content));
+            }
+            else if (token is PrefixUnaryOperatorToken)
+            {
+                tokenToOperator.Add(token, builtInPrefixUnaryOperators.First(o => o.Name == token.Content));
+            }
+        }
+        for (int i = 0; i < tokens.Count; i++)
+        {
+            if (tokens[i] is BinaryOperatorToken or PostfixUnaryOperatorToken or PrefixUnaryOperatorToken)
+            {
+                /*
+                 while (there is an operator o2 other than the left parenthesis at the top of the operator stack &&
+                     ((o2 has greater precedence than o1) || (they have the same precedence && o1 is left-associative)))
+                 {
+                     pop o2 from the operator stack into the output queue
+                 }
+                */
+                Token top = null;
+                IOperatorLike o1 = (IOperatorLike)tokenToOperator[tokens[i]];
+                while (operators.TryPeek(out top) && top is BinaryOperatorToken or PostfixUnaryOperatorToken or PrefixUnaryOperatorToken)
+                {
+                    IOperatorLike o2 = (IOperatorLike)tokenToOperator[top];
+                    if (o1 is not UnaryOperator &&
+                        (((int)o2.Precedence > (int)o1.Precedence) || (o2.Precedence == o1.Precedence && o1.Associativity is OperatorAssociativity.Left)))
+                    {
+                        output.Push(operators.Pop());
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                operators.Push(tokens[i]);
+            }
+            else if (tokens[i] is ClosingParenthesisToken)
+            {
+                while (operators.Peek() is not OpeningParenthesisToken)
+                {
+                    output.Push(operators.Pop());
+                }
+                operators.Pop();
+                if (operators.TryPeek(out Token top) && top is FunctionalOperatorToken)
+                {
+                    output.Push(operators.Pop());
+                }
+            }
+            else if (tokens[i] is CommaToken)
+            {
+                continue;
+            }
+            else if (tokens[i] is ConstantOperatorToken)
+            {
+                output.Push(tokens[i]);
+            }
+            else if (tokens[i] is FunctionalOperatorToken)
+            {
+                operators.Push(tokens[i]);
+            }
+            else if (tokens[i] is NumberToken)
+            {
+                output.Push(tokens[i]);
+            }
+            else if (tokens[i] is OpeningParenthesisToken)
+            {
+                operators.Push(tokens[i]);
+            }
+        }
+        int operatorsCount = operators.Count;
+        for (int i = 0; i < operatorsCount; i++)
+        {
+            output.Push(operators.Pop());
+        }
+        List<Token> postfixTokens = output.Reverse().ToList();
+        Stack<double> operands = new();
+        for (int i = 0; i < postfixTokens.Count; i++)
+        {
+            if (postfixTokens[i] is NumberToken num)
+            {
+                operands.Push(num.Value);
+            }
+            else if (postfixTokens[i] is ConstantOperatorToken)
+            {
+                operands.Push(((ConstantOperator)tokenToOperator[postfixTokens[i]]).Value);
+            }
+            else if (postfixTokens[i] is FunctionalOperatorToken functionToken)
+            {
+                FunctionalOperator function = (FunctionalOperator)tokenToOperator[postfixTokens[i]];
+                List<double> arguments = new();
+                for (int j = 0; j < functionToken.ArgumentCount; j++)
+                {
+                    arguments.Add(operands.Pop());
+                }
+                arguments.Reverse();
+                operands.Push(function.Calculate(arguments));
+            }
+            else if (postfixTokens[i] is BinaryOperatorToken)
+            {
+                BinaryOperator binaryOperator = (BinaryOperator)tokenToOperator[postfixTokens[i]];
+                double right = operands.Pop(), left = operands.Pop();
+                operands.Push(binaryOperator.Calculate(left, right));
+            }
+            else if (postfixTokens[i] is PostfixUnaryOperatorToken)
+            {
+                PostfixUnaryOperator postfixUnaryOperator = (PostfixUnaryOperator)tokenToOperator[postfixTokens[i]];
+                operands.Push(postfixUnaryOperator.Calculate(operands.Pop()));
+            }
+            else if (postfixTokens[i] is PrefixUnaryOperatorToken)
+            {
+                PrefixUnaryOperator prefixUnaryOperator = (PrefixUnaryOperator)tokenToOperator[postfixTokens[i]];
+                operands.Push(prefixUnaryOperator.Calculate(operands.Pop()));
+            }
+        }
+        result = operands.Pop();
+        return null;
     }
 
     /// <summary>
@@ -884,7 +1032,15 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
     /// <exception cref="ParserException">If <see cref="Expression"/> is not a valid math expression.</exception>
     public double Evaluate()
     {
-        throw new NotImplementedException();
+        ParserException error = TryEvaluate(out double result);
+        if (error is null)
+        {
+            return result;
+        }
+        else
+        {
+            throw error;
+        }
     }
 
     /// <summary>

@@ -5,7 +5,7 @@ namespace MathExpressionParser;
 /// <summary>
 /// Represents a operator that takes the left and right tokens as its operands.
 /// </summary>
-internal class BinaryOperator : Operator
+internal class BinaryOperator : Operator, IOperatorLike
 {
     public OperatorAssociativity Associativity { get; set; }
 

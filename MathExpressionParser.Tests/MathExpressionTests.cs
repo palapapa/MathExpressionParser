@@ -365,6 +365,11 @@ public class MathExpressionTests
             (
                 "sin()",
                 new(0, ParserExceptionType.IncorrectArgumentCount)
+            ),
+            new
+            (
+                "1 + ()",
+                new(5, ParserExceptionType.UnexpectedClosingParenthesis)
             )
         };
         foreach ((string, ParserExceptionContext) tuple in tuples0)
@@ -436,6 +441,11 @@ public class MathExpressionTests
             (
                 new(null, constantWithNaN.ToSingletonList()),
                 new(-1, ParserExceptionType.NaNConstant)
+            ),
+            new
+            (
+                new("1 @ 1"),
+                new(2, ParserExceptionType.UnknownOperator)
             )
         };
         foreach ((MathExpression, ParserExceptionContext) tuple in tuples1)
@@ -492,11 +502,444 @@ public class MathExpressionTests
         PrivateType mathExpression = new(typeof(MathExpression));
         foreach ((List<Token>, List<Token>) tuple in tuples)
         {
-            List<Token> result = (List<Token>)mathExpression.InvokeStatic("CalculateArgumentCount", tuple.Item1);
+            List<Token> result = (List<Token>)mathExpression.InvokeStatic("GetArgumentCount", tuple.Item1);
             if (!tuple.Item2.SequenceEqual(result))
             {
                 Assert.Fail($"Actual: {string.Join(", ", result.Where(token => token is FunctionalOperatorToken).Select(token => ((FunctionalOperatorToken)token).ArgumentCount))}");
             }
         }
+    }
+
+    [TestMethod]
+    public void TryEvaluate_GettingResult_CorrectResult()
+    {
+        List<(MathExpression, double, ParserExceptionContext)> tuples = new()
+        {
+            new
+            (
+                new("123 + 456"),
+                579,
+                null
+            ),
+            new
+            (
+                new("123 + (-456)"),
+                -333,
+                null
+            ),
+            new
+            (
+                new("123 + -456"),
+                -333,
+                null
+            ),
+            new
+            (
+                new("123 * -456"),
+                -56088,
+                null
+            ),
+            new
+            (
+                new("2 ^ -4"),
+                (double)1 / 16,
+                null
+            ),
+            new
+            (
+                new("123 + (-(456))"),
+                -333,
+                null
+            ),
+            new
+            (
+                new("5!"),
+                120,
+                null
+            ),
+            new
+            (
+                new("-5!"),
+                -120,
+                null
+            ),
+            new
+            (
+                new("(-5)!"),
+                -120,
+                null
+            ),
+            new
+            (
+                new("(100 - 200) + (100 + 200)"),
+                200,
+                null
+            ),
+            new
+            (
+                new("1000 - 500"),
+                500,
+                null
+            ),
+            new
+            (
+                new("1 + -2"),
+                -1,
+                null
+            ),
+            new
+            (
+                new("3 * -(5 + 2)"),
+                -21,
+                null
+            ),
+            new
+            (
+                new("10 * 100"),
+                1000,
+                null
+            ),
+            new
+            (
+                new("-10 * 100"),
+                -1000,
+                null
+            ),
+            new
+            (
+                new("10 * -100"),
+                -1000,
+                null
+            ),
+            new
+            (
+                new("10 / 4"),
+                2.5,
+                null
+            ),
+            new
+            (
+                new("2 ^ 3"),
+                8,
+                null
+            ),
+            new
+            (
+                new("2 ^ 2 ^ 2"),
+                16,
+                null
+            ),
+            new
+            (
+                new("-2 ^ -2 ^ 2"),
+                (double)-1 / 16,
+                null
+            ),
+            new
+            (
+                new("-2 ^ -2 ^ -2"),
+                -2d.ToThePowerOf(-2d.ToThePowerOf(-2)), // -(2^(-(2^(-2))))
+                null
+            ),
+            new
+            (
+                new("(-2) ^ -2 ^ -2"),
+                double.NaN,
+                null
+            ),
+            new
+            (
+                new("(-2) ^ 2 ^ (-2) ^ -2"),
+                double.NaN,
+                null
+            ),
+            new
+            (
+                new("sqrt(9)"),
+                3,
+                null
+            ),
+            new
+            (
+                new("-sqrt(9)"),
+                -3,
+                null
+            ),
+            new
+            (
+                new("sqrt(-9)"),
+                double.NaN,
+                null
+            ),
+            new
+            (
+                new(""),
+                double.NaN,
+                null
+            ),
+            new
+            (
+                new("\t\n"),
+                double.NaN,
+                null
+            ),
+            new
+            (
+                new("sin(pi / 2)"),
+                1,
+                null
+            ),
+            new
+            (
+                new("cos(2 * pi)"),
+                1,
+                null
+            ),
+            new
+            (
+                new("tan(pi)"),
+                0,
+                null
+            ),
+            new
+            (
+                new("asin(sqrt(2) / 2)"),
+                Math.PI / 4,
+                null
+            ),
+            new
+            (
+                new("-2 ^ 2"),
+                -4,
+                null
+            ),
+            new
+            (
+                new("(-2) ^ 2"),
+                4,
+                null
+            ),
+            new
+            (
+                new("acos(1)"),
+                0,
+                null
+            ),
+            new
+            (
+                new("atan(1)"),
+                Math.PI / 4,
+                null
+            ),
+            new
+            (
+                new("csc(pi / 6)"),
+                2,
+                null
+            ),
+            new
+            (
+                new("sec(pi / 3)"),
+                2,
+                null
+            ),
+            new
+            (
+                new("cot(pi / 4)"),
+                1,
+                null
+            ),
+            new
+            (
+                new("P(5, 2)"),
+                20,
+                null
+            ),
+            new
+            (
+                new("C(5, 2)"),
+                10,
+                null
+            ),
+            new
+            (
+                new("H(5, 2)"),
+                15,
+                null
+            ),
+            new
+            (
+                new("log(64, 2)"),
+                6,
+                null
+            ),
+            new
+            (
+                new("log10(100)"),
+                2,
+                null
+            ),
+            new
+            (
+                new("log2(8)"),
+                3,
+                null
+            ),
+            new
+            (
+                new("ln(10)"),
+                Math.Log(10),
+                null
+            ),
+            new
+            (
+                new("ceil(0.5)"),
+                1,
+                null
+            ),
+            new
+            (
+                new("floor(0.5)"),
+                0,
+                null
+            ),
+            new
+            (
+                new("round(1.5)"),
+                Math.Round(1.5),
+                null
+            ),
+            new
+            (
+                new("pi"),
+                Math.PI,
+                null
+            ),
+            new
+            (
+                new("e"),
+                Math.E,
+                null
+            ),
+            new
+            (
+                new("1 + 2 * 3"),
+                7,
+                null
+            ),
+            new
+            (
+                new("sqrt(1 + sin(pi / 2) * 3)"),
+                2,
+                null
+            ),
+            new
+            (
+                new("log10(sqrt(1E4))"),
+                2,
+                null
+            ),
+            new
+            (
+                new("abs(-2)"),
+                2,
+                null
+            ),
+            new
+            (
+                new("9 % 2"),
+                1,
+                null
+            ),
+            new
+            (
+                new("1 * (2 + 3) - (4 * 5 * (6 + 7))"),
+                -255,
+                null
+            ),
+            new
+            (
+                new("1! * 2! * 3! * 4!"),
+                288,
+                null
+            ),
+            new
+            (
+                new("e * 1e2"),
+                Math.E * 100,
+                null
+            ),
+            new
+            (
+                new("sin(90 torad)"),
+                1,
+                null
+            ),
+            new
+            (
+                new("1 torad * 2 torad"),
+                Math.PI / 180 * (2 * Math.PI / 180),
+                null
+            ),
+            new
+            (
+                new("()"),
+                double.NaN,
+                new(1, ParserExceptionType.UnexpectedClosingParenthesis)
+            ),
+            new
+            (
+                new("f(x)", new FunctionalOperator("f", x => x[0] * 2, 1).ToSingletonList(), new ConstantOperator("x", 100).ToSingletonList()),
+                200,
+                null
+            ),
+            new
+            (
+                new("log(log(3.2e+2, -(-1e1)), sqrt(1E-4))"),
+                -0.19941686566,
+                null
+            )
+        };
+        foreach ((MathExpression, double, ParserExceptionContext) tuple in tuples)
+        {
+            ParserException error = null;
+            double result = 0;
+            try
+            {
+                error = tuple.Item1.TryEvaluate(out result);
+            }
+            catch (Exception e)
+            {
+                Assert.Fail($"{e}\n{tuple.Item1}");
+            }
+            try
+            {
+                if (!(tuple.Item2 is double.NaN && result is double.NaN))
+                {
+                    Assert.AreEqual(tuple.Item2, result, 1E-8);
+                }
+            }
+            catch (AssertFailedException e)
+            {
+                Assert.Fail($"{e.Message}\n{tuple.Item1}");
+            }
+            Assert.AreEqual(tuple.Item3, error?.Context);
+        }
+    }
+
+    [TestMethod]
+    public void Evaluate_GettingResult_CorrectResult()
+    {
+        Assert.AreEqual(-0.19941686566, new MathExpression("log(log(3.2e+2, -(-1e1)), sqrt(1E-4))").Evaluate(), 1E-8);
+    }
+
+    [TestMethod]
+    public void Evaluate_InvalidExpression_ParserException()
+    {
+        TestUtilities.AssertException<ParserException>
+        (
+            () => new MathExpression("()").Evaluate(),
+            e => e.Context == new ParserExceptionContext(1, ParserExceptionType.UnexpectedClosingParenthesis)
+        );
     }
 }
