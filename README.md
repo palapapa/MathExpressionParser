@@ -86,11 +86,11 @@ Function(1)   | ceil  | Least integer not less than
 Function(1)   | floor | Greatest integer not greater than
 Function(1)   | round | Round decimal places
 Function(1)   | abs   | Absolute value
-Function(any) | min   | Smallest value of the arguments. If no arguments are given, returns 0.
-Function(any) | max   | Largest value of the arguments. If no arguments are given, returns 0.
+Function(any) | min   | Returns the least value of the arguments. If no arguments are given, returns 0.
+Function(any) | max   | Returns the greatest value of the arguments. If no arguments are given, returns 0.
 Postfix unary | !     | Factorial
-Postfix unary | torad | Convert degrees to radians
-Postfix unary | todeg | Convert radians to degrees
+Postfix unary | torad | Converts degrees to radians
+Postfix unary | todeg | Converts radians to degrees
 
 ### Adding custom functions and constants
 
