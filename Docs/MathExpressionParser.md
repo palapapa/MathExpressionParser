@@ -1280,4 +1280,4 @@ An error where a [PrefixUnaryOperator](#T-MathExpressionParser-PrefixUnaryOperat
 
 ##### Summary
 
-An error where a [Operator](#T-MathExpressionParser-Operator 'MathExpressionParser.Operator') in a [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression') is not found.
+An error where an unknown [Operator](#T-MathExpressionParser-Operator 'MathExpressionParser.Operator') is used in a [MathExpression](#T-MathExpressionParser-MathExpression 'MathExpressionParser.MathExpression').

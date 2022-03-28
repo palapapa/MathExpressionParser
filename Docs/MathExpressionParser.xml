@@ -558,7 +558,7 @@
         </member>
         <member name="F:MathExpressionParser.ParserExceptionType.UnknownOperator">
             <summary>
-            An error where a <see cref="T:MathExpressionParser.Operator"/> in a <see cref="T:MathExpressionParser.MathExpression"/> is not found.
+            An error where an unknown <see cref="T:MathExpressionParser.Operator"/> is used in a <see cref="T:MathExpressionParser.MathExpression"/>.
             </summary>
         </member>
         <member name="F:MathExpressionParser.ParserExceptionType.UnexpectedNewline">
