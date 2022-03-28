@@ -138,7 +138,7 @@
             <param name="expression"><inheritdoc cref="M:MathExpressionParser.MathExpression.#ctor(System.String)" path="/param[@name='expression']"/></param>
             <param name="customFunctions"><inheritdoc cref="M:MathExpressionParser.MathExpression.#ctor(System.Collections.Generic.IList{MathExpressionParser.FunctionalOperator},System.Collections.Generic.IList{MathExpressionParser.ConstantOperator})" path="/param[@name='customFunctions']"/></param>
             <param name="customConstants"><inheritdoc cref="M:MathExpressionParser.MathExpression.#ctor(System.Collections.Generic.IList{MathExpressionParser.FunctionalOperator},System.Collections.Generic.IList{MathExpressionParser.ConstantOperator})" path="/param[@name='customConstants']"/></param>
-            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentNullException"><inheritdoc cref="M:MathExpressionParser.MathExpression.#ctor(System.String)" path="/exception[@cref='ArgumentNullException']"/></exception>
         </member>
         <member name="M:MathExpressionParser.MathExpression.#ctor(MathExpressionParser.MathExpression)">
             <summary>

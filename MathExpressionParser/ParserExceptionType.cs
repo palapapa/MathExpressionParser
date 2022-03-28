@@ -96,7 +96,7 @@ public enum ParserExceptionType
     UnexpectedPrefixUnaryOperator,
 
     /// <summary>
-    /// An error where a <see cref="Operator"/> in a <see cref="MathExpression"/> is not found.
+    /// An error where an unknown <see cref="Operator"/> is used in a <see cref="MathExpression"/>.
     /// </summary>
     UnknownOperator,
 

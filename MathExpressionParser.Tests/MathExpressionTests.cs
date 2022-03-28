@@ -894,6 +894,36 @@ public class MathExpressionTests
                 new("log(log(3.2e+2, -(-1e1)), sqrt(1E-4))"),
                 -0.19941686566,
                 null
+            ),
+            new
+            (
+                new("sin(90 torad)"),
+                1,
+                null
+            ),
+            new
+            (
+                new("-pi todeg"),
+                -180,
+                null
+            ),
+            new
+            (
+                new("3!!"),
+                720,
+                null
+            ),
+            new
+            (
+                new("max(1, 2, 3)"),
+                3,
+                null
+            ),
+            new
+            (
+                new("min()"),
+                0,
+                null
             )
         };
         foreach ((MathExpression, double, ParserExceptionContext) tuple in tuples)

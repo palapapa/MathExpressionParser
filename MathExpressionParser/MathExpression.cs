@@ -341,12 +341,12 @@ public class MathExpression : IMathExpression, IComparable<MathExpression>, IEqu
         new FunctionalOperator
         (
             "min",
-            arguments => arguments.Min()
+            arguments => arguments.Count is 0 ? 0 : arguments.Min()
         ),
         new FunctionalOperator
         (
             "max",
-            arguments => arguments.Max()
+            arguments => arguments.Count is 0 ? 0 : arguments.Max()
         )
     };
 
