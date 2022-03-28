@@ -135,4 +135,4 @@ UnexpectedNewline              | An error where a `MathExpression` ended unexpec
 
 ## Complete Docs
 
-For the complete auto-generated documentation, see [here](https://github.com/palapapa/MathExpressionParser/blob/master/Docs/MathExpressionParser.md). (The docs generation tool Vsxmd currently doesn't work for &lt;inheritdoc&gt; tags and will just leave them empty or write "Inherited from parent.")
+For the complete auto-generated documentation, see [here](https://github.com/palapapa/MathExpressionParser/blob/master/Docs/MathExpressionParser.md). (The docs generation tool Vsxmd currently doesn't work with &lt;inheritdoc&gt; tags and will just leave them empty or write "Inherited from parent.")
