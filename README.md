@@ -83,7 +83,7 @@ Function(1)   | log10 | Logarithm base 10
 Function(1)   | log2  | Logarithm base 2
 Function(1)   | ln    | Natural logarithm
 Function(1)   | ceil  | Smallest integer not less than
-Function(1)   | floor | Largest integer not less than
+Function(1)   | floor | Largest integer not larger than
 Function(1)   | round | Round decimal places
 Function(1)   | abs   | Absolute value
 Function(any) | min   | Smallest value of the arguments. If no arguments are given, returns 0.
