@@ -78,7 +78,7 @@ Function(1)   | acoth | Hyperbolic arc cotangent
 Function(2)   | P     | Permutation
 Function(2)   | C     | Combination
 Function(2)   | H     | H(x, y) = C(x + y - 1, x - 1) = C(x + y - 1, y)
-Function(2)   | log   | Logarithm
+Function(2)   | log   | Logarithm. The second argument is the base.
 Function(1)   | log10 | Logarithm base 10
 Function(1)   | log2  | Logarithm base 2
 Function(1)   | ln    | Natural logarithm
