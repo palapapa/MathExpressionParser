@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>D:\Desktop\C#\MathExpressionParser\Docs\MathExpressionParser.xml</DocumentationFile>
+    <DocumentationFile>..\Docs\MathExpressionParser.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
