@@ -40,7 +40,7 @@ The number in the parentheses is the number of arguments that function takes.
 All trigonometric functions are in radians. Use torad to convert degrees to radians.
 
 Type          | Name  | Description
---------------|-------|-----------------------------------------------------------------------
+--------------|-------|-----------------------------------------------------------------------------------
 Binary        | +     | Addition
 Binary        | -     | Subtraction
 Prefix unary  | -     | Negation
@@ -105,7 +105,26 @@ double value = expr.Evaluate(); // value is 200
 
 ```csharp
 MathExpression expr = new("sin(1,)");
-Console.WriteLine(expr.Validate().Context); // prints ParserExceptionContext { Position = 6, Type = UnexpectedClosingParenthesis }
+Console.WriteLine(expr.Validate()?.Context);
+// prints ParserExceptionContext { Position = 6, Type = UnexpectedClosingParenthesis }
+```
+
+```csharp
+MathExpression expr = new("2sin(2)");
+Console.WriteLine(expr.Validate()?.Context);
+// prints ParserExceptionContext { Position = 1, Type = UnexpectedFunctionalOperator }
+```
+
+```csharp
+MathExpression expr = new("cos(1, 2)");
+Console.WriteLine(expr.Validate()?.Context);
+// prints ParserExceptionContext { Position = 0, Type = IncorrectArgumentCount }
+```
+
+```csharp
+MathExpression expr = new("tan(pipi)");
+Console.WriteLine(expr.Validate()?.Context);
+// prints ParserExceptionContext { Position = 4, Type = UnknownOperator }
 ```
 
 ### All error types
