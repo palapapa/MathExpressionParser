@@ -117,7 +117,7 @@ IncorrectArgumentCount         | An error where either too many or too few argum
 InvalidCustomFunctionName      | An error where some of the custom functions provided have names that either start with a number, are empty, or contain characters that are not alphanumeric or are not underscores.
 NullCustomFunction             | An error where `MathExpression.CustomFunctions` contains a null element.
 InvalidCustomConstantName      | An error where some of the custom constants provided have names that either start with a number, are empty, or contain characters that are not alphanumeric or are not underscores.
-NullCustomConstant             | An error where `MathExpression.CustomConstants` contain a mull element.
+NullCustomConstant             | An error where `MathExpression.CustomConstants` contain a null element.
 NaNConstant                    | An error where `MathExpression.CustomConstants` have a `ConstantOperator.Value` of `double.NaN`.
 ConflictingNames               | An error where two `Operator`s in a `MathExpression` share the same name.
 UnexpectedBinaryOperator       | An error where a `BinaryOperator` is used incorrectly.
