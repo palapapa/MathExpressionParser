@@ -4,6 +4,8 @@
 
 A lightweight customizable math expression parsing library that supports custom functions and variables, with a complete error handling system(`ParserException`).
 
+To understand the making of this project, please refer to [this PDF](MathExpressionParser.pdf).
+
 ## Getting Started
 
 ### Evaluating a expression
